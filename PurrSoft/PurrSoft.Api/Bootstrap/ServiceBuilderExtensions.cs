@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using PurrSoft.Application.Bootstrap;
 using PurrSoft.Application.Queries.AccountQueries;
+using PurrSoft.Common.Config;
+using PurrSoft.Domain.Repositories;
 using PurrSoft.Infrastructure.Bootstrap;
 using PurrSoft.Persistence;
 using PurrSoft.Persistence.Bootstrap;
+using PurrSoft.Persistence.Repositories;
 
 namespace PurrSoft.Api.Bootstrap;
 public static class ServiceBuilderExtensions
@@ -24,9 +27,19 @@ public static class ServiceBuilderExtensions
         // register dbcontext
         services.AddDbContext(configuration);
         // jwt
-        //services.AddJwtAuthentication(configuration); <- to do
+        IConfigurationSection jwtSettings = configuration.GetSection("JwtConfig");
+        string jwtSecret = jwtSettings["secret"] ?? string.Empty;
+
+        JwtConfig jwtConfig = new()
+        {
+            Audience = jwtSettings["validAudience"] ?? string.Empty,
+            ExpiresIn = Convert.ToDouble(jwtSettings["expiresIn"]),
+            Issuer = jwtSettings["validIssuer"] ?? string.Empty,
+            Secret = jwtSettings["secret"] ?? string.Empty
+        };
+        services.AddJwtAuthentication(configuration, jwtSettings, jwtConfig);
         //identity
-         services.ConfigureIdentity(); 
+        services.ConfigureIdentity();
         //mediatr
         services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblies(typeof(GetLoggedInUserQuery).Assembly));
@@ -37,16 +50,20 @@ public static class ServiceBuilderExtensions
         services.RegisterInfrastructureServices();
         //register application services
         services.RegisterApplicationServices();
+
+        services.AddScoped(typeof(ILogRepository<>), typeof(LogRepository<>));
         // regirer repositories
         services.RegisterRepositories();
         // web api
         services.RegisterWebApiServices();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddSwaggerConfig();
         services.AddControllers();
         // singleton for action context accessor
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         // there will be a singleton for the jwt config
+        // Register JwtConfig as a singleton
+        services.AddSingleton(jwtConfig);
         // scope for action context and url helper
         services.AddScoped(x =>
         {

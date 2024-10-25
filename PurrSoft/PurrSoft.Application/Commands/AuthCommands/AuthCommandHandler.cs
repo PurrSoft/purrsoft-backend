@@ -17,6 +17,7 @@ public class AuthCommandHandler(
     UserManager<ApplicationUser> userManager,
     IJwtTokenService tokenService,
     IRepository<ApplicationUser> userRepository,
+    IRepository<Role> roleRepository,
     IConfiguration configuration,
     ILogRepository<AuthCommandHandler> logRepository)
     : IRequestHandler<UserRegistrationCommand, CommandResponse>,
@@ -26,8 +27,14 @@ public class AuthCommandHandler(
     {
         try
         {
+            if (!await roleRepository.Query(r => r.Name == command.Role).AnyAsync(cancellationToken: cancellationToken))
+            {
+                return CommandResponse.Failed($"Role '{command.Role}' does not exist.");
+            }
+
             ApplicationUser applicationUser = new ApplicationUser
             {
+                Id= Guid.NewGuid().ToString(),
                 Email = command.Email,
                 UserName = command.Email,
                 FirstName = command.FirstName,
@@ -41,7 +48,7 @@ public class AuthCommandHandler(
                 return CommandResponse.Failed(errors);
             }
 
-            IdentityResult roleResult = await userManager.AddToRoleAsync(applicationUser, Roles.User);
+            IdentityResult roleResult = await userManager.AddToRoleAsync(applicationUser, command.Role);
             if (!roleResult.Succeeded)
             {
                 return CommandResponse.Failed(roleResult.Errors.Select(e => e.Description).ToArray());

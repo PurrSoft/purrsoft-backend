@@ -1,5 +1,6 @@
 ﻿using PurrSoft.Application.Common;
 using PurrSoft.Application.Models;
+using PurrSoft.Domain.Entities;
 
 namespace PurrSoft.Application.Commands.AuthCommands;
 
@@ -11,6 +12,7 @@ public class UserRegistrationCommand : BaseRequest<CommandResponse>
     public string ConfirmPassword { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
+    public string Role { get; set; }
 }
 
 //user login

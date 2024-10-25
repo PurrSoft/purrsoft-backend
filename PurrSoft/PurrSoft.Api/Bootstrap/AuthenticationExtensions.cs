@@ -10,18 +10,10 @@ namespace PurrSoft.Api.Bootstrap;
 
 public static class AuthenticationExtensions
 {
-    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration,
+        IConfigurationSection jwtSettings, JwtConfig jwtConfig)
     {
-        IConfigurationSection jwtSettings = configuration.GetSection("JwtConfig");
-        string jwtSecret = jwtSettings["secret"] ?? string.Empty;
 
-        JwtConfig jwtConfig = new()
-        {
-            Audience = jwtSettings["validAudience"] ?? string.Empty,
-            ExpiresIn = Convert.ToDouble(jwtSettings["expiresIn"]),
-            Issuer = jwtSettings["validIssuer"] ?? string.Empty,
-            Secret = jwtSettings["secret"] ?? string.Empty
-        };
         services
              .AddAuthentication(opt =>
              {
@@ -38,10 +30,9 @@ public static class AuthenticationExtensions
                      ValidateIssuerSigningKey = true,
                      ValidIssuer = jwtSettings["validIssuer"],
                      ValidAudience = jwtSettings["validAudience"],
-                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Secret))
                  };
              }).AddCookie();
-        services.AddSingleton(jwtConfig);
         return services;
     }
 
