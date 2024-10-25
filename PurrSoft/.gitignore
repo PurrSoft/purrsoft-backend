@@ -1,0 +1,47 @@
+#logs
+Logs/
+#build
+[Oo]bj/
+[Bb]in/
+#generated files
+project.lock.json
+.vs/
+*.vspscc
+*.vssscc
+#Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+*_i.c
+*_p.c
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.log
+*.vspscc
+*.vssscc
+.builds
+#Roslyn cache
+*.ide/
+#NuGet Packages
+*.nupkg
+#ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+#Jet Brains Rider
+.idea/
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
