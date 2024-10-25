@@ -1,5 +1,5 @@
-﻿
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
+
 namespace PurrSoft.Application.Common;
 
 public abstract class BaseResponse
@@ -49,5 +49,4 @@ public abstract class BaseResponse
             Errors[propertyName] = [];
         }
     }
-
 }
