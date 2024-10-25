@@ -20,9 +20,8 @@ public static class MiddlewareExtensions
         app.UseRouting();
         app.UseCors("_myAllowSpecificOrigins");
 
-        // Temporarily skipping authentication & authorization middleware
-        //app.UseAuthentication(); // Not needed in this iteration
-        //app.UseAuthorization(); // Not needed in this iteration
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.MapControllers();
 

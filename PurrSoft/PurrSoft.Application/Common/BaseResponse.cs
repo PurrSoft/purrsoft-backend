@@ -4,8 +4,7 @@ namespace PurrSoft.Application.Common;
 
 public abstract class BaseResponse
 {
-    public IDictionary<string, IList<string>> Errors { get; set; }
-        = new Dictionary<string, IList<string>>();
+    public IDictionary<string, IList<string>> Errors { get; set; } = new Dictionary<string, IList<string>>();
 
     public bool IsValid => Errors.Keys.Any();
 
@@ -24,9 +23,7 @@ public abstract class BaseResponse
     }
 
     public void AddError(string error) => AddError(string.Empty, error);
-
     public void SetErrors(string propertyName, IEnumerable<string> errors) => Errors[propertyName] = errors.ToList();
-
     public void SetErrors(IEnumerable<string> errors) => Errors[string.Empty] = errors.ToList();
 
     public void SetErrors(IList<ValidationFailure> errors)
@@ -40,7 +37,7 @@ public abstract class BaseResponse
 
     private void EnsureEntry(string propertyName)
     {
-        if (!Errors.TryGetValue(propertyName, out var value))
+        if (!Errors.TryGetValue(propertyName, out IList<string> value))
         {
             Errors.Add(propertyName, []);
         }

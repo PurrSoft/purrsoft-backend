@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using PurrSoft.Application.Interfaces;
+using PurrSoft.Application.Services;
 
 namespace PurrSoft.Application.Bootstrap;
 
@@ -6,7 +8,8 @@ public static class ServiceBuilderExtensions
 {
     public static void RegisterApplicationServices(this IServiceCollection services)
     {
-        // to do jwt token
+        services.AddSingleton<IJwtTokenService, JwtTokenService>();
+
     }
 }
 

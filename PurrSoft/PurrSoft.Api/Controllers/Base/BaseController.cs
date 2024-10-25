@@ -5,7 +5,7 @@ namespace PurrSoft.Api.Controllers.Base;
 
 public abstract class BaseController : ControllerBase
 {
-    protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>()
-                                                  ?? throw new InvalidOperationException("Mediator not found");
-    private IMediator? _mediator;
+    private IMediator? _mediator; // Make _mediator nullable
+
+    protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>() ?? throw new InvalidOperationException("IMediator service not found");
 }

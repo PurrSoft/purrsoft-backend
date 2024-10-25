@@ -2,7 +2,6 @@
 
 public class ApplicationUserDto
 {
-
     public string Id { get; set; }
     public string DisplayName { get; set; }
     public string FirstName { get; set; }
