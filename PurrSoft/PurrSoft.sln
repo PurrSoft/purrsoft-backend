@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2DC101BB-86D6-41FD-9AC9-6E91F90BD209}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{045ECC3D-8421-42B9-BE25-D66980D0DF16}"
 EndProject
@@ -75,5 +78,8 @@ Global
 		{892AE51E-6825-41B7-AEC5-E591FFBA8613} = {820B5D50-35DD-46EE-9E3A-B115C7108EB3}
 		{5D2E0C3A-B715-4647-9F4C-496DB194FFEF} = {820B5D50-35DD-46EE-9E3A-B115C7108EB3}
 		{EE701880-4AA8-41D4-BF2F-78A6AE2A7D39} = {9342CD89-A095-480B-A7A0-9C76D061E76C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {419BE3C3-B01D-42CA-A949-69A8B75992FF}
 	EndGlobalSection
 EndGlobal
