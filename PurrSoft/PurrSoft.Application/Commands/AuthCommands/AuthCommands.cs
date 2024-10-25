@@ -1,6 +1,5 @@
 ﻿using PurrSoft.Application.Common;
 using PurrSoft.Application.Models;
-using PurrSoft.Domain.Entities;
 
 namespace PurrSoft.Application.Commands.AuthCommands;
 

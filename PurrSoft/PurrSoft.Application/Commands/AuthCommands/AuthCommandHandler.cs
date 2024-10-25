@@ -7,7 +7,6 @@ using PurrSoft.Application.Common;
 using PurrSoft.Application.Interfaces;
 using PurrSoft.Application.Models;
 using PurrSoft.Application.QueryOverviews.Mappers;
-using PurrSoft.Common.Constants;
 using PurrSoft.Domain.Entities;
 using PurrSoft.Domain.Repositories;
 
@@ -34,13 +33,14 @@ public class AuthCommandHandler(
 
             ApplicationUser applicationUser = new ApplicationUser
             {
-                Id= Guid.NewGuid().ToString(),
+                Id = Guid.NewGuid().ToString(),
                 Email = command.Email,
                 UserName = command.Email,
                 FirstName = command.FirstName,
                 LastName = command.LastName,
                 EmailConfirmed = false
             };
+
             IdentityResult creationResult = await userManager.CreateAsync(applicationUser, command.Password);
             if (!creationResult.Succeeded)
             {
@@ -55,7 +55,6 @@ public class AuthCommandHandler(
             }
 
             return CommandResponse.Ok();
-
         }
         catch (Exception ex)
         {
@@ -67,7 +66,6 @@ public class AuthCommandHandler(
     {
         try
         {
-
             ApplicationUser? applicationUser = await userManager.FindByEmailAsync(command.Email);
 
             CommandResponse<UserLoginCommandResponse> validationResult = ValidateUser(applicationUser);
@@ -84,7 +82,6 @@ public class AuthCommandHandler(
             }
 
             return await GetApplicationUserDto(applicationUser, cancellationToken);
-
         }
         catch (Exception ex)
         {
@@ -112,11 +109,12 @@ public class AuthCommandHandler(
     }
 
     private CommandResponse<UserLoginCommandResponse> ValidateUser(ApplicationUser? applicationUser)
-   => applicationUser switch
-   {
-       null => CommandResponse.Failed<UserLoginCommandResponse>(@"Invalid username Or Password", "User not found."),
-       _ => null
-   };
+        => (applicationUser switch
+        {
+            null => CommandResponse.Failed<UserLoginCommandResponse>(@"Invalid username Or Password",
+                "User not found."),
+            _ => null
+        })!;
 
 
 }

@@ -29,7 +29,6 @@ public static class ServiceBuilderExtensions
         // jwt
         IConfigurationSection jwtSettings = configuration.GetSection("JwtConfig");
         string jwtSecret = jwtSettings["secret"] ?? string.Empty;
-
         JwtConfig jwtConfig = new()
         {
             Audience = jwtSettings["validAudience"] ?? string.Empty,
@@ -50,9 +49,8 @@ public static class ServiceBuilderExtensions
         services.RegisterInfrastructureServices();
         //register application services
         services.RegisterApplicationServices();
-
+        // register repositories
         services.AddScoped(typeof(ILogRepository<>), typeof(LogRepository<>));
-        // regirer repositories
         services.RegisterRepositories();
         // web api
         services.RegisterWebApiServices();
@@ -61,7 +59,6 @@ public static class ServiceBuilderExtensions
         services.AddControllers();
         // singleton for action context accessor
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-        // there will be a singleton for the jwt config
         // Register JwtConfig as a singleton
         services.AddSingleton(jwtConfig);
         // scope for action context and url helper

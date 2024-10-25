@@ -13,7 +13,6 @@ public static class AuthenticationExtensions
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration,
         IConfigurationSection jwtSettings, JwtConfig jwtConfig)
     {
-
         services
              .AddAuthentication(opt =>
              {
