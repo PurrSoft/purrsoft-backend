@@ -25,9 +25,7 @@ public abstract class BaseResponse
     }
 
     public void AddError(string error) => AddError(string.Empty, error);
-
     public void SetErrors(string propertyName, IEnumerable<string> errors) => Errors[propertyName] = errors.ToList();
-
     public void SetErrors(IEnumerable<string> errors) => Errors[string.Empty] = errors.ToList();
 
     public void SetErrors(IList<ValidationFailure> errors)
