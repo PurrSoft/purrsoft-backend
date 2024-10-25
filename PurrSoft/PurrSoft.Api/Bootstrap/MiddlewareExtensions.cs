@@ -21,10 +21,10 @@ public static class MiddlewareExtensions
         app.UseCors("_myAllowSpecificOrigins");
 
         // Temporarily skipping authentication & authorization middleware
-         //app.UseAuthentication(); // Not needed in this iteration
-         //app.UseAuthorization(); // Not needed in this iteration
+        //app.UseAuthentication(); // Not needed in this iteration
+        //app.UseAuthorization(); // Not needed in this iteration
 
-         app.MapControllers();
+        app.MapControllers();
 
         return app;
     }

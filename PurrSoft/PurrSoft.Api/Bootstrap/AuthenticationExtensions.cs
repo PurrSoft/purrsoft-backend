@@ -8,7 +8,6 @@ using PurrSoft.Persistence;
 
 namespace PurrSoft.Api.Bootstrap;
 
-
 public static class AuthenticationExtensions
 {
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)

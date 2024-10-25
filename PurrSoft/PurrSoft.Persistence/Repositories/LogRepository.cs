@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PurrSoft.Domain.Entities;
 using PurrSoft.Domain.Repositories;
@@ -8,6 +7,8 @@ namespace PurrSoft.Persistence.Repositories;
 
 public class LogRepository<T> : ILogRepository<T> where T : class
 {
+    private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger<T> _logger;
 
     //constructor
     public LogRepository(IServiceProvider serviceProvider, ILogger<T> logger)
@@ -87,9 +88,4 @@ public class LogRepository<T> : ILogRepository<T> where T : class
             }
         }
     }
-
-
-    private readonly IServiceProvider _serviceProvider;
-    private readonly ILogger<T> _logger;
-
 }

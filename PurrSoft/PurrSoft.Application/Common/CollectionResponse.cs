@@ -1,5 +1,4 @@
-﻿
-namespace PurrSoft.Application.Common;
+﻿namespace PurrSoft.Application.Common;
 
 public class CollectionResponse<T>(IList<T> records, int totalNumberOfRecords)
 {

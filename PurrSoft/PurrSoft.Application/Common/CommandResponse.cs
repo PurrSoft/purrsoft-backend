@@ -1,7 +1,7 @@
-﻿
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
 
 namespace PurrSoft.Application.Common;
+
 public class CommandResponse : BaseResponse
 {
     protected CommandResponse(params string[] errors) : base(errors) { }

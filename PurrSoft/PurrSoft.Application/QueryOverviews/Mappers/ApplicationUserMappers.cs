@@ -15,6 +15,5 @@ public static class ApplicationUserMappers
             Id = u.Id,
             LastName = u.LastName,
             Roles = u.UserRoles.Select(ur => ur.Role.Name).ToArray(),
-
         });
 }

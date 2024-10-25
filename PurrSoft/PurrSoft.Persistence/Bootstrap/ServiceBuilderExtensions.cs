@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using PurrSoft.Domain.Repositories;
 using PurrSoft.Persistence.Repositories;
 
