@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using PurrSoft.Common.Config;
 using PurrSoft.Domain.Entities;
 using PurrSoft.Persistence;
 
@@ -9,7 +13,36 @@ public static class AuthenticationExtensions
 {
     public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
-        //to do
+        IConfigurationSection jwtSettings = configuration.GetSection("JwtConfig");
+        string jwtSecret = jwtSettings["secret"] ?? string.Empty;
+
+        JwtConfig jwtConfig = new()
+        {
+            Audience = jwtSettings["validAudience"] ?? string.Empty,
+            ExpiresIn = Convert.ToDouble(jwtSettings["expiresIn"]),
+            Issuer = jwtSettings["validIssuer"] ?? string.Empty,
+            Secret = jwtSettings["secret"] ?? string.Empty
+        };
+        services
+             .AddAuthentication(opt =>
+             {
+                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+             })
+             .AddJwtBearer(opt =>
+             {
+                 opt.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuer = true,
+                     ValidateAudience = true,
+                     ValidateLifetime = true,
+                     ValidateIssuerSigningKey = true,
+                     ValidIssuer = jwtSettings["validIssuer"],
+                     ValidAudience = jwtSettings["validAudience"],
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret))
+                 };
+             }).AddCookie();
+        services.AddSingleton(jwtConfig);
         return services;
     }
 
