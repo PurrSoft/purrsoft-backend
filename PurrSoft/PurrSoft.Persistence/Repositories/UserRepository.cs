@@ -1,7 +1,7 @@
-﻿
-using PurrSoft.Domain.Repositories;
+﻿using PurrSoft.Domain.Repositories;
 
 namespace PurrSoft.Persistence.Repositories;
+
 public class UserRepository(PurrSoftDbContext dbContext) : IUserRepository
 {
     protected PurrSoftDbContext context = dbContext;
@@ -9,5 +9,4 @@ public class UserRepository(PurrSoftDbContext dbContext) : IUserRepository
     {
         return context.Users.Any(u => u.Id == id);
     }
-
 }

@@ -5,7 +5,6 @@ public static class SortAndPaginationUtils
     public static IQueryable<T> OrderByField<T>
         (this IQueryable<T> source, string sortBy, string sortDirection)
     {
-
         if (string.IsNullOrWhiteSpace(sortBy))
         {
             return source;

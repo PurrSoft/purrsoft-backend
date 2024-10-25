@@ -14,7 +14,6 @@ public static class ServiceBuilderExtensions
 {
     public static void RegisterWebApiServices(this IServiceCollection services)
     {
-
     }
 
     public static IServiceCollection AddAppServices(this IServiceCollection services, IConfiguration configuration)
@@ -40,12 +39,11 @@ public static class ServiceBuilderExtensions
         services.RegisterApplicationServices();
         // regirer repositories
         services.RegisterRepositories();
-        //web api
+        // web api
         services.RegisterWebApiServices();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddControllers();
-
         // singleton for action context accessor
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         // there will be a singleton for the jwt config
@@ -58,10 +56,8 @@ public static class ServiceBuilderExtensions
         });
 
         return services;
-
-
-
     }
+
     private static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
         string? connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -71,8 +67,8 @@ public static class ServiceBuilderExtensions
         }
         services.AddDbContext<PurrSoftDbContext>(options =>
             options.UseNpgsql(connectionString));
-
     }
+
     private static void AddCorsPolicy(this IServiceCollection services)
     {
         services.AddCors(
@@ -86,5 +82,4 @@ public static class ServiceBuilderExtensions
                             .AllowCredentials());
             });
     }
-
 }

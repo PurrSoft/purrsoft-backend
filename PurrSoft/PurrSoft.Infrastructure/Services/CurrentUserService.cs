@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using PurrSoft.Common.Identity;
 using PurrSoft.Domain.Entities;
@@ -26,5 +25,4 @@ public class CurrentUserService(IHttpContextAccessor httpContextAccessor, UserMa
                 UserId = user.Id,
             };
     }
-    
 }

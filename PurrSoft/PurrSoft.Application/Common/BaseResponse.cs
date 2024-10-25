@@ -1,6 +1,5 @@
 ﻿
 using FluentValidation.Results;
-
 namespace PurrSoft.Application.Common;
 
 public abstract class BaseResponse

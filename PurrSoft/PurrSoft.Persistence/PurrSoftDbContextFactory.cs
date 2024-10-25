@@ -1,9 +1,7 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace PurrSoft.Persistence;
-
 
 public class PurrSoftDbContextFactory : IDesignTimeDbContextFactory<PurrSoftDbContext>
 {

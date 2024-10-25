@@ -1,5 +1,4 @@
 ﻿namespace PurrSoft.Application.Models;
-
 public class ApplicationUserDto
 {
 

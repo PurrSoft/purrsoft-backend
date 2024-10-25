@@ -10,8 +10,5 @@ public class ApplicationLog
     public string CallStack { get; set; }
     public string ExceptionMessage { get; set; }
     public string ExceptionSource { get; set; }
-    public DateTime LoggedAt
-    {
-        get; set;
-    }
+    public DateTime LoggedAt { get; set; }
 }

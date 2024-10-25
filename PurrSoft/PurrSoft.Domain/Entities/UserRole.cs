@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+
 namespace PurrSoft.Domain.Entities;
 
 public class UserRole : IdentityUserRole<string>
