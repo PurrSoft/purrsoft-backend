@@ -10,6 +10,7 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
     , IdentityRoleClaim<string>, IdentityUserToken<string>>(options)
 {
     public DbSet<ApplicationLog> ApplicationLogs { get; set; }
+    public DbSet<Animal> Animals { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
