@@ -17,11 +17,11 @@ namespace PurrSoft.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     animalType = table.Column<int>(type: "integer", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
                     YearOfBirth = table.Column<int>(type: "integer", nullable: false),
-                    Gender = table.Column<string>(type: "text", nullable: false),
+                    Gender = table.Column<string>(type: "text", nullable: true),
                     Sterilized = table.Column<bool>(type: "boolean", nullable: false),
-                    ImageUrl = table.Column<string>(type: "text", nullable: false)
+                    ImageUrl = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {

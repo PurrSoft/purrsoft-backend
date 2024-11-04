@@ -12,7 +12,7 @@ using PurrSoft.Persistence;
 namespace PurrSoft.Persistence.Migrations
 {
     [DbContext(typeof(PurrSoftDbContext))]
-    [Migration("20241103184854_AddedAnimalEntity")]
+    [Migration("20241104193215_AddedAnimalEntity")]
     partial class AddedAnimalEntity
     {
         /// <inheritdoc />
@@ -123,15 +123,12 @@ namespace PurrSoft.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Gender")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("Sterilized")

@@ -120,15 +120,12 @@ namespace PurrSoft.Persistence.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Gender")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("Sterilized")
