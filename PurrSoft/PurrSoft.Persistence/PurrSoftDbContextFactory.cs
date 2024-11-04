@@ -8,7 +8,7 @@ public class PurrSoftDbContextFactory : IDesignTimeDbContextFactory<PurrSoftDbCo
     public PurrSoftDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<PurrSoftDbContext>();
-        optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Database=PurrSoft;Username=postgres;Password=piki");
+        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=PurrSoft;Username=postgres;Password=postgres");
         return new PurrSoftDbContext(optionsBuilder.Options);
     }
 }
