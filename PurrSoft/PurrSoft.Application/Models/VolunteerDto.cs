@@ -8,8 +8,8 @@ public class VolunteerDto
     public string Status { get; set; }
     public string Tier { get; set; }
     public string AssignedArea { get; set; }
-    // public virtual ICollection<Shift> Shifts { get; set; }
-    // public virtual ICollection<LeaveRequest> LeaveRequests { get; set; }
+    // public ICollection<Shift> Shifts { get; set; }
+    // public ICollection<LeaveRequest> LeaveRequests { get; set; }
     public string? ProfilePictureUrl { get; set; }
     public string? Bio { get; set; }
 }

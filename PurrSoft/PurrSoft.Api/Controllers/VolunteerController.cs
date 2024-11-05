@@ -14,30 +14,40 @@ namespace PurrSoft.Api.Controllers;
 public class VolunteerController : BaseController
 {
     [HttpGet("")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
-    [ProducesResponseType(typeof(List<VolunteerOverview>), (int)HttpStatusCode.OK)]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
+    [ProducesResponseType(typeof(CollectionResponse<VolunteerOverview>), (int)HttpStatusCode.OK)]
     public async Task<CollectionResponse<VolunteerOverview>> GetVolunteers([FromQuery] GetFilteredVolunteersQueries query)
     {
         return await Mediator.Send(query, new CancellationToken());
     }
 
     [HttpGet("{id}")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer")]
     [ProducesResponseType(typeof(VolunteerOverview), (int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> GetVolunteer(string id)
     {
-        VolunteerOverview volunteerOverview = await Mediator.Send(new GetVolunteerQuery() { Id = id }, new CancellationToken());
-        if (volunteerOverview == null)
+        try
         {
-            return NotFound();
-        }
+            VolunteerOverview volunteerOverview = 
+                await Mediator.Send(new GetVolunteerQuery() { Id = id }, new CancellationToken());
 
-        return Ok(volunteerOverview);
+            if (volunteerOverview == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(volunteerOverview);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Forbid();
+        }
     }
 
     [HttpPost("")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> CreateVolunteer([FromBody] CreateVolunteerCommand volunteerCommand)
@@ -48,41 +58,50 @@ public class VolunteerController : BaseController
             return Ok(commandResponse);
         }
 
-        return BadRequest(commandResponse);
+        return BadRequest();
     }
 
     [HttpPut()]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer")]
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    [ProducesResponseType((int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> UpdateVolunteer([FromBody] UpdateVolunteerCommand updateVolunteerCommand)
     {
-        CommandResponse commandResponse = await Mediator.Send(updateVolunteerCommand, new CancellationToken());
-        if (commandResponse == null)
+        try
         {
-            return NotFound();
-        }
-        if (commandResponse.IsValid)
-        {
-            return Ok(commandResponse);
-        }
+            CommandResponse commandResponse = await Mediator.Send(updateVolunteerCommand, new CancellationToken());
+            if (commandResponse == null)
+            {
+                return NotFound();
+            }
+            if (commandResponse.IsValid)
+            {
+                return Ok(commandResponse);
+            }
 
-        return BadRequest(commandResponse);
+            return BadRequest();
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return Forbid();
+        }
     }
 
     [HttpDelete("{id}")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> DeleteVolunteer(string id)
     {
-        CommandResponse commandResponse = await Mediator.Send(new DeleteVolunteerCommand() { Id = id }, new CancellationToken());
+        CommandResponse commandResponse = 
+            await Mediator.Send(new DeleteVolunteerCommand() { Id = id }, new CancellationToken());
         if (commandResponse.IsValid)
         {
             return Ok(commandResponse);
         }
 
-        return BadRequest(commandResponse);
+        return BadRequest();
     }
 }

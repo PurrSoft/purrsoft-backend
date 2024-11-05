@@ -11,16 +11,16 @@ public static class VolunteerMappers
             FirstName = v.User.FirstName,
             LastName = v.User.LastName,
             Email = v.User.Email,
-            StartDate = v.StartDate.ToString(),
-            EndDate = v.EndDate.ToString(),
+            StartDate = v.StartDate,
+            EndDate = v.EndDate,
             Status = v.Status.ToString(),
             Tier = v.Tier.ToString(),
             AssignedArea = v.AssignedArea,
-            LastShiftDate = v.LastShiftDate.ToString(),
+            LastShiftDate = v.LastShiftDate,
             ProfilePictureUrl = v.ProfilePictureUrl,
             Bio = v.Bio,
-            CreatedAt = v.CreatedAt.ToString(),
-            UpdatedAt = v.UpdatedAt.ToString()
+            CreatedAt = v.CreatedAt,
+            UpdatedAt = v.UpdatedAt
         });
 }
 

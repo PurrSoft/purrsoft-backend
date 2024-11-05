@@ -2,14 +2,18 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
+using PurrSoft.Common.Identity;
 using PurrSoft.Domain.Entities;
+using PurrSoft.Domain.Entities.Enum;
 using PurrSoft.Domain.Repositories;
 
 namespace AlbumStore.Application.Commands.VolunteerCommands;
 
 public class VolunteerCommandHandler(
     IRepository<Volunteer> _volunteerRepository,
-    ILogRepository<VolunteerCommandHandler> _logRepository) :
+    ILogRepository<VolunteerCommandHandler> _logRepository,
+    IRepository<ApplicationUser> _userRepository,
+    ICurrentUserService _currentUserService) :
     IRequestHandler<CreateVolunteerCommand, CommandResponse>,
     IRequestHandler<UpdateVolunteerCommand, CommandResponse>,
     IRequestHandler<DeleteVolunteerCommand, CommandResponse>
@@ -21,7 +25,8 @@ public class VolunteerCommandHandler(
             Volunteer volunteer = new Volunteer
             {
                 UserId = request.VolunteerDto.UserId,
-                StartDate = DateTime.SpecifyKind(DateTime.Parse(request.VolunteerDto.StartDate), DateTimeKind.Utc),
+                StartDate = DateTime.SpecifyKind(DateTime.Parse(request.VolunteerDto.StartDate), 
+                                                DateTimeKind.Utc),
                 EndDate = null,
                 Status = Enum.Parse<VolunteerStatus>(request.VolunteerDto.Status),
                 Tier = Enum.Parse<TierLevel>(request.VolunteerDto.Tier),
@@ -47,17 +52,44 @@ public class VolunteerCommandHandler(
 
     public async Task<CommandResponse> Handle(UpdateVolunteerCommand request, CancellationToken cancellationToken)
     {
+        CurrentUser currentUser = await _currentUserService.GetCurrentUser();
+
+        if (currentUser == null)
+        {
+            throw new UnauthorizedAccessException();
+        }
+
+        ApplicationUser user = await _userRepository
+            .Query(u => u.Id == currentUser.UserId)
+            .Include(u => u.UserRoles)
+            .ThenInclude(ur => ur.Role)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        List<string> userRoles = user.UserRoles
+            .Select(ur => ur.Role.Name).ToList();
+
+        if (userRoles != null &&
+            userRoles.Contains("Volunteer") &&
+            currentUser.UserId != request.VolunteerDto.UserId)
+        {
+            throw new UnauthorizedAccessException();
+        }
+
         try
         {
-            Volunteer volunteer = _volunteerRepository.Query(v => v.UserId == request.VolunteerDto.UserId).FirstOrDefault();
+            Volunteer volunteer = _volunteerRepository
+                .Query(v => v.UserId == request.VolunteerDto.UserId).FirstOrDefault();
             if (volunteer == null)
             {
                 return CommandResponse.Failed(new[] { "There is no Volunteer with that Id!" });
             }
 
             volunteer.UserId = request.VolunteerDto.UserId;
-            volunteer.StartDate = DateTime.SpecifyKind(DateTime.Parse(request.VolunteerDto.StartDate), DateTimeKind.Utc);
-            volunteer.EndDate = request.VolunteerDto.EndDate != null ? DateTime.SpecifyKind(DateTime.Parse(request.VolunteerDto.EndDate), DateTimeKind.Utc) : null;
+            volunteer.StartDate = DateTime.SpecifyKind(DateTime.Parse(request.VolunteerDto.StartDate), 
+                                                        DateTimeKind.Utc);
+            volunteer.EndDate = request.VolunteerDto.EndDate != null ? 
+                                DateTime.SpecifyKind(DateTime.Parse(request.VolunteerDto.EndDate), 
+                                                    DateTimeKind.Utc) : null;
             volunteer.Status = Enum.Parse<VolunteerStatus>(request.VolunteerDto.Status);
             volunteer.Tier = Enum.Parse<TierLevel>(request.VolunteerDto.Tier);
             volunteer.AssignedArea = request.VolunteerDto.AssignedArea;
@@ -80,7 +112,8 @@ public class VolunteerCommandHandler(
     {
         try
         {
-            Volunteer volunteer = await _volunteerRepository.Query(v => v.UserId == request.Id).FirstOrDefaultAsync();
+            Volunteer volunteer = await _volunteerRepository
+                .Query(v => v.UserId == request.Id).FirstOrDefaultAsync();
             if (volunteer == null)
             {
                 return CommandResponse.Failed(new[] { "There is no Volunteer with that Id!" });

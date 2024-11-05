@@ -1,6 +1,5 @@
-﻿using AlbumStore.Application.Models;
-using FluentValidation;
-using PurrSoft.Domain.Entities;
+﻿using FluentValidation;
+using PurrSoft.Domain.Entities.Enum;
 
 namespace AlbumStore.Application.Commands.VolunteerCommands;
 
@@ -15,22 +14,12 @@ public class CreateVolunteerCommandValidator : AbstractValidator<CreateVolunteer
             .GreaterThan(DateTime.MinValue);
         RuleFor(x => x.VolunteerDto.Status)
             .NotNull().NotEmpty()
-            .Must(BeAValidStatus);
+            .Must(VolunteerCommandEnumValidator.BeAValidStatus);
         RuleFor(x => x.VolunteerDto.Tier)
             .NotNull().NotEmpty()
-            .Must(BeAValidTier);
+            .Must(VolunteerCommandEnumValidator.BeAValidTier);
         RuleFor(x => x.VolunteerDto.AssignedArea)
             .NotNull().NotEmpty();
-    }
-
-    private bool BeAValidStatus(string status)
-    {
-        return Enum.TryParse(typeof(VolunteerStatus), status, true, out _);
-    }
-
-    private bool BeAValidTier(string tier)
-    {
-        return Enum.TryParse(typeof(TierLevel), tier, true, out _);
     }
 }
 
@@ -49,22 +38,12 @@ public class UpdateVolunteerCommandValidator : AbstractValidator<UpdateVolunteer
             .When(v => v.VolunteerDto.EndDate != null);
         RuleFor(x => x.VolunteerDto.Status)
             .NotNull().NotEmpty()
-            .Must(BeAValidStatus);
+            .Must(VolunteerCommandEnumValidator.BeAValidStatus);
         RuleFor(x => x.VolunteerDto.Tier)
             .NotNull().NotEmpty()
-            .Must(BeAValidTier);
+            .Must(VolunteerCommandEnumValidator.BeAValidTier);
         RuleFor(x => x.VolunteerDto.AssignedArea)
             .NotNull().NotEmpty();
-    }
-
-    private bool BeAValidStatus(string status)
-    {
-        return Enum.TryParse(typeof(VolunteerStatus), status, true, out _);
-    }
-
-    private bool BeAValidTier(string tier)
-    {
-        return Enum.TryParse(typeof(TierLevel), tier, true, out _);
     }
 }
 
@@ -74,5 +53,18 @@ public class DeleteVolunteerCommandValidator : AbstractValidator<DeleteVolunteer
     {
         RuleFor(x => x.Id)
             .NotNull().NotEmpty();
+    }
+}
+
+public static class VolunteerCommandEnumValidator
+{
+    public static bool BeAValidStatus(string status)
+    {
+        return Enum.TryParse(typeof(VolunteerStatus), status, true, out _);
+    }
+
+    public static bool BeAValidTier(string tier)
+    {
+        return Enum.TryParse(typeof(TierLevel), tier, true, out _);
     }
 }
