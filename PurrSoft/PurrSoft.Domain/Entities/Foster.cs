@@ -10,11 +10,11 @@ namespace PurrSoft.Domain.Entities
 		public FosterStatus Status { get; set; }
 		public string Location { get; set; }
 
-		public int MaxAnimalsAllowed { get; set; }
+		public int? MaxAnimalsAllowed { get; set; }
 		public string HomeDescription { get; set; }
-		public string ExperienceLevel { get; set; }
+		public string? ExperienceLevel { get; set; }
 		public bool HasOtherAnimals { get; set; }
-		public string OtherAnimalDetails { get; set; }
+		public string? OtherAnimalDetails { get; set; }
 
 		public DateTime CreatedAt { get; set; }
 		public DateTime UpdatedAt { get; set; }
