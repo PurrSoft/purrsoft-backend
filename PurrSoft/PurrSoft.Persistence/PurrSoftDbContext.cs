@@ -10,6 +10,7 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
     , IdentityRoleClaim<string>, IdentityUserToken<string>>(options)
 {
     public DbSet<ApplicationLog> ApplicationLogs { get; set; }
+    public DbSet<Volunteer> Volunteers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -17,6 +18,7 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
         ConfigureUser(modelBuilder);
         ConfigureRole(modelBuilder);
         //ConfigureUserRole(modelBuilder);
+        ConfigureVolunteers(modelBuilder);
         modelBuilder.SeederForRoles();
     }
 
@@ -32,4 +34,14 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
         builder.Entity<Role>().HasMany(r => r.UserRoles).WithOne(ur => ur.Role).HasForeignKey(ur => ur.RoleId);
     }
 
+    private static void ConfigureVolunteers(ModelBuilder builder)
+    {
+        builder.Entity<Volunteer>().HasKey(v => v.UserId);
+        builder.Entity<Volunteer>()
+            .HasOne(v => v.User)
+            .WithOne()
+            .HasForeignKey<Volunteer>(v => v.UserId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
+    }
 }

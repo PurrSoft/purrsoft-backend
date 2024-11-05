@@ -1,4 +1,4 @@
-﻿namespace PurrSoft.Domain.Entities;
+﻿namespace PurrSoft.Domain.Entities.Enum;
 
 public enum RoleType
 {
