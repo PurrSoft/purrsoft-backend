@@ -94,3 +94,4 @@ _ReSharper*/
 *.psess
 *.vsp
 *.vspx
+/PurrSoft/PurrSoft.Persistence/PurrSoftDbContextFactory.cs
