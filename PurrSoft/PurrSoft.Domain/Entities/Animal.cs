@@ -11,4 +11,6 @@ public class Animal
     public string? Gender { get; set; }
     public Boolean Sterilized { get; set; }
     public string? ImageUrl { get; set; }
+    
+    public AnimalProfile? AnimalProfile { get; set; }
 }
