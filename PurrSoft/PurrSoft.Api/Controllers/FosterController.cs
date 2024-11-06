@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using PurrSoft.Api.Controllers.Base;
 using PurrSoft.Application.Common;
 using PurrSoft.Application.Models;
-using PurrSoft.Application.Queries.AccountQueries;
 using PurrSoft.Application.Queries.FosterQueries;
 using System.Net;
 using static PurrSoft.Application.Commands.FosterCommands.FosterCommands;
@@ -15,7 +14,7 @@ namespace PurrSoft.Api.Controllers
 	public class FosterController : BaseController
 	{
 		[HttpGet("")]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
 		[ProducesResponseType(typeof(CollectionResponse<FosterDto>), (int)HttpStatusCode.OK)]
 		public async Task<CollectionResponse<FosterDto>> GetFosters([FromQuery] GetFilteredFostersQueries query)
 		{
@@ -23,7 +22,7 @@ namespace PurrSoft.Api.Controllers
 		}
 
 		[HttpGet("{id}")]
-		[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer, Foster")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Foster")]
 		[ProducesResponseType(typeof(FosterDto), (int)HttpStatusCode.OK)]
 		[ProducesResponseType((int)HttpStatusCode.BadRequest)]
 		[ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -34,13 +33,14 @@ namespace PurrSoft.Api.Controllers
 			{
 				FosterDto foster = await Mediator.Send(new GetFosterByIdQuery { Id = id }, new CancellationToken());
 
-				if(foster == null)
+				if (foster == null)
 				{
 					return NotFound();
 				}
 
 				return Ok(foster);
-			} catch(UnauthorizedAccessException)
+			}
+			catch (UnauthorizedAccessException)
 			{
 				return Forbid();
 			}
@@ -48,17 +48,50 @@ namespace PurrSoft.Api.Controllers
 
 		[HttpPost("")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
-		[ProducesResponseType(typeof(FosterDto), (int)HttpStatusCode.OK)]
-		[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
-		public async Task<IActionResult> CreateFoster(FosterDto foster)
+		[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
+		[ProducesResponseType((int)HttpStatusCode.BadRequest)]
+		public async Task<IActionResult> CreateFoster([FromBody] CreateFosterCommand createFosterCommand)
 		{
-			CommandResponse commandResponse = await Mediator.Send(new CreateFosterCommand { FosterDto = foster }, new CancellationToken());
+			CommandResponse commandResponse = await Mediator.Send(createFosterCommand, new CancellationToken());
 
-			return commandResponse.IsValid ? Ok(foster) : BadRequest(commandResponse);
+			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest();
 		}
 
-		[HttpPut("{id}")]
+		[HttpPut()]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Foster")]
-		[ProducesResponseType(typeof(FosterDto), (int)HttpStatusCode.OK)]
+		[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
+		[ProducesResponseType((int)HttpStatusCode.BadRequest)]
+		[ProducesResponseType((int)HttpStatusCode.NotFound)]
+		[ProducesResponseType((int)HttpStatusCode.Forbidden)]
+		public async Task<IActionResult> UpdateFoster([FromBody] UpdateFosterCommand updateFosterCommand)
+		{
+			try
+			{
+				CommandResponse commandResponse = await Mediator.Send(updateFosterCommand, new CancellationToken());
+				if (commandResponse == null)
+				{
+					return NotFound();
+				}
+				if (commandResponse.IsValid)
+				{
+					return Ok(commandResponse);
+				}
+				return BadRequest();
+			}
+			catch (UnauthorizedAccessException)
+			{
+				return Forbid();
+			}
+		}
+		[HttpDelete("{id}")]
+		[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
+		[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
+		[ProducesResponseType((int)HttpStatusCode.BadRequest)]
+		public async Task<IActionResult> DeleteFoster(string id)
+		{
+			CommandResponse commandResponse = await Mediator.Send(new DeleteFosterCommand { Id = id }, new CancellationToken());
+
+			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest();
+		}
 	}
 }

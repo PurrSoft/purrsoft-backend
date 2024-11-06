@@ -15,6 +15,7 @@ namespace PurrSoft.Domain.Entities
 		public string? ExperienceLevel { get; set; }
 		public bool HasOtherAnimals { get; set; }
 		public string? OtherAnimalDetails { get; set; }
+		public int AnimalFosteredCount { get; set; }
 
 		public DateTime CreatedAt { get; set; }
 		public DateTime UpdatedAt { get; set; }
