@@ -3,7 +3,7 @@
 public static class SortAndPaginationUtils
 {
     public static IQueryable<T> OrderByField<T>
-        (this IQueryable<T> source, string sortBy, string sortDirection)
+        (this IQueryable<T> source, string? sortBy, string? sortDirection)
     {
         if (string.IsNullOrWhiteSpace(sortBy))
         {
@@ -11,8 +11,8 @@ public static class SortAndPaginationUtils
         }
 
         var type = typeof(T);
-        var property = type.GetProperty(sortBy);
-        if (property == null)
+        var property = type.GetProperty(sortBy); // case-sensitive search
+		if (property == null)
         {
             return source;
         }
@@ -34,7 +34,7 @@ public static class SortAndPaginationUtils
         return source.Provider.CreateQuery<T>(resultExp);
     }
 
-    public static IQueryable<T> SortAndPaginate<T>(this IQueryable<T> source, string sortBy, string sortDirection, int? skip, int? take)
+    public static IQueryable<T> SortAndPaginate<T>(this IQueryable<T> source, string? sortBy, string? sortDirection, int? skip, int? take)
     {
         source = source.OrderByField(sortBy, sortDirection);
         return source.Paginate(skip, take);
@@ -43,8 +43,8 @@ public static class SortAndPaginationUtils
     public static IQueryable<T> Paginate<T>(this IQueryable<T> source, int? skip, int? take)
     {
         skip ??= 0;
-        take ??= 20;
+        take = take > 0 ? take : 20; // default take 20
 
-        return source.Skip(skip.Value).Take(take.Value);
+		return source.Skip(skip.Value).Take(take.Value);
     }
 }

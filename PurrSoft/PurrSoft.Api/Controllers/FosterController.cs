@@ -4,6 +4,7 @@ using PurrSoft.Api.Controllers.Base;
 using PurrSoft.Application.Common;
 using PurrSoft.Application.Models;
 using PurrSoft.Application.Queries.FosterQueries;
+using PurrSoft.Application.QueryOverviews;
 using System.Net;
 using static PurrSoft.Application.Commands.FosterCommands.FosterCommands;
 
@@ -16,7 +17,7 @@ namespace PurrSoft.Api.Controllers
 		[HttpGet("")]
 		[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
 		[ProducesResponseType(typeof(CollectionResponse<FosterDto>), (int)HttpStatusCode.OK)]
-		public async Task<CollectionResponse<FosterDto>> GetFosters([FromQuery] GetFilteredFostersQueries query)
+		public async Task<CollectionResponse<FosterOverview>> GetFosters([FromQuery] GetFilteredFostersQueries query)
 		{
 			return await Mediator.Send(query, new CancellationToken());
 		}
@@ -31,7 +32,7 @@ namespace PurrSoft.Api.Controllers
 		{
 			try
 			{
-				FosterDto foster = await Mediator.Send(new GetFosterByIdQuery { Id = id }, new CancellationToken());
+				FosterOverview foster = await Mediator.Send(new GetFosterByIdQuery { Id = id }, new CancellationToken());
 
 				if (foster == null)
 				{
