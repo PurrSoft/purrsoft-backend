@@ -24,6 +24,7 @@ public class AnimalQueryHandler(IRepository<Animal> animalRepository) :
                 Gender = a.Gender,
                 YearOfBirth = a.YearOfBirth,
                 Sterilized = a.Sterilized,
+                ImageUrl = a.ImageUrl
             })
             .ToListAsync(cancellationToken);
         return new CollectionResponse<AnimalDto>(result, result.Count);
@@ -41,6 +42,7 @@ public class AnimalQueryHandler(IRepository<Animal> animalRepository) :
                 Gender = a.Gender,
                 YearOfBirth = a.YearOfBirth,
                 Sterilized = a.Sterilized,
+                ImageUrl = a.ImageUrl
             })
             .FirstOrDefaultAsync(cancellationToken);
 
