@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
@@ -11,17 +12,29 @@ public class AnimalCommandHandler(
     IRepository<Animal> animalRepository,
     IConfiguration configuration,
     ILogRepository<AnimalCommandHandler> logRepository)
-    : IRequestHandler<AnimalGetCommand, CollectionResponse<Animal>>,
-        IRequestHandler<AnimalCreateCommand, CommandResponse<int>>,
-        IRequestHandler<AnimalUpdateCommand, CommandResponse<Animal>>,
-        IRequestHandler<AnimalDeleteCommand, CommandResponse<Animal>>
+    : IRequestHandler<AnimalCreateCommand, CommandResponse<string>>,
+      IRequestHandler<AnimalUpdateCommand, CommandResponse>,
+      IRequestHandler<AnimalDeleteCommand, CommandResponse>
 {
-    public Task<CollectionResponse<Animal>> Handle(AnimalGetCommand request, CancellationToken cancellationToken)
+    public async Task<CommandResponse<string>> Handle(AnimalCreateCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            var animals = animalRepository.Query().ToList();
-            return null;
+            Guid guid = Guid.NewGuid();
+            animalRepository.Add(new Animal
+            {
+                Id = guid,
+                AnimalType = request.AnimalType,
+                Name = request.Name,
+                YearOfBirth = request.YearOfBirth,
+                Gender = request.Gender,
+                Sterilized = request.Sterilized,
+                ImageUrl = request.ImageUrl
+            });
+
+            await animalRepository.SaveChangesAsync(cancellationToken);
+
+            return CommandResponse.Ok(guid.ToString());
         }
         catch (Exception ex)
         {
@@ -30,11 +43,24 @@ public class AnimalCommandHandler(
         }
     }
 
-    public Task<CommandResponse<int>> Handle(AnimalCreateCommand request, CancellationToken cancellationToken)
+    public async Task<CommandResponse> Handle(AnimalUpdateCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            return null;
+            var animal = await animalRepository
+                .Query(x => x.Id == request.Id)
+                .FirstOrDefaultAsync();
+
+            animal.Name = request.Name;
+            animal.AnimalType = request.AnimalType;
+            animal.YearOfBirth = request.YearOfBirth;
+            animal.Gender = request.Gender;
+            animal.Sterilized = request.Sterilized;
+            animal.ImageUrl = request.ImageUrl;
+            
+            await animalRepository.SaveChangesAsync(cancellationToken);
+
+            return CommandResponse.Ok();
         }
         catch (Exception ex)
         {
@@ -43,24 +69,24 @@ public class AnimalCommandHandler(
         }
     }
 
-    public Task<CommandResponse<Animal>> Handle(AnimalUpdateCommand request, CancellationToken cancellationToken)
+    public async Task<CommandResponse> Handle(AnimalDeleteCommand request, CancellationToken cancellationToken)
     {
         try
         {
-            return null;
-        }
-        catch (Exception ex)
-        {
-            logRepository.LogException(LogLevel.Error, ex);
-            throw;
-        }
-    }
+            var animal = await animalRepository
+                .Query(x => x.Id == request.Id)
+                .FirstOrDefaultAsync();
 
-    public Task<CommandResponse<Animal>> Handle(AnimalDeleteCommand request, CancellationToken cancellationToken)
-    {
-        try
-        {
-            return null;
+            if (animal == null)
+            {
+                return CommandResponse.Failed("Animal not found.");
+            }
+
+            animalRepository.Remove(animal);
+
+            await animalRepository.SaveChangesAsync(cancellationToken);
+
+            return CommandResponse.Ok();
         }
         catch (Exception ex)
         {

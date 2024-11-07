@@ -119,6 +119,9 @@ namespace PurrSoft.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int>("AnimalType")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Gender")
                         .HasColumnType("text");
 
@@ -132,9 +135,6 @@ namespace PurrSoft.Persistence.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<int>("YearOfBirth")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("animalType")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");

@@ -16,7 +16,7 @@ namespace PurrSoft.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    animalType = table.Column<int>(type: "integer", nullable: false),
+                    AnimalType = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     YearOfBirth = table.Column<int>(type: "integer", nullable: false),
                     Gender = table.Column<string>(type: "text", nullable: true),
