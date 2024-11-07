@@ -18,7 +18,7 @@ namespace PurrSoft.Application.Commands.FosterCommands
 			RuleFor(x => x.FosterDto.StartDate)
 				.NotNull().NotEmpty().GreaterThan(DateTime.MinValue);
 			RuleFor(x => x.FosterDto.Status)
-				.NotNull().NotEmpty()
+				.NotNull()
 				.Must(x => Enum.IsDefined(typeof(FosterStatus), x));
 			RuleFor(x => x.FosterDto.Location)
 				.NotNull();
@@ -45,7 +45,7 @@ namespace PurrSoft.Application.Commands.FosterCommands
 				.GreaterThan(DateTime.MinValue)
 				.When(x => x.FosterDto.EndDate != null);
 			RuleFor(x => x.FosterDto.Status)
-				.NotNull().NotEmpty()
+				.NotNull()
 				.Must(x => Enum.IsDefined(typeof(FosterStatus), x));
 			RuleFor(x => x.FosterDto.Location)
 				.NotNull();
