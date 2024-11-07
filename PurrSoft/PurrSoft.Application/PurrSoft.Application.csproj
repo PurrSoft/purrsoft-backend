@@ -8,6 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Filtering\**" />
+      <EmbeddedResource Remove="Filtering\**" />
+      <None Remove="Filtering\**" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="FluentValidation" Version="11.10.0" />
       <PackageReference Include="MediatR" Version="12.4.1" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />

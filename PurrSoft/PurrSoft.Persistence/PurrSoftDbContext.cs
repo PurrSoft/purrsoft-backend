@@ -9,8 +9,9 @@ namespace PurrSoft.Persistence;
 public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<ApplicationUser, Role, string, IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>
 	, IdentityRoleClaim<string>, IdentityUserToken<string>>(options)
 {
-	public DbSet<ApplicationLog> ApplicationLogs { get; set; }
-	public DbSet<Foster> Fosters { get; set; }
+    public DbSet<ApplicationLog> ApplicationLogs { get; set; }
+    public DbSet<Foster> Fosters { get; set; }
+    public DbSet<Animal> Animals { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
