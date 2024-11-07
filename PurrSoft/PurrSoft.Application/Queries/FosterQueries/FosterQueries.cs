@@ -23,7 +23,7 @@ namespace PurrSoft.Application.Queries.FosterQueries
 		public int? AnimalFosteredCount { get; set; }
 	}
 
-	public class GetFosterByIdQuery : BaseRequest<FosterOverview>
+	public class GetFosterByIdQuery : BaseRequest<FosterDto>
 	{
 		public required string Id { get; set; }
 	}

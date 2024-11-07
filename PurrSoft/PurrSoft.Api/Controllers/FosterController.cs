@@ -32,7 +32,7 @@ namespace PurrSoft.Api.Controllers
 		{
 			try
 			{
-				FosterOverview foster = await Mediator.Send(new GetFosterByIdQuery { Id = id }, new CancellationToken());
+				FosterDto foster = await Mediator.Send(new GetFosterByIdQuery { Id = id }, new CancellationToken());
 
 				if (foster == null)
 				{

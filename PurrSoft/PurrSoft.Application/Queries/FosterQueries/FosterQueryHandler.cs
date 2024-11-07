@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PurrSoft.Application.Common;
 using PurrSoft.Application.Filtering;
+using PurrSoft.Application.Models;
 using PurrSoft.Application.QueryOverviews;
 using PurrSoft.Application.QueryOverviews.Mappers;
 using PurrSoft.Common.Helpful;
@@ -21,7 +22,7 @@ namespace PurrSoft.Application.Queries.FosterQueries
 		IRepository<ApplicationUser> _userRepository,
 		ICurrentUserService _currentUserService)
 		: IRequestHandler<GetFilteredFostersQueries, CollectionResponse<FosterOverview>>,
-		IRequestHandler<GetFosterByIdQuery, FosterOverview>
+		IRequestHandler<GetFosterByIdQuery, FosterDto>
 	{
 		public async Task<CollectionResponse<FosterOverview>> Handle(
 			GetFilteredFostersQueries request, CancellationToken cancellationToken
@@ -36,7 +37,7 @@ namespace PurrSoft.Application.Queries.FosterQueries
 			return new CollectionResponse<FosterOverview>(fosterOverviewsList, fosterOverviewsList.Count);
 		}
 
-		public async Task<FosterOverview> Handle(GetFosterByIdQuery request, CancellationToken cancellationToken)
+		public async Task<FosterDto> Handle(GetFosterByIdQuery request, CancellationToken cancellationToken)
 		{
 			CurrentUser currentUser = await _currentUserService.GetCurrentUser();
 
@@ -58,11 +59,11 @@ namespace PurrSoft.Application.Queries.FosterQueries
 				throw new UnauthorizedAccessException();
 			}
 
-			FosterOverview? fosterOverview = await _fosterRepository.Query(f => f.UserId == request.Id)
-				.ProjectToOverview()
+			FosterDto? fosterDto = await _fosterRepository.Query(f => f.UserId == request.Id)
+				.ProjectToDto()
 				.FirstOrDefaultAsync(cancellationToken);
 
-			return fosterOverview;
+			return fosterDto;
 		}
 	}
 

@@ -1,4 +1,5 @@
-﻿using PurrSoft.Domain.Entities;
+﻿using PurrSoft.Application.Models;
+using PurrSoft.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,22 @@ namespace PurrSoft.Application.QueryOverviews.Mappers
 				//FosteredAnimals = f.FosteredAnimals,
 				CreatedAt = f.CreatedAt,
 				UpdatedAt = f.UpdatedAt
+			});
+
+		public static IQueryable<FosterDto> ProjectToDto(this IQueryable<Foster> query)
+			=> query.Select(f => new FosterDto
+			{
+				UserId = f.UserId,
+				StartDate = f.StartDate,
+				EndDate = f.EndDate,
+				Status = f.Status,
+				Location = f.Location,
+				MaxAnimalsAllowed = f.MaxAnimalsAllowed,
+				HomeDescription = f.HomeDescription,
+				ExperienceLevel = f.ExperienceLevel,
+				HasOtherAnimals = f.HasOtherAnimals,
+				OtherAnimalDetails = f.OtherAnimalDetails,
+				AnimalFosteredCount = f.AnimalFosteredCount,
 			});
 	}
 }
