@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
 using PurrSoft.Domain.Entities;
+using PurrSoft.Domain.Entities.Enums;
 using PurrSoft.Domain.Repositories;
 
 namespace PurrSoft.Application.Commands.AnimalCommands;
@@ -24,7 +25,7 @@ public class AnimalCommandHandler(
             animalRepository.Add(new Animal
             {
                 Id = guid,
-                AnimalType = request.AnimalType,
+                AnimalType = Enum.Parse<AnimalType>(request.AnimalType),
                 Name = request.Name,
                 YearOfBirth = request.YearOfBirth,
                 Gender = request.Gender,
@@ -48,11 +49,11 @@ public class AnimalCommandHandler(
         try
         {
             var animal = await animalRepository
-                .Query(x => x.Id == request.Id)
+                .Query(x => x.Id == Guid.Parse(request.Id))
                 .FirstOrDefaultAsync();
 
             animal.Name = request.Name;
-            animal.AnimalType = request.AnimalType;
+            animal.AnimalType = Enum.Parse<AnimalType>(request.AnimalType);
             animal.YearOfBirth = request.YearOfBirth;
             animal.Gender = request.Gender;
             animal.Sterilized = request.Sterilized;
@@ -74,7 +75,7 @@ public class AnimalCommandHandler(
         try
         {
             var animal = await animalRepository
-                .Query(x => x.Id == request.Id)
+                .Query(x => x.Id == Guid.Parse(request.Id))
                 .FirstOrDefaultAsync();
 
             if (animal == null)
