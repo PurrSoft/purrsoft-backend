@@ -1,15 +1,9 @@
 ﻿using PurrSoft.Application.Common;
-using PurrSoft.Domain.Entities;
 using PurrSoft.Domain.Entities.Enums;
 
 namespace PurrSoft.Application.Commands.AnimalCommands;
 
-public class AnimalGetCommand: BaseRequest<CollectionResponse<Animal>>
-{
-
-}
-
-public class AnimalCreateCommand: BaseRequest<CommandResponse<int>>
+public class AnimalCreateCommand: BaseRequest<CommandResponse<string>>
 {
     public AnimalType AnimalType { get; set; }
     public string? Name { get; set; }
@@ -19,7 +13,7 @@ public class AnimalCreateCommand: BaseRequest<CommandResponse<int>>
     public string? ImageUrl { get; set; }
 }
 
-public class  AnimalUpdateCommand: BaseRequest<CommandResponse<Animal>>
+public class  AnimalUpdateCommand: BaseRequest<CommandResponse>
 {
     public Guid Id { get; set; }
     public AnimalType AnimalType { get; set; }
@@ -30,7 +24,7 @@ public class  AnimalUpdateCommand: BaseRequest<CommandResponse<Animal>>
     public string? ImageUrl { get; set; }
 }
 
-public class AnimalDeleteCommand: BaseRequest<CommandResponse<Animal>>
+public class AnimalDeleteCommand: BaseRequest<CommandResponse>
 {
     public Guid Id { get; set; }
 }

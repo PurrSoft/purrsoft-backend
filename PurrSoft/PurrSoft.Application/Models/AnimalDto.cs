@@ -1,11 +1,9 @@
-﻿using PurrSoft.Domain.Entities.Enums;
+﻿namespace PurrSoft.Application.Models;
 
-namespace PurrSoft.Domain.Entities;
-
-public class Animal
+public class AnimalDto
 {
-    public Guid Id { get; set; }
-    public AnimalType AnimalType { get; set; }
+    public string? Id { get; set; }
+    public string? AnimalType { get; set; }
     public string? Name { get; set; }
     public int YearOfBirth { get; set; }
     public string? Gender { get; set; }
