@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PurrSoft.Application.Common;
-using PurrSoft.Application.Filtering;
 using PurrSoft.Application.Models;
 using PurrSoft.Application.QueryOverviews;
 using PurrSoft.Application.QueryOverviews.Mappers;
