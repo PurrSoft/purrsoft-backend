@@ -18,7 +18,7 @@ public class AnimalController : BaseController
     {
     }
 
-    [HttpGet]
+    [HttpGet("GetAnimals")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(CollectionResponse<AnimalDto>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
@@ -30,7 +30,7 @@ public class AnimalController : BaseController
         return commandResponse;
     }
 
-    [HttpGet]
+    [HttpGet("GetAnimalById")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(CommandResponse<AnimalDto>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
@@ -42,8 +42,9 @@ public class AnimalController : BaseController
         return commandResponse;
     }
 
-    [HttpPost]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    [HttpPost("CreateAnimal")]
+    //[Authorize(AuthenticationSchemes = "Bearer")]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(CommandResponse<int>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> CreateAnimalAsync(AnimalCreateCommand animalCreateCommand)
@@ -53,7 +54,7 @@ public class AnimalController : BaseController
         return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
     }
 
-    [HttpPut]
+    [HttpPut("UpdateAnimal")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [ProducesResponseType(typeof(CommandResponse<Animal>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
@@ -64,7 +65,7 @@ public class AnimalController : BaseController
         return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
     }
 
-    [HttpDelete]
+    [HttpDelete("DeleteAnimalById")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [ProducesResponseType(typeof(CommandResponse<Animal>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
