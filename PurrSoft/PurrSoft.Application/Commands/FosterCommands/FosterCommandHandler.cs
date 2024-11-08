@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
 using PurrSoft.Common.Identity;
 using PurrSoft.Domain.Entities;
+using PurrSoft.Domain.Entities.Enums;
 using PurrSoft.Domain.Repositories;
 using static PurrSoft.Application.Commands.FosterCommands.FosterCommands;
 
@@ -27,7 +28,7 @@ public class FosterCommandHandler(
 				UserId = request.FosterDto.UserId,
 				StartDate = request.FosterDto.StartDate,
 				EndDate = null,
-				Status = request.FosterDto.Status,
+				Status = Enum.Parse<FosterStatus>(request.FosterDto.Status),
 				Location = request.FosterDto.Location,
 				MaxAnimalsAllowed = request.FosterDto.MaxAnimalsAllowed,
 				HomeDescription = request.FosterDto.HomeDescription,
@@ -84,7 +85,7 @@ public class FosterCommandHandler(
 			foster.UserId = request.FosterDto.UserId;
 			foster.StartDate = request.FosterDto.StartDate;
 			foster.EndDate = request.FosterDto.EndDate;
-			foster.Status = request.FosterDto.Status;
+			foster.Status = Enum.Parse<FosterStatus>(request.FosterDto.Status);
 			foster.Location = request.FosterDto.Location;
 			foster.MaxAnimalsAllowed = request.FosterDto.MaxAnimalsAllowed;
 			foster.HomeDescription = request.FosterDto.HomeDescription;

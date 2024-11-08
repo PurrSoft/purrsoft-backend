@@ -7,7 +7,7 @@ public class FosterDto
 	public string UserId { get; set; }
 	public DateTime StartDate { get; set; }
 	public DateTime? EndDate { get; set; }
-	public FosterStatus Status { get; set; }
+	public string Status { get; set; }
 	public string Location { get; set; }
 	public int? MaxAnimalsAllowed { get; set; }
 	public string HomeDescription { get; set; }

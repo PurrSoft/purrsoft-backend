@@ -13,7 +13,7 @@ public class CreateFosterCommandValidator : AbstractValidator<CreateFosterComman
 		RuleFor(x => x.FosterDto.StartDate)
 			.NotNull().NotEmpty().GreaterThan(DateTime.MinValue);
 		RuleFor(x => x.FosterDto.Status)
-			.NotNull()
+			.NotNull().NotEmpty()
 			.Must(x => Enum.IsDefined(typeof(FosterStatus), x));
 		RuleFor(x => x.FosterDto.Location)
 			.NotNull();
@@ -40,7 +40,7 @@ public class UpdateFosterCommandValidator : AbstractValidator<UpdateFosterComman
 			.GreaterThan(DateTime.MinValue)
 			.When(x => x.FosterDto.EndDate != null);
 		RuleFor(x => x.FosterDto.Status)
-			.NotNull()
+			.NotNull().NotEmpty()
 			.Must(x => Enum.IsDefined(typeof(FosterStatus), x));
 		RuleFor(x => x.FosterDto.Location)
 			.NotNull();
