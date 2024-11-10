@@ -11,10 +11,11 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 {
     public DbSet<ApplicationLog> ApplicationLogs { get; set; }
     public DbSet<Animal> Animals { get; set; }
-
+    public DbSet<AnimalProfile> AnimalProfiles { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        ConfigureAnimalProfile(modelBuilder);
         ConfigureUser(modelBuilder);
         ConfigureRole(modelBuilder);
         //ConfigureUserRole(modelBuilder);
@@ -33,4 +34,15 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
         builder.Entity<Role>().HasMany(r => r.UserRoles).WithOne(ur => ur.Role).HasForeignKey(ur => ur.RoleId);
     }
 
+    private static void ConfigureAnimalProfile(ModelBuilder builder)
+    {
+        builder.Entity<AnimalProfile>()
+            .HasKey(ap => ap.Id);  
+
+        builder.Entity<Animal>()
+            .HasOne(a => a.AnimalProfile)
+            .WithOne(ap => ap.Animal)
+            .HasForeignKey<AnimalProfile>(ap => ap.AnimalId)  // Ensure Foreign Key is AnimalId in AnimalProfile
+            .OnDelete(DeleteBehavior.Cascade);
+    }
 }
