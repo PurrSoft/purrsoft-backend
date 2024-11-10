@@ -1,4 +1,4 @@
-﻿namespace PurrSoft.Application.DTOs
+﻿namespace PurrSoft.Application.Models
 {
     public class AnimalProfileDto
     {
@@ -6,5 +6,7 @@
         public string? CurrentDisease { get; set; }
         public string? CurrentMedication { get; set; }
         public string? PastDisease { get; set; }
+        
+        public Guid AnimalId { get; set; }
     }
 }
