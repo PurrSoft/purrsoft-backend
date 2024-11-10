@@ -95,3 +95,4 @@ _ReSharper*/
 *.vsp
 *.vspx
 /PurrSoft/PurrSoft.Persistence/PurrSoftDbContextFactory.cs
+/PurrSoft/PurrSoft.Api/appsettings.json
