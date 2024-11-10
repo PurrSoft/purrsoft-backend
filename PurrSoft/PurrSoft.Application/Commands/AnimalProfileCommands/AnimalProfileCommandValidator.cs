@@ -1,46 +1,55 @@
 ﻿using FluentValidation;
 
-namespace AlbumStore.Application.Commands.AnimalProfileCommands
+namespace PurrSoft.Application.Commands.AnimalProfileCommands
 {
-    public class AnimalProfileCreateCommandValidator : AbstractValidator<PurrSoft.Application.Commands.AnimalProfileCommands.AnimalProfileCommands.AnimalProfileCreateCommand>
+    public class AnimalProfileCreateCommandValidator : AbstractValidator<AnimalProfileCommands.AnimalProfileCreateCommand>
     {
         public AnimalProfileCreateCommandValidator()
         {
+            RuleFor(x => x.AnimalId)
+                .NotEmpty().WithMessage("AnimalId is required.");
+
             RuleFor(x => x.CurrentDisease)
-                .NotNull().WithMessage("CurrentDisease cannot be null.");
+                .NotEmpty().WithMessage("CurrentDisease cannot be empty.")
+                .MaximumLength(500).WithMessage("CurrentDisease should not exceed 500 characters.");
 
             RuleFor(x => x.CurrentMedication)
-                .NotNull().WithMessage("CurrentMedication cannot be null.");
+                .NotEmpty().WithMessage("CurrentMedication cannot be empty.")
+                .MaximumLength(500).WithMessage("CurrentMedication should not exceed 500 characters.");
 
             RuleFor(x => x.PastDisease)
-                .NotNull().WithMessage("PastDisease cannot be null.");
+                .NotEmpty().WithMessage("PastDisease cannot be empty.")
+                .MaximumLength(500).WithMessage("PastDisease should not exceed 500 characters.");
         }
     }
 
-    public class AnimalProfileUpdateCommandValidator : AbstractValidator<PurrSoft.Application.Commands.AnimalProfileCommands.AnimalProfileCommands.AnimalProfileUpdateCommand>
+    public class AnimalProfileUpdateCommandValidator : AbstractValidator<AnimalProfileCommands.AnimalProfileUpdateCommand>
     {
         public AnimalProfileUpdateCommandValidator()
         {
             RuleFor(x => x.Id)
-                .NotNull().NotEmpty().WithMessage("Id cannot be null or empty.");
+                .NotEmpty().WithMessage("Id cannot be null or empty.");
 
             RuleFor(x => x.CurrentDisease)
-                .NotNull().WithMessage("CurrentDisease cannot be null.");
+                .NotEmpty().WithMessage("CurrentDisease cannot be empty.")
+                .MaximumLength(500).WithMessage("CurrentDisease should not exceed 500 characters.");
 
             RuleFor(x => x.CurrentMedication)
-                .NotNull().WithMessage("CurrentMedication cannot be null.");
+                .NotEmpty().WithMessage("CurrentMedication cannot be empty.")
+                .MaximumLength(500).WithMessage("CurrentMedication should not exceed 500 characters.");
 
             RuleFor(x => x.PastDisease)
-                .NotNull().WithMessage("PastDisease cannot be null.");
+                .NotEmpty().WithMessage("PastDisease cannot be empty.")
+                .MaximumLength(500).WithMessage("PastDisease should not exceed 500 characters.");
         }
     }
 
-    public class AnimalProfileDeleteCommandValidator : AbstractValidator<PurrSoft.Application.Commands.AnimalProfileCommands.AnimalProfileCommands.AnimalProfileDeleteCommand>
+    public class AnimalProfileDeleteCommandValidator : AbstractValidator<AnimalProfileCommands.AnimalProfileDeleteCommand>
     {
         public AnimalProfileDeleteCommandValidator()
         {
             RuleFor(x => x.Id)
-                .NotNull().NotEmpty().WithMessage("Id cannot be null or empty.");
+                .NotEmpty().WithMessage("Id cannot be null or empty.");
         }
     }
 }

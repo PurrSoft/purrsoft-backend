@@ -10,6 +10,7 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
 {
     public class AnimalProfileCommandHandler(
         IRepository<AnimalProfile> animalProfileRepository,
+        IRepository<Animal> animalRepository,
         ILogRepository<AnimalProfileCommandHandler> logRepository)
         : IRequestHandler<AnimalProfileCommands.AnimalProfileCreateCommand, CommandResponse<Guid>>,
           IRequestHandler<AnimalProfileCommands.AnimalProfileUpdateCommand, CommandResponse>,
@@ -19,9 +20,20 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
         {
             try
             {
+                // Ensure that the associated Animal exists
+                var animal = await animalRepository.Query(x => x.Id == request.AnimalId).FirstOrDefaultAsync(cancellationToken);
+                if (animal == null)
+                {
+                    return CommandResponse.Failed(new List<ValidationFailure>
+                    {
+                        new("AnimalId", "Animal not found.")
+                    }) as CommandResponse<Guid> ?? throw new InvalidOperationException();
+                }
+
                 var newProfile = new AnimalProfile
                 {
                     Id = Guid.NewGuid(),
+                    AnimalId = request.AnimalId,
                     CurrentDisease = request.CurrentDisease,
                     CurrentMedication = request.CurrentMedication,
                     PastDisease = request.PastDisease
@@ -35,10 +47,7 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
             catch (Exception ex)
             {
                 logRepository.LogException(LogLevel.Error, ex);
-                return (CommandResponse<Guid>)CommandResponse.Failed(new List<ValidationFailure>
-                {
-                    new("AnimalProfile", "Failed to create animal profile.")
-                });
+                throw;
             }
         }
 
