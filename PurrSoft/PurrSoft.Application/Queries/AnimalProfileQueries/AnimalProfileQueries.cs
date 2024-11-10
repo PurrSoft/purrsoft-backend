@@ -1,5 +1,4 @@
 ﻿using PurrSoft.Application.Common;
-using PurrSoft.Application.DTOs;
 using PurrSoft.Application.Models;
 
 namespace PurrSoft.Application.Queries.AnimalProfileQueries

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PurrSoft.Application.Common;
-using PurrSoft.Application.DTOs;
+using PurrSoft.Application.Models;
 using PurrSoft.Domain.Entities;
 using PurrSoft.Domain.Repositories;
 
@@ -20,7 +20,8 @@ namespace PurrSoft.Application.Queries.AnimalProfileQueries
                     Id = ap.Id,
                     CurrentDisease = ap.CurrentDisease,
                     CurrentMedication = ap.CurrentMedication,
-                    PastDisease = ap.PastDisease
+                    PastDisease = ap.PastDisease,
+                    AnimalId = ap.AnimalId  // Include AnimalId in the DTO
                 })
                 .ToListAsync(cancellationToken);
 
@@ -29,14 +30,21 @@ namespace PurrSoft.Application.Queries.AnimalProfileQueries
 
         public async Task<CommandResponse<AnimalProfileDto>> Handle(GetAnimalProfileByIdQuery request, CancellationToken cancellationToken)
         {
+            // Parse the ID to Guid to avoid using string comparison
+            if (!Guid.TryParse(request.Id, out var profileId))
+            {
+                return CommandResponse.Failed<AnimalProfileDto>(new[] { "Invalid Animal profile ID format." });
+            }
+
             var profile = await animalProfileRepository
-                .Query(x => x.Id.ToString() == request.Id)
+                .Query(x => x.Id == profileId)
                 .Select(ap => new AnimalProfileDto
                 {
                     Id = ap.Id,
                     CurrentDisease = ap.CurrentDisease,
                     CurrentMedication = ap.CurrentMedication,
-                    PastDisease = ap.PastDisease
+                    PastDisease = ap.PastDisease,
+                    AnimalId = ap.AnimalId  // Include AnimalId in the DTO
                 })
                 .FirstOrDefaultAsync(cancellationToken);
 
