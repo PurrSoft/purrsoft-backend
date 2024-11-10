@@ -142,6 +142,32 @@ namespace PurrSoft.Persistence.Migrations
                     b.ToTable("Animals");
                 });
 
+            modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AnimalId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CurrentDisease")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CurrentMedication")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PastDisease")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnimalId")
+                        .IsUnique();
+
+                    b.ToTable("AnimalProfiles");
+                });
+
             modelBuilder.Entity("PurrSoft.Domain.Entities.ApplicationLog", b =>
                 {
                     b.Property<Guid>("Id")
@@ -353,6 +379,17 @@ namespace PurrSoft.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalProfile", b =>
+                {
+                    b.HasOne("PurrSoft.Domain.Entities.Animal", "Animal")
+                        .WithOne("AnimalProfile")
+                        .HasForeignKey("PurrSoft.Domain.Entities.AnimalProfile", "AnimalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Animal");
+                });
+
             modelBuilder.Entity("PurrSoft.Domain.Entities.UserRole", b =>
                 {
                     b.HasOne("PurrSoft.Domain.Entities.Role", "Role")
@@ -370,6 +407,11 @@ namespace PurrSoft.Persistence.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PurrSoft.Domain.Entities.Animal", b =>
+                {
+                    b.Navigation("AnimalProfile");
                 });
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.ApplicationUser", b =>
