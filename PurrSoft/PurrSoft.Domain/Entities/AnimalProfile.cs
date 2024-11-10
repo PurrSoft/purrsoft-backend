@@ -7,4 +7,8 @@ public class AnimalProfile
     public string? CurrentMedication { get; set; }
     public string? PastDisease { get; set; }
     
+    public Animal? Animal { get; set; }
+    
+    public Guid AnimalId { get; set; }
+    
 }
