@@ -43,7 +43,7 @@ public static class SortAndPaginationUtils
     public static IQueryable<T> Paginate<T>(this IQueryable<T> source, int? skip, int? take)
     {
         skip ??= 0;
-        take ??= 20;
+        take = take > 0 ? take : 20;
 
         return source.Skip(skip.Value).Take(take.Value);
     }

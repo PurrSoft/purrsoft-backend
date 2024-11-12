@@ -7,7 +7,7 @@ using PurrSoft.Domain.Entities;
 using PurrSoft.Domain.Entities.Enum;
 using PurrSoft.Domain.Repositories;
 
-namespace AlbumStore.Application.Commands.VolunteerCommands;
+namespace PurrSoft.Application.Commands.VolunteerCommands;
 
 public class VolunteerCommandHandler(
     IRepository<Volunteer> _volunteerRepository,
@@ -18,24 +18,25 @@ public class VolunteerCommandHandler(
     IRequestHandler<UpdateVolunteerCommand, CommandResponse>,
     IRequestHandler<DeleteVolunteerCommand, CommandResponse>
 {
-    public async Task<CommandResponse> Handle(CreateVolunteerCommand request, CancellationToken cancellationToken)
+    public async Task<CommandResponse> Handle(
+        CreateVolunteerCommand request, 
+        CancellationToken cancellationToken)
     {
         try
         {
             Volunteer volunteer = new Volunteer
             {
                 UserId = request.VolunteerDto.UserId,
-                StartDate = DateTime.SpecifyKind(DateTime.Parse(request.VolunteerDto.StartDate), 
-                                                DateTimeKind.Utc),
+                StartDate = DateTime.SpecifyKind(
+                    DateTime.Parse(request.VolunteerDto.StartDate), 
+                    DateTimeKind.Utc),
                 EndDate = null,
                 Status = Enum.Parse<VolunteerStatus>(request.VolunteerDto.Status),
                 Tier = Enum.Parse<TierLevel>(request.VolunteerDto.Tier),
-                AssignedArea = request.VolunteerDto.AssignedArea,
                 LastShiftDate = null,
-                ProfilePictureUrl = request.VolunteerDto.ProfilePictureUrl,
-                Bio = request.VolunteerDto.Bio,
                 CreatedAt = DateTime.UtcNow,
-                UpdatedAt = DateTime.UtcNow
+                UpdatedAt = DateTime.UtcNow,
+                Tasks = request.VolunteerDto.Tasks
             };
 
             _volunteerRepository.Add(volunteer);
@@ -50,7 +51,9 @@ public class VolunteerCommandHandler(
         }
     }
 
-    public async Task<CommandResponse> Handle(UpdateVolunteerCommand request, CancellationToken cancellationToken)
+    public async Task<CommandResponse> Handle(
+        UpdateVolunteerCommand request, 
+        CancellationToken cancellationToken)
     {
         CurrentUser currentUser = await _currentUserService.GetCurrentUser();
 
@@ -85,17 +88,18 @@ public class VolunteerCommandHandler(
             }
 
             volunteer.UserId = request.VolunteerDto.UserId;
-            volunteer.StartDate = DateTime.SpecifyKind(DateTime.Parse(request.VolunteerDto.StartDate), 
-                                                        DateTimeKind.Utc);
+            volunteer.StartDate = DateTime.SpecifyKind(
+                DateTime.Parse(request.VolunteerDto.StartDate), 
+                DateTimeKind.Utc);
             volunteer.EndDate = request.VolunteerDto.EndDate != null ? 
-                                DateTime.SpecifyKind(DateTime.Parse(request.VolunteerDto.EndDate), 
-                                                    DateTimeKind.Utc) : null;
+                                DateTime.SpecifyKind(
+                                    DateTime.Parse(request.VolunteerDto.EndDate), 
+                                    DateTimeKind.Utc) : null;
             volunteer.Status = Enum.Parse<VolunteerStatus>(request.VolunteerDto.Status);
             volunteer.Tier = Enum.Parse<TierLevel>(request.VolunteerDto.Tier);
-            volunteer.AssignedArea = request.VolunteerDto.AssignedArea;
-            volunteer.ProfilePictureUrl = request.VolunteerDto.ProfilePictureUrl;
-            volunteer.Bio = request.VolunteerDto.Bio;
+            // LastShiftDate logic when Shifts are implemented
             volunteer.UpdatedAt = DateTime.UtcNow;
+            volunteer.Tasks = request.VolunteerDto.Tasks;
 
             await _volunteerRepository.SaveChangesAsync(cancellationToken);
 

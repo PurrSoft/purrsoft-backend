@@ -1,11 +1,12 @@
-﻿using AlbumStore.Application.Commands.VolunteerCommands;
-using AlbumStore.Application.Queries.VolunteerQueries;
-using AlbumStore.Application.QueryOverviews;
+﻿using PurrSoft.Application.Commands.VolunteerCommands;
+using PurrSoft.Application.Queries.VolunteerQueries;
+using PurrSoft.Application.QueryOverviews;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PurrSoft.Api.Controllers.Base;
 using PurrSoft.Application.Common;
 using System.Net;
+using PurrSoft.Application.Models;
 
 namespace PurrSoft.Api.Controllers;
 
@@ -23,22 +24,22 @@ public class VolunteerController : BaseController
 
     [HttpGet("{id}")]
     [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer")]
-    [ProducesResponseType(typeof(VolunteerOverview), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(VolunteerDto), (int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     [ProducesResponseType((int)HttpStatusCode.Forbidden)]
     public async Task<IActionResult> GetVolunteer(string id)
     {
         try
         {
-            VolunteerOverview volunteerOverview = 
+            VolunteerDto volunteerDto = 
                 await Mediator.Send(new GetVolunteerQuery() { Id = id }, new CancellationToken());
 
-            if (volunteerOverview == null)
+            if (volunteerDto == null)
             {
                 return NotFound();
             }
 
-            return Ok(volunteerOverview);
+            return Ok(volunteerDto);
         }
         catch (UnauthorizedAccessException)
         {

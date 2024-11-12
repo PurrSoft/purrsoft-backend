@@ -9,18 +9,17 @@ public class Volunteer
     public DateTime? EndDate { get; set; }
     public VolunteerStatus Status { get; set; }
     public TierLevel Tier { get; set; }
-    public string AssignedArea { get; set; }
     public DateTime? LastShiftDate { get; set; }
-    public string? ProfilePictureUrl { get; set; }
-    public string? Bio { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+    public ICollection<string> Tasks { get; set; }
     public virtual ApplicationUser User { get; set; }
     // public virtual ICollection<Shift> Shifts { get; set; }
     // public virtual ICollection<LeaveRequest> LeaveRequests { get; set; }
 
     public Volunteer()
     {
+        Tasks = new List<string>();
         // Shifts = new List<Shift>();
         // LeaveRequests = new List<LeaveRequest>();
     }

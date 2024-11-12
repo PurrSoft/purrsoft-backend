@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using PurrSoft.Domain.Entities.Enum;
 
-namespace AlbumStore.Application.Commands.VolunteerCommands;
+namespace PurrSoft.Application.Commands.VolunteerCommands;
 
 public class CreateVolunteerCommandValidator : AbstractValidator<CreateVolunteerCommand>
 {
@@ -18,8 +18,6 @@ public class CreateVolunteerCommandValidator : AbstractValidator<CreateVolunteer
         RuleFor(x => x.VolunteerDto.Tier)
             .NotNull().NotEmpty()
             .Must(VolunteerCommandEnumValidator.BeAValidTier);
-        RuleFor(x => x.VolunteerDto.AssignedArea)
-            .NotNull().NotEmpty();
     }
 }
 
@@ -42,7 +40,7 @@ public class UpdateVolunteerCommandValidator : AbstractValidator<UpdateVolunteer
         RuleFor(x => x.VolunteerDto.Tier)
             .NotNull().NotEmpty()
             .Must(VolunteerCommandEnumValidator.BeAValidTier);
-        RuleFor(x => x.VolunteerDto.AssignedArea)
+        RuleFor(x => x.VolunteerDto.Tasks)
             .NotNull().NotEmpty();
     }
 }

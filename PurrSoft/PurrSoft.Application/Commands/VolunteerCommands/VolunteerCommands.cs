@@ -1,7 +1,7 @@
-﻿using AlbumStore.Application.Models;
+﻿using PurrSoft.Application.Models;
 using PurrSoft.Application.Common;
 
-namespace AlbumStore.Application.Commands.VolunteerCommands;
+namespace PurrSoft.Application.Commands.VolunteerCommands;
 
 public class CreateVolunteerCommand : BaseRequest<CommandResponse>
 {

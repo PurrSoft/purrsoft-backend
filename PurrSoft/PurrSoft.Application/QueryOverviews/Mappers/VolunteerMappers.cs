@@ -1,6 +1,7 @@
-﻿using PurrSoft.Domain.Entities;
+﻿using PurrSoft.Application.Models;
+using PurrSoft.Domain.Entities;
 
-namespace AlbumStore.Application.QueryOverviews.Mappers;
+namespace PurrSoft.Application.QueryOverviews.Mappers;
 
 public static class VolunteerMappers
 {
@@ -10,17 +11,22 @@ public static class VolunteerMappers
             UserId = v.UserId,
             FirstName = v.User.FirstName,
             LastName = v.User.LastName,
-            Email = v.User.Email,
-            StartDate = v.StartDate,
-            EndDate = v.EndDate,
+            Status = v.Status.ToString(),
+            Tier = v.Tier.ToString()
+        });
+
+    public static IQueryable<VolunteerDto> ProjectToDto(this IQueryable<Volunteer> query)
+        => query.Select(v => new VolunteerDto
+        {
+            UserId = v.UserId,
+            StartDate = v.StartDate.ToString(),
+            EndDate = v.EndDate.ToString(),
             Status = v.Status.ToString(),
             Tier = v.Tier.ToString(),
-            AssignedArea = v.AssignedArea,
-            LastShiftDate = v.LastShiftDate,
-            ProfilePictureUrl = v.ProfilePictureUrl,
-            Bio = v.Bio,
-            CreatedAt = v.CreatedAt,
-            UpdatedAt = v.UpdatedAt
+            LastShiftDate = v.LastShiftDate.ToString(),
+            CreatedAt = v.CreatedAt.ToString(),
+            UpdatedAt = v.UpdatedAt.ToString(),
+            Tasks = v.Tasks
         });
 }
 

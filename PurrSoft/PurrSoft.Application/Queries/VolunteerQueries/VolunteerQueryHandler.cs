@@ -1,6 +1,5 @@
-﻿using AlbumStore.Application.Filtering;
-using AlbumStore.Application.QueryOverviews;
-using AlbumStore.Application.QueryOverviews.Mappers;
+﻿using PurrSoft.Application.QueryOverviews;
+using PurrSoft.Application.QueryOverviews.Mappers;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PurrSoft.Application.Common;
@@ -8,15 +7,16 @@ using PurrSoft.Common.Helpful;
 using PurrSoft.Common.Identity;
 using PurrSoft.Domain.Entities;
 using PurrSoft.Domain.Repositories;
+using PurrSoft.Application.Models;
 
-namespace AlbumStore.Application.Queries.VolunteerQueries;
+namespace PurrSoft.Application.Queries.VolunteerQueries;
 
 public class VolunteerQueryHandler(
     IRepository<Volunteer> _volunteerRepository,
     IRepository<ApplicationUser> _userRepository,
     ICurrentUserService _currentUserService) :
     IRequestHandler<GetFilteredVolunteersQueries, CollectionResponse<VolunteerOverview>>,
-    IRequestHandler<GetVolunteerQuery, VolunteerOverview>
+    IRequestHandler<GetVolunteerQuery, VolunteerDto>
 {
     public async Task<CollectionResponse<VolunteerOverview>> Handle(
         GetFilteredVolunteersQueries request, 
@@ -28,12 +28,17 @@ public class VolunteerQueryHandler(
         IQueryable<VolunteerOverview> volunteerOverviews = query.ProjectToOverview();
         volunteerOverviews = volunteerOverviews
             .SortAndPaginate(request.SortBy, request.SortOrder, request.Skip, request.Take);
-        List<VolunteerOverview> volunteerOverviewsList = await volunteerOverviews.ToListAsync(cancellationToken);
+        List<VolunteerOverview> volunteerOverviewsList = 
+            await volunteerOverviews.ToListAsync(cancellationToken);
 
-        return new CollectionResponse<VolunteerOverview>(volunteerOverviewsList, totalNumberOfItems);
+        return new CollectionResponse<VolunteerOverview>(
+            volunteerOverviewsList, 
+            totalNumberOfItems);
     }
 
-    public async Task<VolunteerOverview> Handle(GetVolunteerQuery request, CancellationToken cancellationToken)
+    public async Task<VolunteerDto> Handle(
+        GetVolunteerQuery request, 
+        CancellationToken cancellationToken)
     {
         CurrentUser currentUser = await _currentUserService.GetCurrentUser();
 
@@ -58,11 +63,11 @@ public class VolunteerQueryHandler(
             throw new UnauthorizedAccessException();
         }
 
-        VolunteerOverview? volunteerOverview = await _volunteerRepository
-            .Query(v => v.UserId == request.Id).ProjectToOverview()
+        VolunteerDto? volunteerDto = await _volunteerRepository
+            .Query(v => v.UserId == request.Id).ProjectToDto()
             .FirstOrDefaultAsync(cancellationToken);
 
-        return volunteerOverview;
+        return volunteerDto;
     }
 }
 
