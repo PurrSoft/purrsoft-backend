@@ -12,7 +12,6 @@ namespace PurrSoft.Api.Controllers;
 [ApiController]
 public class AccountController : BaseController
 {
-
     public AccountController()
     {
 

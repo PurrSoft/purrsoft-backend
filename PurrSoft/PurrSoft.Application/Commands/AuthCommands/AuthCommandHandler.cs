@@ -115,6 +115,4 @@ public class AuthCommandHandler(
                 "User not found."),
             _ => null
         })!;
-
-
 }

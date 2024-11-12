@@ -4,8 +4,14 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>AlbumStore.Application</RootNamespace>
+        <RootNamespace>PurrSoft.Application</RootNamespace>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Filtering\**" />
+      <EmbeddedResource Remove="Filtering\**" />
+      <None Remove="Filtering\**" />
+    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="FluentValidation" Version="11.10.0" />
