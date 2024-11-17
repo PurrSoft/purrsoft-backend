@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Deea\\.nuget\\packages\\": {}
+    "C:\\Users\\Raul\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Deea\\Desktop\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
+      "projectUniqueName": "D:\\Anul3\\Semestrul1\\Proiect_Colectiv\\purrsoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
       "projectName": "PurrSoft.Common",
-      "projectPath": "C:\\Users\\Deea\\Desktop\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
-      "packagesPath": "C:\\Users\\Deea\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Deea\\Desktop\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\obj\\",
+      "projectPath": "D:\\Anul3\\Semestrul1\\Proiect_Colectiv\\purrsoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
+      "packagesPath": "C:\\Users\\Raul\\.nuget\\packages\\",
+      "outputPath": "D:\\Anul3\\Semestrul1\\Proiect_Colectiv\\purrsoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Deea\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Raul\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

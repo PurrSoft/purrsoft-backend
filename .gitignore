@@ -53,6 +53,7 @@ Logs/
 #build
 [Oo]bj/
 [Bb]in/
+**/obj/
 #generated files
 project.lock.json
 .vs/

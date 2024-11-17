@@ -12,15 +12,17 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
     public DbSet<ApplicationLog> ApplicationLogs { get; set; }
     public DbSet<Foster> Fosters { get; set; }
     public DbSet<Animal> Animals { get; set; }
+    public DbSet<Volunteer> Volunteers { get; set; }
 
-	protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		base.OnModelCreating(modelBuilder);
 		ConfigureUser(modelBuilder);
 		ConfigureRole(modelBuilder);
 		//ConfigureUserRole(modelBuilder);
 		ConfigureFosters(modelBuilder);
-		modelBuilder.SeederForRoles();
+        ConfigureVolunteers(modelBuilder);
+        modelBuilder.SeederForRoles();
 	}
 
 	private static void ConfigureUser(ModelBuilder builder)
@@ -46,4 +48,15 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 			.IsRequired()
 			.OnDelete(DeleteBehavior.Restrict);
 	}
+
+    private static void ConfigureVolunteers(ModelBuilder builder)
+    {
+        builder.Entity<Volunteer>().HasKey(v => v.UserId);
+        builder.Entity<Volunteer>()
+            .HasOne(v => v.User)
+            .WithOne()
+            .HasForeignKey<Volunteer>(v => v.UserId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
+    }
 }
