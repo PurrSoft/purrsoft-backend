@@ -34,8 +34,13 @@ public class AuthController : BaseController
     {
         CommandResponse<UserLoginCommandResponse> commandResponse = await Mediator.Send(userLoginCommand);
 
-        return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
-    }
+		if (commandResponse.IsValid)
+		{
+			SetTokenCookie(commandResponse.Result.Token);
+			return Ok(commandResponse);
+		}
+		return BadRequest(commandResponse);
+	}
 
 
     private void SetTokenCookie(string token)
