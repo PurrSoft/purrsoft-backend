@@ -8,9 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Filtering\**" />
-      <EmbeddedResource Remove="Filtering\**" />
-      <None Remove="Filtering\**" />
+      <Folder Include="Filtering\" />
     </ItemGroup>
 
     <ItemGroup>

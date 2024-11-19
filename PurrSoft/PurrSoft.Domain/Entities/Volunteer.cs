@@ -12,7 +12,7 @@ public class Volunteer
     public DateTime? LastShiftDate { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public ICollection<string> Tasks { get; set; }
+    public IList<string>? Tasks { get; set; }
     public virtual ApplicationUser User { get; set; }
     // public virtual ICollection<Shift> Shifts { get; set; }
     // public virtual ICollection<LeaveRequest> LeaveRequests { get; set; }

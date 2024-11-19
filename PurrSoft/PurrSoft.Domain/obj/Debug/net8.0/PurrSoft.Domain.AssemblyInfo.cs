@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PurrSoft.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5c49baaae36466d183894806d40b596d046a8f1b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ee22fc3a03dfcc7f4cd6c95ca45f64435d198c2d")]
 [assembly: System.Reflection.AssemblyProductAttribute("PurrSoft.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PurrSoft.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
