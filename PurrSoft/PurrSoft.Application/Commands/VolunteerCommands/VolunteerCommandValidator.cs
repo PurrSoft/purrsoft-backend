@@ -40,8 +40,6 @@ public class UpdateVolunteerCommandValidator : AbstractValidator<UpdateVolunteer
         RuleFor(x => x.VolunteerDto.Tier)
             .NotNull().NotEmpty()
             .Must(VolunteerCommandEnumValidator.BeAValidTier);
-        RuleFor(x => x.VolunteerDto.Tasks)
-            .NotNull().NotEmpty();
     }
 }
 
