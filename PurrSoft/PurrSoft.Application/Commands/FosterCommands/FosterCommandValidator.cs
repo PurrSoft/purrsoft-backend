@@ -16,7 +16,7 @@ public class CreateFosterCommandValidator : AbstractValidator<CreateFosterComman
 			.NotNull().NotEmpty()
 			.Must(x => Enum.IsDefined(typeof(FosterStatus), x));
 		RuleFor(x => x.FosterDto.Location)
-			.NotNull();
+			.NotNull().NotEmpty();
 		RuleFor(x => x.FosterDto.HomeDescription)
 			.NotNull();
 		RuleFor(x => x.FosterDto.HasOtherAnimals)
@@ -43,7 +43,7 @@ public class UpdateFosterCommandValidator : AbstractValidator<UpdateFosterComman
 			.NotNull().NotEmpty()
 			.Must(x => Enum.IsDefined(typeof(FosterStatus), x));
 		RuleFor(x => x.FosterDto.Location)
-			.NotNull();
+			.NotNull().NotEmpty();
 		RuleFor(x => x.FosterDto.HomeDescription)
 			.NotNull();
 		RuleFor(x => x.FosterDto.HasOtherAnimals)
