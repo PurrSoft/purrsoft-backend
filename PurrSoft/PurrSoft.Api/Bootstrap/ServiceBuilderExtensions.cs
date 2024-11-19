@@ -90,7 +90,7 @@ public static class ServiceBuilderExtensions
             {
                 options.AddPolicy("_myAllowSpecificOrigins",
                     policy =>
-                        policy.WithOrigins("https://localhost:7233", "http://localhost:5173")
+                        policy.WithOrigins("https://localhost:7233", "https://localhost:5173")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials());
