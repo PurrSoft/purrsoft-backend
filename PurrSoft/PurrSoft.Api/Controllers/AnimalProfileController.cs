@@ -20,7 +20,7 @@ namespace PurrSoft.Api.Controllers
         }
 
         // Get all animal profiles
-        [HttpGet("GetAllAnimalProfiles")]
+        [HttpGet()]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(typeof(CollectionResponse<AnimalProfileDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
@@ -33,7 +33,7 @@ namespace PurrSoft.Api.Controllers
         }
 
         // Get animal profile by Id
-        [HttpGet("GetAnimalProfileById/{id}")]
+        [HttpGet("/{id}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(typeof(AnimalProfile), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.NotFound)]
@@ -49,7 +49,7 @@ namespace PurrSoft.Api.Controllers
         
 
         // Create a new animal profile
-        [HttpPost ( "CreateAnimalProfile" )]
+        [HttpPost (  )]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(typeof(CommandResponse<Guid>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(CommandResponse<Guid>), (int)HttpStatusCode.BadRequest)]
@@ -61,7 +61,7 @@ namespace PurrSoft.Api.Controllers
         }
 
         // Update an animal profile
-        [HttpPut("UpdateAnimalProfile")]
+        [HttpPut()]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
@@ -73,7 +73,7 @@ namespace PurrSoft.Api.Controllers
         }
 
         // Delete an animal profile
-        [HttpDelete("DeleteAnimalProfile/{id}")]
+        [HttpDelete("/{id}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
