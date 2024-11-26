@@ -35,7 +35,6 @@ public class AuthController : BaseController
 		}
 	}
 
-<<<<<<< HEAD
 	[HttpPost("Login")]
 	[ProducesResponseType(typeof(CommandResponse<UserLoginCommandResponse>), (int)HttpStatusCode.OK)]
 	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
@@ -44,20 +43,17 @@ public class AuthController : BaseController
 		try
 		{
 			CommandResponse<UserLoginCommandResponse> commandResponse = await Mediator.Send(userLoginCommand);
-			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
+			if (commandResponse.IsValid)
+			{
+				SetTokenCookie(commandResponse.Result.Token);
+				return Ok(commandResponse);
+			}
+			return BadResponse(commandResponse);
 		}
 		catch (FluentValidation.ValidationException ex)
 		{
 			return BadRequest(new CommandResponse(ex.Errors.ToList()));
 		}
-=======
-		if (commandResponse.IsValid)
-		{
-			SetTokenCookie(commandResponse.Result.Token);
-			return Ok(commandResponse);
-		}
-		return BadRequest(commandResponse);
->>>>>>> main
 	}
 
 
