@@ -48,7 +48,7 @@ public class AuthController : BaseController
 				SetTokenCookie(commandResponse.Result.Token);
 				return Ok(commandResponse);
 			}
-			return BadResponse(commandResponse);
+			return BadRequest(commandResponse);
 		}
 		catch (FluentValidation.ValidationException ex)
 		{

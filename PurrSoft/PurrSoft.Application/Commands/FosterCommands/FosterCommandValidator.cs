@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using PurrSoft.Application.Helpers;
 using PurrSoft.Domain.Entities.Enums;
 using static PurrSoft.Application.Commands.FosterCommands.FosterCommands;
 
@@ -37,7 +38,9 @@ public class UpdateFosterCommandValidator : AbstractValidator<UpdateFosterComman
 			.NotNull().NotEmpty().GreaterThan(DateTime.MinValue);
 		RuleFor(x => x.FosterDto.EndDate)
 			.NotEmpty()
-			.GreaterThan(DateTime.MinValue)
+			.Must((dto, endDate) =>
+							DateTimeValidationHelper.BeLaterThan(dto.FosterDto.StartDate, endDate))
+			.WithMessage("EndDate must be greater than StartDate.")
 			.When(x => x.FosterDto.EndDate != null);
 		RuleFor(x => x.FosterDto.Status)
 			.NotNull().NotEmpty()

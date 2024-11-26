@@ -18,4 +18,7 @@ public static class DateTimeValidationHelper
 		DateTime.TryParse(startDate, out var parsedStartDate) &&
 		DateTime.TryParse(endDate, out var parsedEndDate) &&
 		parsedEndDate > parsedStartDate;
+
+	public static bool BeLaterThan(DateTime? startDate, DateTime? endDate) =>
+		endDate > startDate;
 }
