@@ -43,7 +43,7 @@ public static class AuthenticationExtensions
                 o.Password.RequireLowercase = false;
                 o.Password.RequireUppercase = false;
                 o.Password.RequireNonAlphanumeric = false;
-                o.Password.RequiredLength = 6;
+                o.Password.RequiredLength = 8;
                 o.Password.RequireUppercase = false;
                 o.User.RequireUniqueEmail = true;
                 o.SignIn.RequireConfirmedEmail = false;

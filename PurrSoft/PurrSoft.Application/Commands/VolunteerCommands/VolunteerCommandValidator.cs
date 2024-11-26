@@ -27,6 +27,7 @@ public class CreateVolunteerCommandValidator : AbstractValidator<CreateVolunteer
 
 public class UpdateVolunteerCommandValidator : AbstractValidator<UpdateVolunteerCommand>
 {
+<<<<<<< HEAD
 	public UpdateVolunteerCommandValidator()
 	{
 		RuleFor(x => x.VolunteerDto.UserId)
@@ -54,6 +55,26 @@ public class UpdateVolunteerCommandValidator : AbstractValidator<UpdateVolunteer
 		RuleFor(x => x.VolunteerDto.Tasks)
 			.NotNull().NotEmpty();
 	}
+=======
+    public UpdateVolunteerCommandValidator()
+    {
+        RuleFor(x => x.VolunteerDto.UserId)
+            .NotNull().NotEmpty();
+        RuleFor(x => DateTime.Parse(x.VolunteerDto.StartDate))
+            .NotNull().NotEmpty()
+            .GreaterThan(DateTime.MinValue);
+        RuleFor(x => DateTime.Parse(x.VolunteerDto.EndDate))
+            .NotNull().NotEmpty()
+            .GreaterThan(v => DateTime.Parse(v.VolunteerDto.StartDate))
+            .When(v => v.VolunteerDto.EndDate != null);
+        RuleFor(x => x.VolunteerDto.Status)
+            .NotNull().NotEmpty()
+            .Must(VolunteerCommandEnumValidator.BeAValidStatus);
+        RuleFor(x => x.VolunteerDto.Tier)
+            .NotNull().NotEmpty()
+            .Must(VolunteerCommandEnumValidator.BeAValidTier);
+    }
+>>>>>>> main
 }
 
 public class DeleteVolunteerCommandValidator : AbstractValidator<DeleteVolunteerCommand>

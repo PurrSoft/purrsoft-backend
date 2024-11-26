@@ -35,6 +35,7 @@ public class AuthController : BaseController
 		}
 	}
 
+<<<<<<< HEAD
 	[HttpPost("Login")]
 	[ProducesResponseType(typeof(CommandResponse<UserLoginCommandResponse>), (int)HttpStatusCode.OK)]
 	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
@@ -49,6 +50,14 @@ public class AuthController : BaseController
 		{
 			return BadRequest(new CommandResponse(ex.Errors.ToList()));
 		}
+=======
+		if (commandResponse.IsValid)
+		{
+			SetTokenCookie(commandResponse.Result.Token);
+			return Ok(commandResponse);
+		}
+		return BadRequest(commandResponse);
+>>>>>>> main
 	}
 
 
