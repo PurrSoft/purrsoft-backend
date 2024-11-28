@@ -42,6 +42,15 @@ public class AuthController : BaseController
 		return BadRequest(commandResponse);
 	}
 
+    [HttpPost("ChangePassword")]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> ChangePassword(UserChangePasswordCommand userChangePasswordCommand)
+    {
+        CommandResponse commandResponse = await Mediator.Send(userChangePasswordCommand);
+        return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
+    }
+
 
     private void SetTokenCookie(string token)
     {

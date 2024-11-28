@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Mvc;
 using PurrSoft.Api.Controllers.Base;
 using PurrSoft.Application.Commands.AnimalCommands;
 using PurrSoft.Application.Common;
 using PurrSoft.Application.Models;
 using PurrSoft.Application.Queries.AnimalQueries;
+using PurrSoft.Application.QueryOverviews;
 using PurrSoft.Domain.Entities;
 using System.Net;
 
@@ -18,60 +20,61 @@ public class AnimalController : BaseController
     {
     }
 
-    [HttpGet("GetAnimals")]
+    [HttpGet("")]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(CollectionResponse<AnimalDto>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CollectionResponse<AnimalOverview>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
-    public async Task<CollectionResponse<AnimalDto>> GetAnimalsAsync()
+    public async Task<CollectionResponse<AnimalOverview>> GetAnimals([FromQuery] GetFilteredAnimalsQueries query)
     {
-        CollectionResponse<AnimalDto> commandResponse =
-            await Mediator.Send(new GetAnimalsQuery());
-
-        return commandResponse;
+        return await Mediator.Send(query, new CancellationToken());
     }
 
-    [HttpGet("GetAnimalById")]
+    [HttpGet("{id}")]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(CommandResponse<AnimalDto>), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
-    public async Task<CommandResponse<AnimalDto>> GetAnimalByIdAsync()
+    [ProducesResponseType(typeof(AnimalDto), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> GetAnimal(string id)
     {
-        CommandResponse<AnimalDto> commandResponse =
-            await Mediator.Send(new GetAnimalByIdQuery());
+        AnimalDto animal = await Mediator.Send(new GetAnimalByIdQuery { Id = id }, new CancellationToken());
+        if (animal == null)
+        {
+            return NotFound();
+        }
 
-        return commandResponse;
+        return Ok(animal);
+
     }
 
-    [HttpPost("CreateAnimal")]
+    [HttpPost("")]
     //[Authorize(AuthenticationSchemes = "Bearer")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(CommandResponse<int>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
-    public async Task<IActionResult> CreateAnimalAsync(AnimalCreateCommand animalCreateCommand)
+    public async Task<IActionResult> CreateAnimalAsync(CreateAnimalCommand animalCreateCommand)
     {
-        CommandResponse<string> commandResponse = await Mediator.Send(animalCreateCommand);
+        CommandResponse commandResponse = await Mediator.Send(animalCreateCommand);
 
         return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
     }
 
-    [HttpPut("UpdateAnimal")]
+    [HttpPut()]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [ProducesResponseType(typeof(CommandResponse<Animal>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
-    public async Task<IActionResult> UpdateAnimalAsync(AnimalUpdateCommand animalUpdateCommand)
+    public async Task<IActionResult> UpdateAnimalAsync(UpdateAnimalCommand animalUpdateCommand)
     {
         CommandResponse commandResponse = await Mediator.Send(animalUpdateCommand);
 
         return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
     }
 
-    [HttpDelete("DeleteAnimalById")]
+    [HttpDelete("{id}")]
     [Authorize(AuthenticationSchemes = "Bearer")]
     [ProducesResponseType(typeof(CommandResponse<Animal>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
-    public async Task<IActionResult> DeleteAnimalAsync(AnimalDeleteCommand animalDeleteCommand)
+    public async Task<IActionResult> DeleteAnimalAsync(string id)
     {
-        CommandResponse commandResponse = await Mediator.Send(animalDeleteCommand);
+        CommandResponse commandResponse = await Mediator.Send(new DeleteAnimalCommand { Id = id}, new CancellationToken());
 
         return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
     }
