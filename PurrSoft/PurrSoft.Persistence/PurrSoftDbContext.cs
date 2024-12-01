@@ -9,20 +9,21 @@ namespace PurrSoft.Persistence;
 public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<ApplicationUser, Role, string, IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>
 	, IdentityRoleClaim<string>, IdentityUserToken<string>>(options)
 {
-    public DbSet<ApplicationLog> ApplicationLogs { get; set; }
-    public DbSet<Foster> Fosters { get; set; }
-    public DbSet<Animal> Animals { get; set; }
-    public DbSet<Volunteer> Volunteers { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+	public DbSet<ApplicationLog> ApplicationLogs { get; set; }
+	public DbSet<Foster> Fosters { get; set; }
+	public DbSet<Animal> Animals { get; set; }
+	public DbSet<Volunteer> Volunteers { get; set; }
+	public DbSet<AnimalFosterMap> AnimalFosters { get; set; }
+	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		base.OnModelCreating(modelBuilder);
 		ConfigureUser(modelBuilder);
 		ConfigureRole(modelBuilder);
 		//ConfigureUserRole(modelBuilder);
 		ConfigureFosters(modelBuilder);
-        ConfigureVolunteers(modelBuilder);
-        modelBuilder.SeederForRoles();
+		ConfigureVolunteers(modelBuilder);
+		ConfigureFosterAnimals(modelBuilder);
+		modelBuilder.SeederForRoles();
 	}
 
 	private static void ConfigureUser(ModelBuilder builder)
@@ -49,14 +50,32 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 			.OnDelete(DeleteBehavior.Restrict);
 	}
 
-    private static void ConfigureVolunteers(ModelBuilder builder)
-    {
-        builder.Entity<Volunteer>().HasKey(v => v.UserId);
-        builder.Entity<Volunteer>()
-            .HasOne(v => v.User)
-            .WithOne()
-            .HasForeignKey<Volunteer>(v => v.UserId)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.Restrict);
-    }
+	private static void ConfigureVolunteers(ModelBuilder builder)
+	{
+		builder.Entity<Volunteer>().HasKey(v => v.UserId);
+		builder.Entity<Volunteer>()
+			.HasOne(v => v.User)
+			.WithOne()
+			.HasForeignKey<Volunteer>(v => v.UserId)
+			.IsRequired()
+			.OnDelete(DeleteBehavior.Restrict);
+	}
+	private static void ConfigureFosterAnimals(ModelBuilder builder)
+	{
+		builder.Entity<AnimalFosterMap>().HasKey(af => af.Id);
+		builder.Entity<AnimalFosterMap>()
+			.HasOne(af => af.Animal)
+			.WithMany(a => a.FosteredBy)
+			.HasForeignKey(af => af.AnimalId)
+			.IsRequired()
+			.OnDelete(DeleteBehavior.Restrict);
+
+
+		builder.Entity<AnimalFosterMap>()
+			.HasOne(af => af.Foster)
+			.WithMany(f => f.FosteredAnimals)
+			.HasForeignKey(af => af.FosterId)
+			.IsRequired()
+			.OnDelete(DeleteBehavior.Restrict);
+	}
 }

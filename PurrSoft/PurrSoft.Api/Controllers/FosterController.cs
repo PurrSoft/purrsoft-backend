@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PurrSoft.Api.Controllers.Base;
 using PurrSoft.Application.Common;
 using PurrSoft.Application.Models;
+using PurrSoft.Application.Queries.AnimalFosterMapQueries;
 using PurrSoft.Application.Queries.FosterQueries;
 using PurrSoft.Application.QueryOverviews;
 using System.Net;
+using static PurrSoft.Application.Commands.AnimalFosterMapCommands.AnimalFosterMapCommands;
 using static PurrSoft.Application.Commands.FosterCommands.FosterCommands;
 
 namespace PurrSoft.Api.Controllers;
@@ -14,9 +17,9 @@ namespace PurrSoft.Api.Controllers;
 [ApiController]
 public class FosterController : BaseController
 {
-	[HttpGet("")]
+	[HttpGet()]
 	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
-	[ProducesResponseType(typeof(CollectionResponse<FosterDto>), (int)HttpStatusCode.OK)]
+	[ProducesResponseType(typeof(CollectionResponse<FosterOverview>), (int)HttpStatusCode.OK)]
 	public async Task<CollectionResponse<FosterOverview>> GetFosters([FromQuery] GetFilteredFostersQueries query)
 	{
 		return await Mediator.Send(query, new CancellationToken());
@@ -47,7 +50,7 @@ public class FosterController : BaseController
 		}
 	}
 
-	[HttpPost("")]
+	[HttpPost()]
 	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager")]
 	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
 	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
