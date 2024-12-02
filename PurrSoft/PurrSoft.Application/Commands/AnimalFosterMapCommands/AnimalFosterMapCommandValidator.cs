@@ -11,10 +11,12 @@ namespace PurrSoft.Application.Commands.AnimalFosterMapCommands
 				.NotNull().NotEmpty().WithMessage("FosterId is required.");
 			RuleFor(x => x.AnimalFosterMapDto.AnimalId)
 				.NotNull().NotEmpty().WithMessage("AnimalId is required.");
-			//RuleFor(x => x.AnimalFosterMapDto.StartFosteringDate)
-			//	.NotNull().NotEmpty().WithMessage("StartFosteringDate is required.");
-			//RuleFor(x => x.AnimalFosterMapDto.EndFosteringDate)
-			//	.GreaterThanOrEqualTo(x => x.AnimalFosterMapDto.StartFosteringDate).WithMessage("EndFosteringDate must be greater than or equal to StartFosteringDate.");
+			RuleFor(x => x.AnimalFosterMapDto.StartFosteringDate)
+				.NotNull().NotEmpty().WithMessage("StartFosteringDate is required.");
+			RuleFor(x => x.AnimalFosterMapDto.EndFosteringDate)
+				.GreaterThanOrEqualTo(x => x.AnimalFosterMapDto.StartFosteringDate)
+				.WithMessage("EndFosteringDate must be greater than or equal to StartFosteringDate.")
+				.When(x => x.AnimalFosterMapDto.EndFosteringDate != null);
 		}
 	}
 
@@ -26,10 +28,12 @@ namespace PurrSoft.Application.Commands.AnimalFosterMapCommands
 				.NotNull().NotEmpty().WithMessage("FosterId is required.");
 			RuleFor(x => x.AnimalFosterMapDto.AnimalId)
 				.NotNull().NotEmpty().WithMessage("AnimalId is required.");
-			//RuleFor(x => x.AnimalFosterMapDto.StartFosteringDate)
-			//	.NotNull().NotEmpty().WithMessage("StartFosteringDate is required.");
-			//RuleFor(x => x.AnimalFosterMapDto.EndFosteringDate)
-			//	.GreaterThanOrEqualTo(x => x.AnimalFosterMapDto.StartFosteringDate).WithMessage("EndFosteringDate must be greater than or equal to StartFosteringDate.");
+			RuleFor(x => x.AnimalFosterMapDto.StartFosteringDate)
+				.NotNull().NotEmpty().WithMessage("StartFosteringDate is required.");
+			RuleFor(x => x.AnimalFosterMapDto.EndFosteringDate)
+				.GreaterThanOrEqualTo(x => x.AnimalFosterMapDto.StartFosteringDate)
+				.WithMessage("EndFosteringDate must be greater than or equal to StartFosteringDate.")
+				.When(x => x.AnimalFosterMapDto.EndFosteringDate != null);
 		}
 	}
 

@@ -10,7 +10,7 @@ using static PurrSoft.Application.Commands.AnimalFosterMapCommands.AnimalFosterM
 namespace PurrSoft.Application.Commands.AnimalFosterMapCommands;
 
 public class AnimalFosterMapCommandHandler(
-	IAnimalFosterMapRepository _animalFosterMapRepository,
+	IRepository<AnimalFosterMap> _animalFosterMapRepository,
 	ILogRepository<AnimalFosterMapCommandHandler> _logRepository,
 	IRepository<ApplicationUser> _userRepository,
 	ICurrentUserService _currentService
@@ -27,8 +27,10 @@ public class AnimalFosterMapCommandHandler(
 			{
 				AnimalId = request.AnimalFosterMapDto.AnimalId,
 				FosterId = request.AnimalFosterMapDto.FosterId,
-				StartFosteringDate = request.AnimalFosterMapDto.StartFosteringDate.ToUniversalTime(),
-				EndFosteringDate = request.AnimalFosterMapDto.EndFosteringDate?.ToUniversalTime(),
+				StartFosteringDate = DateTime.SpecifyKind(request.AnimalFosterMapDto.StartFosteringDate, DateTimeKind.Utc),
+				EndFosteringDate = request.AnimalFosterMapDto.EndFosteringDate != null ?
+									DateTime.SpecifyKind(request.AnimalFosterMapDto.EndFosteringDate.Value, DateTimeKind.Utc)
+									: null,
 				SupervisingComment = request.AnimalFosterMapDto.SupervisingComment
 			};
 			_animalFosterMapRepository.Add(animalFosterMap);
@@ -77,8 +79,11 @@ public class AnimalFosterMapCommandHandler(
 				return CommandResponse.Failed("Animal is not assigned to this foster.");
 			}
 
-			animalFosterMap.StartFosteringDate = request.AnimalFosterMapDto.StartFosteringDate.ToUniversalTime();
-			animalFosterMap.EndFosteringDate = request.AnimalFosterMapDto.EndFosteringDate?.ToUniversalTime();
+			animalFosterMap.StartFosteringDate = DateTime.SpecifyKind(request.AnimalFosterMapDto.StartFosteringDate, DateTimeKind.Utc);
+			if (request.AnimalFosterMapDto.EndFosteringDate is not null)
+			{
+				animalFosterMap.EndFosteringDate = DateTime.SpecifyKind(request.AnimalFosterMapDto.EndFosteringDate.Value, DateTimeKind.Utc);
+			}
 			animalFosterMap.SupervisingComment = request.AnimalFosterMapDto.SupervisingComment;
 
 			await _animalFosterMapRepository.SaveChangesAsync(cancellationToken);

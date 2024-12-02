@@ -23,12 +23,12 @@ public static class AnimalFosterMapFilters
 		if (query.StartFosteringDate != null)
 		{
 			animalFosterMapsQuery = animalFosterMapsQuery.Where(
-									a => a.StartFosteringDate == query.StartFosteringDate);
+									a => a.StartFosteringDate >= query.StartFosteringDate);
 		}
 		if (query.EndFosteringDate != null)
 		{
 			animalFosterMapsQuery = animalFosterMapsQuery.Where(
-													a => a.EndFosteringDate == query.EndFosteringDate);
+													a => a.EndFosteringDate <= query.EndFosteringDate);
 		}
 		if(!string.IsNullOrEmpty(query.FosterId))
 		{

@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Raul\\.nuget\\packages\\": {}
+    "C:\\Users\\Dominic\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Anul3\\Semestrul1\\Proiect_Colectiv\\purrsoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
+      "projectUniqueName": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
       "projectName": "PurrSoft.Common",
-      "projectPath": "D:\\Anul3\\Semestrul1\\Proiect_Colectiv\\purrsoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
-      "packagesPath": "C:\\Users\\Raul\\.nuget\\packages\\",
-      "outputPath": "D:\\Anul3\\Semestrul1\\Proiect_Colectiv\\purrsoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\obj\\",
+      "projectPath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
+      "packagesPath": "C:\\Users\\Dominic\\.nuget\\packages\\",
+      "outputPath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Raul\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Dominic\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -28,7 +28,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -67,7 +66,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

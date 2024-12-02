@@ -12,7 +12,5 @@ public static class ServiceBuilderExtensions
         services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
         // and user repo
         services.AddTransient(typeof(IUserRepository), typeof(UserRepository));
-		// and animal foster map repo
-		services.AddTransient(typeof(IAnimalFosterMapRepository), typeof(AnimalFosterMapRepository));
 	}
 }

@@ -5,7 +5,6 @@ using PurrSoft.Api.Controllers.Base;
 using PurrSoft.Application.Common;
 using PurrSoft.Application.Models;
 using PurrSoft.Application.Queries.AnimalFosterMapQueries;
-using PurrSoft.Application.Queries.FosterQueries;
 using PurrSoft.Application.QueryOverviews;
 using System.Net;
 using static PurrSoft.Application.Commands.AnimalFosterMapCommands.AnimalFosterMapCommands;
@@ -102,28 +101,4 @@ public class AnimalFosterMapController : BaseController
 			return BadRequest(new CommandResponse(ex.Errors.ToList()));
 		}
 	}
-
-	[HttpGet("Foster/{fosterId}")]
-	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Foster")]
-	[ProducesResponseType(typeof(CollectionResponse<AnimalFosterMapDto>), (int)HttpStatusCode.OK)]
-	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-	public async Task<IActionResult> GetAnimalFosterMapByFosterId([FromRoute] string fosterId)
-	{
-		CollectionResponse<AnimalFosterMapDto> commandResponse = await Mediator.Send(new GetAnimalFosterMapsByFosterId { FosterId = fosterId }, new CancellationToken());
-
-		return Ok(commandResponse);
-	}
-
-	[HttpGet("Animal/{animalId}")]
-	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Foster")]
-	[ProducesResponseType(typeof(CollectionResponse<AnimalFosterMapDto>), (int)HttpStatusCode.OK)]
-	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-	public async Task<IActionResult> GetAnimalFosterMapByAnimalId([FromRoute] string animalId)
-	{
-		CollectionResponse<AnimalFosterMapDto> commandResponse = await Mediator.Send(new GetAnimalFosterMapsByAnimalId { AnimalId = animalId }, new CancellationToken());
-
-		return Ok(commandResponse);
-	}
-
-
 }
