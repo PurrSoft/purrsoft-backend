@@ -7,7 +7,6 @@ using PurrSoft.Application.Common;
 using PurrSoft.Application.Queries.AnimalProfileQueries;
 using PurrSoft.Application.Commands.AnimalProfileCommands;
 using PurrSoft.Application.Models;
-using PurrSoft.Domain.Entities;
 
 namespace PurrSoft.Api.Controllers
 {
@@ -19,43 +18,40 @@ namespace PurrSoft.Api.Controllers
         {
         }
 
-        // Get all animal profiles
+        // Get all animal profiles with optional filters
         [HttpGet()]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(typeof(CollectionResponse<AnimalProfileDto>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
-        public async Task<CollectionResponse<AnimalProfileDto>> GetAllAnimalProfilesAsync()
+        public async Task<IActionResult> GetAllAnimalProfilesAsync([FromQuery] GetAnimalProfilesQuery query)
         {
-            CollectionResponse<AnimalProfileDto> response = 
-                await Mediator.Send(new GetAnimalProfilesQuery());
-
-            return response;
+            var response = await Mediator.Send(query);
+            return Ok(response);
         }
 
-        // Get animal profile by Id
-        [HttpGet("/api/AnimalProfile/{id}")]
+        [HttpGet("{id:guid}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        [ProducesResponseType(typeof(AnimalProfile), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(AnimalProfileDto), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetAnimalProfileByIdAsync(Guid id)
         {
             var response = await Mediator.Send(new GetAnimalProfileByIdQuery { Id = id.ToString() });
 
-            return response.IsValid ? Ok(response) : NotFound(new CommandResponse(new List<ValidationFailure>
-            {
-                new("Id", "Animal profile not found.")
-            }));
+            // Assuming the data is stored in a 'Result' property
+            return response.IsValid 
+                ? Ok(response.Result) 
+                : NotFound(response);
         }
-        
+
 
         // Create a new animal profile
-        [HttpPost (  )]
+        [HttpPost()]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(typeof(CommandResponse<Guid>), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(CommandResponse<Guid>), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> CreateAnimalProfileAsync([FromBody] AnimalProfileCommands.AnimalProfileCreateCommand command)
         {
-            CommandResponse<Guid> response = await Mediator.Send(command);
+            var response = await Mediator.Send(command);
 
             return response.IsValid ? Ok(response) : BadRequest(response);
         }
@@ -67,23 +63,22 @@ namespace PurrSoft.Api.Controllers
         [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> UpdateAnimalProfileAsync([FromBody] AnimalProfileCommands.AnimalProfileUpdateCommand command)
         {
-            CommandResponse response = await Mediator.Send(command);
+            var response = await Mediator.Send(command);
 
             return response.IsValid ? Ok(response) : BadRequest(response);
         }
 
         // Delete an animal profile
-        [HttpDelete("/api/AnimalProfile/{id}")]
+        [HttpDelete("{id:guid}")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> DeleteAnimalProfileAsync(Guid id)
         {
             var command = new AnimalProfileCommands.AnimalProfileDeleteCommand { Id = id };
-            CommandResponse response = await Mediator.Send(command);
+            var response = await Mediator.Send(command);
 
             return response.IsValid ? Ok(response) : BadRequest(response);
         }
-
     }
 }

@@ -36,13 +36,22 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 
     private static void ConfigureAnimalProfile(ModelBuilder builder)
     {
+        // Configure AnimalProfile primary key
         builder.Entity<AnimalProfile>()
-            .HasKey(ap => ap.Id);  
+            .HasKey(ap => ap.Id);
+        
+        builder.Entity<AnimalProfile>(entity =>
+        {
+            // Configure JSON column for UsefulLinks
+            entity.Property(ap => ap.UsefulLinks)
+                .HasColumnType("jsonb");
 
-        builder.Entity<Animal>()
-            .HasOne(a => a.AnimalProfile)
-            .WithOne(ap => ap.Animal)
-            .HasForeignKey<AnimalProfile>(ap => ap.AnimalId)  // Ensure Foreign Key is AnimalId in AnimalProfile
-            .OnDelete(DeleteBehavior.Cascade);
+            // Configure one-to-one relationship between Animal and AnimalProfile
+            entity.HasOne(ap => ap.Animal)
+                .WithOne(a => a.AnimalProfile)
+                .HasForeignKey<AnimalProfile>(ap => ap.AnimalId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
     }
 }

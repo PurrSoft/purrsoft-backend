@@ -9,17 +9,27 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
             RuleFor(x => x.AnimalId)
                 .NotEmpty().WithMessage("AnimalId is required.");
 
+            RuleFor(x => x.Passport)
+                .NotEmpty().WithMessage("Passport is required.")
+                .MaximumLength(100).WithMessage("Passport should not exceed 100 characters.");
+
+            RuleFor(x => x.Microchip)
+                .NotEmpty().WithMessage("Microchip is required.")
+                .MaximumLength(100).WithMessage("Microchip should not exceed 100 characters.");
+
             RuleFor(x => x.CurrentDisease)
-                .NotEmpty().WithMessage("CurrentDisease cannot be empty.")
                 .MaximumLength(500).WithMessage("CurrentDisease should not exceed 500 characters.");
 
             RuleFor(x => x.CurrentMedication)
-                .NotEmpty().WithMessage("CurrentMedication cannot be empty.")
                 .MaximumLength(500).WithMessage("CurrentMedication should not exceed 500 characters.");
 
             RuleFor(x => x.PastDisease)
-                .NotEmpty().WithMessage("PastDisease cannot be empty.")
                 .MaximumLength(500).WithMessage("PastDisease should not exceed 500 characters.");
+
+            RuleFor(x => x.UsefulLinks)
+                .NotNull().WithMessage("UsefulLinks cannot be null.")
+                .Must(list => list.All(link => link.Length <= 200))
+                .WithMessage("Each link in UsefulLinks must be 200 characters or less.");
         }
     }
 
@@ -28,19 +38,27 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
         public AnimalProfileUpdateCommandValidator()
         {
             RuleFor(x => x.Id)
-                .NotEmpty().WithMessage("Id cannot be null or empty.");
+                .NotEmpty().WithMessage("Id is required.");
+
+            RuleFor(x => x.Passport)
+                .MaximumLength(100).WithMessage("Passport should not exceed 100 characters.");
+
+            RuleFor(x => x.Microchip)
+                .MaximumLength(100).WithMessage("Microchip should not exceed 100 characters.");
 
             RuleFor(x => x.CurrentDisease)
-                .NotEmpty().WithMessage("CurrentDisease cannot be empty.")
                 .MaximumLength(500).WithMessage("CurrentDisease should not exceed 500 characters.");
 
             RuleFor(x => x.CurrentMedication)
-                .NotEmpty().WithMessage("CurrentMedication cannot be empty.")
                 .MaximumLength(500).WithMessage("CurrentMedication should not exceed 500 characters.");
 
             RuleFor(x => x.PastDisease)
-                .NotEmpty().WithMessage("PastDisease cannot be empty.")
                 .MaximumLength(500).WithMessage("PastDisease should not exceed 500 characters.");
+
+            RuleFor(x => x.UsefulLinks)
+                .NotNull().WithMessage("UsefulLinks cannot be null.")
+                .Must(list => list.All(link => link.Length <= 200))
+                .WithMessage("Each link in UsefulLinks must be 200 characters or less.");
         }
     }
 
@@ -49,7 +67,7 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
         public AnimalProfileDeleteCommandValidator()
         {
             RuleFor(x => x.Id)
-                .NotEmpty().WithMessage("Id cannot be null or empty.");
+                .NotEmpty().WithMessage("Id is required.");
         }
     }
 }

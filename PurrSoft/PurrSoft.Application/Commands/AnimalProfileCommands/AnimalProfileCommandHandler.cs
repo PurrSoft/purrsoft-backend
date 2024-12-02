@@ -34,9 +34,26 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
                 {
                     Id = Guid.NewGuid(),
                     AnimalId = request.AnimalId,
+                    Passport = request.Passport,
+                    Microchip = request.Microchip,
                     CurrentDisease = request.CurrentDisease,
                     CurrentMedication = request.CurrentMedication,
-                    PastDisease = request.PastDisease
+                    PastDisease = request.PastDisease,
+                    ExternalDeworming = request.ExternalDeworming,
+                    InternalDeworming = request.InternalDeworming,
+                    CurrentTreatment = request.CurrentTreatment,
+                    MultivalentVaccine = request.MultivalentVaccine,
+                    RabiesVaccine = request.RabiesVaccine,
+                    FIVFeLVTest = request.FIVFeLVTest,
+                    CoronavirusVaccine = request.CoronavirusVaccine,
+                    GiardiaTest = request.GiardiaTest,
+                    EarMiteTreatment = request.EarMiteTreatment,
+                    IntakeNotes = request.IntakeNotes,
+                    AdditionalMedicalInfo = request.AdditionalMedicalInfo,
+                    AdditionalInfo = request.AdditionalInfo,
+                    MedicalAppointments = request.MedicalAppointments,
+                    RefillReminders = request.RefillReminders,
+                    UsefulLinks = request.UsefulLinks
                 };
 
                 animalProfileRepository.Add(newProfile);
@@ -67,9 +84,26 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
                     });
                 }
 
-                profile.CurrentDisease = request.CurrentDisease;
-                profile.CurrentMedication = request.CurrentMedication;
-                profile.PastDisease = request.PastDisease;
+                profile.Passport = request.Passport ?? profile.Passport;
+                profile.Microchip = request.Microchip ?? profile.Microchip;
+                profile.CurrentDisease = request.CurrentDisease ?? profile.CurrentDisease;
+                profile.CurrentMedication = request.CurrentMedication ?? profile.CurrentMedication;
+                profile.PastDisease = request.PastDisease ?? profile.PastDisease;
+                profile.ExternalDeworming = request.ExternalDeworming ?? profile.ExternalDeworming;
+                profile.InternalDeworming = request.InternalDeworming ?? profile.InternalDeworming;
+                profile.CurrentTreatment = request.CurrentTreatment ?? profile.CurrentTreatment;
+                profile.MultivalentVaccine = request.MultivalentVaccine ?? profile.MultivalentVaccine;
+                profile.RabiesVaccine = request.RabiesVaccine ?? profile.RabiesVaccine;
+                profile.FIVFeLVTest = request.FIVFeLVTest ?? profile.FIVFeLVTest;
+                profile.CoronavirusVaccine = request.CoronavirusVaccine ?? profile.CoronavirusVaccine;
+                profile.GiardiaTest = request.GiardiaTest ?? profile.GiardiaTest;
+                profile.EarMiteTreatment = request.EarMiteTreatment ?? profile.EarMiteTreatment;
+                profile.IntakeNotes = request.IntakeNotes ?? profile.IntakeNotes;
+                profile.AdditionalMedicalInfo = request.AdditionalMedicalInfo ?? profile.AdditionalMedicalInfo;
+                profile.AdditionalInfo = request.AdditionalInfo ?? profile.AdditionalInfo;
+                profile.MedicalAppointments = request.MedicalAppointments ?? profile.MedicalAppointments;
+                profile.RefillReminders = request.RefillReminders ?? profile.RefillReminders;
+                profile.UsefulLinks = request.UsefulLinks;
 
                 await animalProfileRepository.SaveChangesAsync(cancellationToken);
 
