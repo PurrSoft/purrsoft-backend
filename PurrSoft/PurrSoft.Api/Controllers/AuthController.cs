@@ -47,7 +47,7 @@ public class AuthController : BaseController
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> ChangePassword(UserChangePasswordCommand userChangePasswordCommand)
     {
-        CommandResponse commandResponse = await Mediator.Send(userChangePasswordCommand);
+        CommandResponse commandResponse = await Mediator.Send(userChangePasswordCommand, new CancellationToken());
         return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
     }
 
