@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Mvc;
 using PurrSoft.Api.Controllers.Base;
 using PurrSoft.Application.Commands.AnimalCommands;
@@ -52,7 +51,7 @@ public class AnimalController : BaseController
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> CreateAnimalAsync(CreateAnimalCommand animalCreateCommand)
     {
-        CommandResponse commandResponse = await Mediator.Send(animalCreateCommand);
+        CommandResponse commandResponse = await Mediator.Send(animalCreateCommand, new CancellationToken());
 
         return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
     }
@@ -63,7 +62,7 @@ public class AnimalController : BaseController
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> UpdateAnimalAsync(UpdateAnimalCommand animalUpdateCommand)
     {
-        CommandResponse commandResponse = await Mediator.Send(animalUpdateCommand);
+        CommandResponse commandResponse = await Mediator.Send(animalUpdateCommand, new CancellationToken());
 
         return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
     }
