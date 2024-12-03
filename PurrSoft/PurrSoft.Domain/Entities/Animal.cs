@@ -9,9 +9,9 @@ public class Animal
 	public string? Name { get; set; }
 	public int YearOfBirth { get; set; }
 	public string? Gender { get; set; }
-	public Boolean Sterilized { get; set; }
+	public bool Sterilized { get; set; }
 	public string? ImageUrl { get; set; }
-	public IList<AnimalFosterMap> FosteredBy { get; set; }
+	public virtual IList<AnimalFosterMap> FosteredBy { get; set; }
 	public Animal()
 	{
 		FosteredBy = new List<AnimalFosterMap>();

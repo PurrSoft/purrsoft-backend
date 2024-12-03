@@ -8,8 +8,8 @@ public class AnimalFosterMap
 	public string? SupervisingComment { get; set; }
 
 	public Guid AnimalId { get; set; }
-	public Animal Animal { get; set; }
+	public virtual Animal Animal { get; set; }
 
 	public string FosterId { get; set; }
-	public Foster Foster { get; set; }
+	public virtual Foster Foster { get; set; }
 }

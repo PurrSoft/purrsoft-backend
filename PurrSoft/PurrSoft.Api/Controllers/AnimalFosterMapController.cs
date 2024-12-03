@@ -17,7 +17,7 @@ public class AnimalFosterMapController : BaseController
 {
 	[HttpGet()]
 	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Foster")]
-	[ProducesResponseType(typeof(CollectionResponse<AnimalFosterMapDto>), (int)HttpStatusCode.OK)]
+	[ProducesResponseType(typeof(CollectionResponse<AnimalFosterMapOverview>), (int)HttpStatusCode.OK)]
 	public async Task<CollectionResponse<AnimalFosterMapOverview>> GetAnimalFosterMaps([FromQuery] GetFilteredAnimalFosterMapsQueries query)
 	{
 		return await Mediator.Send(query, new CancellationToken());
@@ -26,7 +26,7 @@ public class AnimalFosterMapController : BaseController
 	[HttpGet("{id}")]
 	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Foster")]
 	[ProducesResponseType(typeof(AnimalFosterMapDto), (int)HttpStatusCode.OK)]
-	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
+	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
 	[ProducesResponseType((int)HttpStatusCode.NotFound)]
 	public async Task<IActionResult> GetAnimalFosterMapById(string id)
 	{
@@ -50,7 +50,7 @@ public class AnimalFosterMapController : BaseController
 	[HttpPost()]
 	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Foster")]
 	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
-	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
+	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
 	public async Task<IActionResult> AddAnimalFosterMap([FromBody] AddAnimalToFosterCommand addAnimalToFosterCommand)
 	{
 		try

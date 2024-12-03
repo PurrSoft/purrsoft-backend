@@ -4,16 +4,6 @@ using PurrSoft.Application.QueryOverviews;
 
 namespace PurrSoft.Application.Queries.AnimalFosterMapQueries;
 
-public class GetAnimalFosterMapsByFosterId : BaseRequest<CollectionResponse<AnimalFosterMapDto>>
-{
-	public string FosterId { get; set; }
-}
-
-public class GetAnimalFosterMapsByAnimalId : BaseRequest<CollectionResponse<AnimalFosterMapDto>>
-{
-	public string AnimalId { get; set; }
-}
-
 public class GetAnimalFosterMapById : BaseRequest<AnimalFosterMapDto>
 {
 	public string Id { get; set; }
