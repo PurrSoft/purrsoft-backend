@@ -12,5 +12,5 @@ public static class ServiceBuilderExtensions
         services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
         // and user repo
         services.AddTransient(typeof(IUserRepository), typeof(UserRepository));
-    }
+	}
 }

@@ -18,10 +18,10 @@ public class Foster
 	public DateTime CreatedAt { get; set; }
 	public DateTime UpdatedAt { get; set; }
 	public virtual ApplicationUser User { get; set; }
-	//public virtual ICollection<Animal> FosteredAnimals { get; set; }
+	public virtual IList<AnimalFosterMap> FosteredAnimals { get; set; }
 
 	public Foster()
 	{
-		//FosteredAnimals = new List<Animal>();
+		FosteredAnimals = new List<AnimalFosterMap>();
 	}
 }
