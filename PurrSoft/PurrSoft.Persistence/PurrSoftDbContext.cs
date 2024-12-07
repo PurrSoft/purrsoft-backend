@@ -13,8 +13,9 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
     public DbSet<Foster> Fosters { get; set; }
     public DbSet<Animal> Animals { get; set; }
     public DbSet<Volunteer> Volunteers { get; set; }
+	public DbSet<Shift> Shifts { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		base.OnModelCreating(modelBuilder);
 		ConfigureUser(modelBuilder);
@@ -22,7 +23,8 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 		//ConfigureUserRole(modelBuilder);
 		ConfigureFosters(modelBuilder);
         ConfigureVolunteers(modelBuilder);
-        modelBuilder.SeederForRoles();
+		ConfigureShifts(modelBuilder);
+		modelBuilder.SeederForRoles();
 	}
 
 	private static void ConfigureUser(ModelBuilder builder)
@@ -59,4 +61,14 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
     }
+
+	private static void ConfigureShifts(ModelBuilder builder)
+	{
+		builder.Entity<Shift>().HasKey(s => s.Id);
+		builder.Entity<Shift>()
+			.HasOne(s => s.Volunteer)
+			.WithMany(v => v.Shifts)
+			.HasForeignKey(s => s.VolunteerId)
+			.OnDelete(DeleteBehavior.Restrict);
+	}
 }
