@@ -11,6 +11,8 @@ namespace PurrSoft.Application.Commands.AnimalFosterMapCommands;
 
 public class AnimalFosterMapCommandHandler(
 	IRepository<AnimalFosterMap> _animalFosterMapRepository,
+	IRepository<Animal> _animalRepository,
+	IRepository<Foster> _fosterRepository,
 	ILogRepository<AnimalFosterMapCommandHandler> _logRepository,
 	IRepository<ApplicationUser> _userRepository,
 	ICurrentUserService _currentService
@@ -23,6 +25,18 @@ public class AnimalFosterMapCommandHandler(
 	{
 		try
 		{
+			var animalExists = await isExistingAnimal(_animalRepository, request.AnimalFosterMapDto.AnimalId, cancellationToken);
+			if (!animalExists)
+			{
+				return CommandResponse.Failed($"Animal with ID {request.AnimalFosterMapDto.AnimalId} not found.");
+			}
+
+			var fosterExists = await isExistingFoster(_fosterRepository, request.AnimalFosterMapDto.FosterId, cancellationToken);
+			if (!fosterExists)
+			{
+				return CommandResponse.Failed($"Foster with ID {request.AnimalFosterMapDto.FosterId} not found.");
+			}
+
 			AnimalFosterMap animalFosterMap = new AnimalFosterMap
 			{
 				AnimalId = request.AnimalFosterMapDto.AnimalId,
@@ -37,6 +51,11 @@ public class AnimalFosterMapCommandHandler(
 			await _animalFosterMapRepository.SaveChangesAsync(cancellationToken);
 			var resp = CommandResponse.Ok();
 			return CommandResponse.Ok();
+		}
+		catch (DbUpdateException ex)
+		{
+			_logRepository.LogException(LogLevel.Error, ex);
+			return CommandResponse.Failed("An error occurred while saving the data. Ensure the IDs are valid.");
 		}
 		catch (Exception ex)
 		{
@@ -70,15 +89,28 @@ public class AnimalFosterMapCommandHandler(
 
 		try
 		{
+			bool animalExists = await isExistingAnimal(_animalRepository, request.AnimalFosterMapDto.AnimalId, cancellationToken); if (!animalExists)
+			{
+				return CommandResponse.Failed($"Animal with ID {request.AnimalFosterMapDto.AnimalId} not found.");
+			}
+
+			bool fosterExists = await isExistingFoster(_fosterRepository, request.AnimalFosterMapDto.FosterId, cancellationToken);
+			if (!fosterExists)
+			{
+				return CommandResponse.Failed($"Foster with ID {request.AnimalFosterMapDto.FosterId} not found.");
+			}
+
 			AnimalFosterMap? animalFosterMap =
-				_animalFosterMapRepository.Query(x => x.Id == request.AnimalFosterMapDto.Id
-				&& x.AnimalId == request.AnimalFosterMapDto.AnimalId
-				&& x.FosterId == request.AnimalFosterMapDto.FosterId).FirstOrDefault();
+				_animalFosterMapRepository
+					.Query(x => x.Id == request.AnimalFosterMapDto.Id)
+					.FirstOrDefault();
 			if (animalFosterMap == null)
 			{
 				return CommandResponse.Failed("Animal is not assigned to this foster.");
 			}
 
+			animalFosterMap.AnimalId = request.AnimalFosterMapDto.AnimalId;
+			animalFosterMap.FosterId = request.AnimalFosterMapDto.FosterId;
 			animalFosterMap.StartFosteringDate = DateTime.SpecifyKind(request.AnimalFosterMapDto.StartFosteringDate, DateTimeKind.Utc);
 			if (request.AnimalFosterMapDto.EndFosteringDate is not null)
 			{
@@ -89,11 +121,26 @@ public class AnimalFosterMapCommandHandler(
 			await _animalFosterMapRepository.SaveChangesAsync(cancellationToken);
 			return CommandResponse.Ok();
 		}
+		catch (DbUpdateException ex)
+		{
+			_logRepository.LogException(LogLevel.Error, ex);
+			return CommandResponse.Failed("An error occurred while saving the data. Ensure the IDs are valid.");
+		}
 		catch (Exception ex)
 		{
 			_logRepository.LogException(LogLevel.Error, ex);
 			throw;
 		}
+	}
+
+	private static async Task<bool> isExistingAnimal(IRepository<Animal> _animalRepository, Guid id, CancellationToken cancellationToken)
+	{
+		return await _animalRepository.Query(x => x.Id == id).AnyAsync(cancellationToken);
+	}
+
+	private static async Task<bool> isExistingFoster(IRepository<Foster> _fosterRepository, string id, CancellationToken cancellationToken)
+	{
+		return await _fosterRepository.Query(x => x.UserId == id).AnyAsync(cancellationToken);
 	}
 
 	public async Task<CommandResponse> Handle(RemoveAnimalFromFosterCommand request, CancellationToken cancellationToken)
