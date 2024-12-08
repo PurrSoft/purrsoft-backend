@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Newtonsoft.Json;
+using PurrSoft.Domain.Entities.JsonConvertor;
 
 namespace PurrSoft.Domain.Entities;
 
@@ -29,6 +30,8 @@ public class AnimalProfile
     public string? AdditionalInfo { get; set; } // General additional notes
     public string? MedicalAppointments { get; set; } // Upcoming or past medical appointments
     public string? RefillReminders { get; set; } // Medication refill reminders or notes
-    [Column(TypeName = "jsonb")] 
-    public List<string>? UsefulLinks { get; set; } = new List<string>(); // List of helpful links for the profile
+    
+    [JsonProperty("UsefulLinks")]
+    [JsonConverter(typeof(SingleOrArrayJsonConverter<string>))]
+    public List<string>? UsefulLinks { get; set; } = new(); // Helpful links related to the profile
 }
