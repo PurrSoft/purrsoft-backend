@@ -13,60 +13,74 @@ namespace PurrSoft.Api.Controllers;
 [ApiController]
 public class AuthController : BaseController
 {
-    public AuthController()
-    {
-    }
+	public AuthController()
+	{
+	}
 
-    [AllowAnonymous]
-    [HttpPost("Register")]
-    [ProducesResponseType((int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
-    public async Task<IActionResult> Register(UserRegistrationCommand userRegistrationCommand)
-    {
-        CommandResponse commandResponse = await Mediator.Send(userRegistrationCommand);
-        return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
-    }
-
-    [HttpPost("Login")]
-    [ProducesResponseType(typeof(CommandResponse<UserLoginCommandResponse>), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
-    public async Task<IActionResult> Login(UserLoginCommand userLoginCommand)
-    {
-        CommandResponse<UserLoginCommandResponse> commandResponse = await Mediator.Send(userLoginCommand);
-
-		if (commandResponse.IsValid)
+	[AllowAnonymous]
+	[HttpPost("Register")]
+	[ProducesResponseType((int)HttpStatusCode.OK)]
+	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
+	public async Task<IActionResult> Register(UserRegistrationCommand userRegistrationCommand)
+	{
+		try
 		{
-			SetTokenCookie(commandResponse.Result.Token);
-			return Ok(commandResponse);
+			CommandResponse commandResponse = await Mediator.Send(userRegistrationCommand);
+			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
 		}
-		return BadRequest(commandResponse);
+		catch (FluentValidation.ValidationException ex)
+		{
+			return BadRequest(new CommandResponse(ex.Errors.ToList()));
+
+		}
+	}
+
+	[HttpPost("Login")]
+	[ProducesResponseType(typeof(CommandResponse<UserLoginCommandResponse>), (int)HttpStatusCode.OK)]
+	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
+	public async Task<IActionResult> Login(UserLoginCommand userLoginCommand)
+	{
+		try
+		{
+			CommandResponse<UserLoginCommandResponse> commandResponse = await Mediator.Send(userLoginCommand);
+			if (commandResponse.IsValid)
+			{
+				SetTokenCookie(commandResponse.Result.Token);
+				return Ok(commandResponse);
+			}
+			return BadRequest(commandResponse);
+		}
+		catch (FluentValidation.ValidationException ex)
+		{
+			return BadRequest(new CommandResponse(ex.Errors.ToList()));
+		}
 	}
 
 
-    private void SetTokenCookie(string token)
-    {
-        CookieOptions cookieOptions = new CookieOptions
-        {
-            HttpOnly = false,
-            Secure = false,
-            SameSite = SameSiteMode.Lax,
-            Expires = DateTime.UtcNow.AddHours(1)
-        };
-        Response.Cookies.Append("auth_token", token, cookieOptions);
-    }
+	private void SetTokenCookie(string token)
+	{
+		CookieOptions cookieOptions = new CookieOptions
+		{
+			HttpOnly = false,
+			Secure = false,
+			SameSite = SameSiteMode.Lax,
+			Expires = DateTime.UtcNow.AddHours(1)
+		};
+		Response.Cookies.Append("auth_token", token, cookieOptions);
+	}
 
-    [HttpPost("Logout")]
-    public async Task<IActionResult> Logout()
-    {
-        Response.Cookies.Append("auth_token", "", new CookieOptions
-        {
-            Expires = DateTime.UtcNow.AddDays(-1),
-            HttpOnly = true,
-            Secure = false,
-            SameSite = SameSiteMode.Lax
-        });
+	[HttpPost("Logout")]
+	public async Task<IActionResult> Logout()
+	{
+		Response.Cookies.Append("auth_token", "", new CookieOptions
+		{
+			Expires = DateTime.UtcNow.AddDays(-1),
+			HttpOnly = true,
+			Secure = false,
+			SameSite = SameSiteMode.Lax
+		});
 
-        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        return Ok(new { message = "Logout successful" });
-    }
+		await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+		return Ok(new { message = "Logout successful" });
+	}
 }
