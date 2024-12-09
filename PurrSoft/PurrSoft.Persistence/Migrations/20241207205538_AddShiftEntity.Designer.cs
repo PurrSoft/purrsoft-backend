@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PurrSoft.Persistence;
@@ -11,9 +12,11 @@ using PurrSoft.Persistence;
 namespace PurrSoft.Persistence.Migrations
 {
     [DbContext(typeof(PurrSoftDbContext))]
-    partial class PurrSoftDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241207205538_AddShiftEntity")]
+    partial class AddShiftEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -140,37 +143,6 @@ namespace PurrSoft.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Animals");
-                });
-
-            modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalFosterMap", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AnimalId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("EndFosteringDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("FosterId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("StartFosteringDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("SupervisingComment")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnimalId");
-
-                    b.HasIndex("FosterId");
-
-                    b.ToTable("AnimalFosters");
                 });
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.ApplicationLog", b =>
@@ -488,25 +460,6 @@ namespace PurrSoft.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalFosterMap", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.Animal", "Animal")
-                        .WithMany("FosteredBy")
-                        .HasForeignKey("AnimalId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("PurrSoft.Domain.Entities.Foster", "Foster")
-                        .WithMany("FosteredAnimals")
-                        .HasForeignKey("FosterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Animal");
-
-                    b.Navigation("Foster");
-                });
-
             modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
                 {
                     b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
@@ -558,19 +511,9 @@ namespace PurrSoft.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Animal", b =>
-                {
-                    b.Navigation("FosteredBy");
-                });
-
             modelBuilder.Entity("PurrSoft.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
-                {
-                    b.Navigation("FosteredAnimals");
                 });
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.Role", b =>
