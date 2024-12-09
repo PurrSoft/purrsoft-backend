@@ -56,9 +56,16 @@ public class FosterController : BaseController
 	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
 	public async Task<IActionResult> CreateFoster([FromBody] CreateFosterCommand createFosterCommand)
 	{
-		CommandResponse commandResponse = await Mediator.Send(createFosterCommand, new CancellationToken());
+		try
+		{
+			CommandResponse commandResponse = await Mediator.Send(createFosterCommand, new CancellationToken());
 
-		return commandResponse.IsValid ? Ok(commandResponse) : BadRequest();
+			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
+		}
+		catch (FluentValidation.ValidationException ex)
+		{
+			return BadRequest(new CommandResponse(ex.Errors.ToList()));
+		}
 	}
 
 	[HttpPut()]
@@ -80,11 +87,15 @@ public class FosterController : BaseController
 			{
 				return Ok(commandResponse);
 			}
-			return BadRequest();
+			return BadRequest(commandResponse);
 		}
 		catch (UnauthorizedAccessException)
 		{
 			return Forbid();
+		}
+		catch (FluentValidation.ValidationException ex)
+		{
+			return BadRequest(new CommandResponse(ex.Errors.ToList()));
 		}
 	}
 
@@ -94,8 +105,15 @@ public class FosterController : BaseController
 	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
 	public async Task<IActionResult> DeleteFoster(string id)
 	{
-		CommandResponse commandResponse = await Mediator.Send(new DeleteFosterCommand { Id = id }, new CancellationToken());
+		try
+		{
+			CommandResponse commandResponse = await Mediator.Send(new DeleteFosterCommand { Id = id }, new CancellationToken());
 
-		return commandResponse.IsValid ? Ok(commandResponse) : BadRequest();
+			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
+		}
+		catch (FluentValidation.ValidationException ex)
+		{
+			return BadRequest(new CommandResponse(ex.Errors.ToList()));
+		}
 	}
 }

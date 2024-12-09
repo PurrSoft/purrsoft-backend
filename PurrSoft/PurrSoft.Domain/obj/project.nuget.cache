@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "LCyY2MtozML0jYUEPISfQfcGRYFRYTZL+9MXQVD5JexI0GqtqHvclWUAkaI1RmC0DAtuS5MTXGccQvwOaxDwwg==",
+  "dgSpecHash": "Ek0vazeMdpwq4gKkkKem/1KZvdD3Xlx+PISrG3FkTthCP7Vig26rWMnX+kd1+2o58B4EQXeeNYHY9Qe4N0th1Q==",
   "success": true,
   "projectFilePath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\PurrSoft.Domain.csproj",
   "expectedPackageFiles": [
@@ -14,7 +14,8 @@
     "C:\\Users\\Dominic\\.nuget\\packages\\microsoft.extensions.logging\\8.0.1\\microsoft.extensions.logging.8.0.1.nupkg.sha512",
     "C:\\Users\\Dominic\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.2\\microsoft.extensions.logging.abstractions.8.0.2.nupkg.sha512",
     "C:\\Users\\Dominic\\.nuget\\packages\\microsoft.extensions.options\\8.0.2\\microsoft.extensions.options.8.0.2.nupkg.sha512",
-    "C:\\Users\\Dominic\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512"
+    "C:\\Users\\Dominic\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "C:\\Users\\Dominic\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],
   "logs": []
 }

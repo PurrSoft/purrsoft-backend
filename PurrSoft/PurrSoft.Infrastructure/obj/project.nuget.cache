@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "+eKkM+reNk5UBQuUxG3TvR0zdreMCYajFBH2LlUmyccW6qg43aM6qBvYctI/8lSgErVb2HO/X3VeQC81AeHY1Q==",
+  "dgSpecHash": "Ye7IlouyWrQ0SX96fu0pXxYUw8ecXHlQ+a7rI8U088N0nywj3Mbi+Q8I77ynmP4zccj7tia3fDT/xuIvGotP8A==",
   "success": true,
   "projectFilePath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Infrastructure\\PurrSoft.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -32,6 +32,7 @@
     "C:\\Users\\Dominic\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.1.2\\microsoft.identitymodel.jsonwebtokens.8.1.2.nupkg.sha512",
     "C:\\Users\\Dominic\\.nuget\\packages\\microsoft.identitymodel.logging\\8.1.2\\microsoft.identitymodel.logging.8.1.2.nupkg.sha512",
     "C:\\Users\\Dominic\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.1.2\\microsoft.identitymodel.tokens.8.1.2.nupkg.sha512",
+    "C:\\Users\\Dominic\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\Dominic\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.1.2\\system.identitymodel.tokens.jwt.8.1.2.nupkg.sha512",
     "C:\\Users\\Dominic\\.nuget\\packages\\system.text.encodings.web\\4.5.0\\system.text.encodings.web.4.5.0.nupkg.sha512"
   ],

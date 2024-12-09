@@ -49,9 +49,16 @@ public class AnimalController : BaseController
 	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
 	public async Task<IActionResult> CreateAnimalAsync(AnimalCreateCommand animalCreateCommand)
 	{
-		CommandResponse<string> commandResponse = await Mediator.Send(animalCreateCommand);
+		try
+		{
+			CommandResponse<string> commandResponse = await Mediator.Send(animalCreateCommand);
 
-		return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
+			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
+		}
+		catch (FluentValidation.ValidationException ex)
+		{
+			return BadRequest(new CommandResponse(ex.Errors.ToList()));
+		}
 	}
 
 	[HttpPut("UpdateAnimal")]
@@ -60,9 +67,16 @@ public class AnimalController : BaseController
 	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
 	public async Task<IActionResult> UpdateAnimalAsync(AnimalUpdateCommand animalUpdateCommand)
 	{
-		CommandResponse commandResponse = await Mediator.Send(animalUpdateCommand);
+		try
+		{
+			CommandResponse commandResponse = await Mediator.Send(animalUpdateCommand);
 
-		return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
+			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
+		}
+		catch (FluentValidation.ValidationException ex)
+		{
+			return BadRequest(new CommandResponse(ex.Errors.ToList()));
+		}
 	}
 
 	[HttpDelete("DeleteAnimalById")]
@@ -71,8 +85,15 @@ public class AnimalController : BaseController
 	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
 	public async Task<IActionResult> DeleteAnimalAsync(AnimalDeleteCommand animalDeleteCommand)
 	{
-		CommandResponse commandResponse = await Mediator.Send(animalDeleteCommand);
+		try
+		{
+			CommandResponse commandResponse = await Mediator.Send(animalDeleteCommand);
 
-		return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
+			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
+		}
+		catch (FluentValidation.ValidationException ex)
+		{
+			return BadRequest(new CommandResponse(ex.Errors.ToList()));
+		}
 	}
 }

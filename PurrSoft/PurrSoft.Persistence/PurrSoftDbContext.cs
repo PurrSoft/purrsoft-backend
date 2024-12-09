@@ -14,6 +14,7 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 	public DbSet<Animal> Animals { get; set; }
 	public DbSet<Volunteer> Volunteers { get; set; }
 	public DbSet<AnimalFosterMap> AnimalFosters { get; set; }
+	public DbSet<AnimalProfile> AnimalProfiles { get; set; }
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		base.OnModelCreating(modelBuilder);
@@ -22,6 +23,7 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 		//ConfigureUserRole(modelBuilder);
 		ConfigureFosters(modelBuilder);
 		ConfigureVolunteers(modelBuilder);
+		ConfigureAnimalProfile(modelBuilder);
 		ConfigureFosterAnimals(modelBuilder);
 		modelBuilder.SeederForRoles();
 	}
@@ -77,5 +79,25 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 			.HasForeignKey(af => af.FosterId)
 			.IsRequired()
 			.OnDelete(DeleteBehavior.Restrict);
+	}
+	private static void ConfigureAnimalProfile(ModelBuilder builder)
+	{
+		// Configure AnimalProfile primary key
+		builder.Entity<AnimalProfile>()
+			.HasKey(ap => ap.Id);
+
+		builder.Entity<AnimalProfile>(entity =>
+		{
+			// Configure JSON column for UsefulLinks
+			entity.Property(ap => ap.UsefulLinks)
+				.HasColumnType("jsonb");
+
+			// Configure one-to-one relationship between Animal and AnimalProfile
+			entity.HasOne(ap => ap.Animal)
+				.WithOne(a => a.AnimalProfile)
+				.HasForeignKey<AnimalProfile>(ap => ap.AnimalId)
+				.OnDelete(DeleteBehavior.Cascade);
+		});
+
 	}
 }
