@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using PurrSoft.Api.Controllers.Base;
 using PurrSoft.Application.Commands.ShiftCommands;
 using PurrSoft.Application.Common;
+using PurrSoft.Application.Models;
+using PurrSoft.Application.Queries.ShiftQueries;
+using PurrSoft.Application.QueryOverviews;
 using System.Net;
 
 namespace PurrSoft.Api.Controllers;
@@ -12,6 +15,32 @@ namespace PurrSoft.Api.Controllers;
 [ApiController]
 public class ShiftController : BaseController
 {
+	[HttpGet()]
+	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer")]
+	[ProducesResponseType(typeof(CollectionResponse<ShiftOverview>), (int)HttpStatusCode.OK)]
+	public async Task<CollectionResponse<ShiftOverview>> GetShifts([FromQuery] GetFilteredShiftsQueries getFilteredShiftsQueries)
+	{
+		return await Mediator.Send(getFilteredShiftsQueries, new CancellationToken());
+	}
+
+	[HttpGet("{id}")]
+	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer")]
+	[ProducesResponseType(typeof(ShiftDto), (int)HttpStatusCode.OK)]
+	[ProducesResponseType((int)HttpStatusCode.NotFound)]
+	public async Task<IActionResult> GetShiftById([FromRoute] Guid Id)
+	{
+		try
+		{
+			ShiftDto? shiftDto = await Mediator.Send(new GetShiftQuery { Id = Id }, new CancellationToken());
+
+			return shiftDto != null ? Ok(shiftDto) : NotFound();
+		}
+		catch (ValidationException ex)
+		{
+			return BadRequest(new CommandResponse(ex.Errors.ToList()));
+		}
+	}
+
 	[HttpPost()]
 	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer")]
 	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
@@ -22,7 +51,7 @@ public class ShiftController : BaseController
 		{
 			CommandResponse commandResponse = await Mediator.Send(createShiftCommand, new CancellationToken());
 
-			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest();
+			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
 		}
 		catch (ValidationException ex)
 		{
@@ -44,7 +73,7 @@ public class ShiftController : BaseController
 			{
 				return NotFound();
 			}
-			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest();
+			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
 		}
 		catch (ValidationException ex)
 		{
@@ -56,13 +85,13 @@ public class ShiftController : BaseController
 	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer")]
 	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
 	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
-	public async Task<IActionResult> DeleteShift(string id)
+	public async Task<IActionResult> DeleteShift([FromRoute] string id)
 	{
 		try
 		{
 			CommandResponse commandResponse = await Mediator.Send(new DeleteShiftCommand { Id = id }, new CancellationToken());
 
-			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest();
+			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
 		}
 		catch (ValidationException ex)
 		{

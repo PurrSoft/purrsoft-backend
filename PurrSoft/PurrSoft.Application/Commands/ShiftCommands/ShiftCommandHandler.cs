@@ -11,9 +11,8 @@ namespace PurrSoft.Application.Commands.ShiftCommands;
 
 public class ShiftCommandHandler(
 	IRepository<Shift> _shiftRepository,
-	ILogRepository<ShiftCommandHandler> logRepository,
-	IRepository<ApplicationUser> _userRepository,
-	ICurrentUserService _currentUserService) :
+	IRepository<Volunteer> _volunteerRepository,
+	ILogRepository<ShiftCommandHandler> logRepository) :
 	IRequestHandler<CreateShiftCommand, CommandResponse>,
 	IRequestHandler<UpdateShiftCommand, CommandResponse>,
 	IRequestHandler<DeleteShiftCommand, CommandResponse>
@@ -22,6 +21,16 @@ public class ShiftCommandHandler(
 	{
 		try
 		{
+			if (request.ShiftDto.VolunteerId != null)
+			{
+				Volunteer? volunteer = await _volunteerRepository.Query(v => v.UserId == request.ShiftDto.VolunteerId)
+					.FirstOrDefaultAsync(cancellationToken);
+				if (volunteer == null)
+				{
+					return CommandResponse.Failed($"Volunteer with ID {request.ShiftDto.VolunteerId} not found.");
+				}
+			}
+
 			Shift shift = new()
 			{
 				Start = DateTime.SpecifyKind(request.ShiftDto.Start, DateTimeKind.Utc),
@@ -51,6 +60,16 @@ public class ShiftCommandHandler(
 			if (shift == null)
 			{
 				return CommandResponse.Failed("Shift not found.");
+			}
+
+			if (request.ShiftDto.VolunteerId != null)
+			{
+				Volunteer? volunteer = await _volunteerRepository.Query(v => v.UserId == request.ShiftDto.VolunteerId)
+					.FirstOrDefaultAsync(cancellationToken);
+				if (volunteer == null)
+				{
+					return CommandResponse.Failed($"Volunteer with ID {request.ShiftDto.VolunteerId} not found.");
+				}
 			}
 
 			shift.Start = request.ShiftDto.Start;
