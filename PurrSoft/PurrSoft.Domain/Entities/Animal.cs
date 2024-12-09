@@ -11,6 +11,7 @@ public class Animal
 	public string? Gender { get; set; }
 	public bool Sterilized { get; set; }
 	public string? ImageUrl { get; set; }
+	public AnimalProfile? AnimalProfile { get; set; }
 	public virtual IList<AnimalFosterMap> FosteredBy { get; set; }
 	public Animal()
 	{
