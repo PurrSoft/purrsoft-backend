@@ -50,47 +50,102 @@ Thumbs.db
 
 #logs
 Logs/
-
-# C# build folders
-[Bb]in/
+#build
 [Oo]bj/
-
-# Build results
+[Bb]in/
+**/obj/
+#generated files
+project.lock.json
+.vs/
+*.vspscc
+*.vssscc
+#Build results
 [Dd]ebug/
 [Rr]elease/
 x64/
-
-# Project lock and package files
-project.lock.json
-project.nuget.cache
-project.packagespec.json
-*.csproj.nuget.dgspec.json
-*.csproj.nuget.g.props
-*.csproj.nuget.g.targets
-*.csproj.user
-project.assets.json
-
-# MSBuild editorconfig and assembly information files
-**/GeneratedMSBuildEditorConfig.editorconfig
-*.AssemblyInfo.cs
-*.AssemblyInfoInputs.cache
-*.GlobalUsings.g.cs
-
-# Roslyn cache
+*_i.c
+*_p.c
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.log
+*.vspscc
+*.vssscc
+.builds
+#Roslyn cache
 *.ide/
-
-# NuGet Packages
+#NuGet Packages
 *.nupkg
-
-# ReSharper
+#ReSharper
 _ReSharper*/
 *.[Rr]e[Ss]harper
 *.DotSettings.user
-
-# JetBrains Rider
+#Jet Brains Rider
 .idea/
-
 # Visual Studio profiler
 *.psess
 *.vsp
-*.vspxPurrSoft/PurrSoft.Api/appsettings.json
+*.vspx
+/PurrSoft/PurrSoft.Application/obj/Debug/net8.0/PurrSoft.Application.AssemblyInfo.cs
+/PurrSoft/PurrSoft.Application/obj/Debug/net8.0/PurrSoft.Application.AssemblyInfoInputs.cache
+/PurrSoft/PurrSoft.Application/obj/Debug/net8.0/PurrSoft.Application.assets.cache
+/PurrSoft/PurrSoft.Application/obj/Debug/net8.0/PurrSoft.Application.GeneratedMSBuildEditorConfig.editorconfig
+/PurrSoft/PurrSoft.Application/obj/Debug/net8.0/PurrSoft.Application.GlobalUsings.g.cs
+/PurrSoft/PurrSoft.Application/obj/project.assets.json
+/PurrSoft/PurrSoft.Application/obj/project.nuget.cache
+/PurrSoft/PurrSoft.Application/obj/project.packagespec.json
+/PurrSoft/PurrSoft.Application/obj/PurrSoft.Application.csproj.nuget.dgspec.json
+/PurrSoft/PurrSoft.Application/obj/PurrSoft.Application.csproj.nuget.g.props
+/PurrSoft/PurrSoft.Application/obj/rider.project.restore.info
+/PurrSoft/PurrSoft.Common/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/PurrSoft/PurrSoft.Common/obj/Debug/net8.0/PurrSoft.Common.AssemblyInfo.cs
+/PurrSoft/PurrSoft.Common/obj/Debug/net8.0/PurrSoft.Common.AssemblyInfoInputs.cache
+/PurrSoft/PurrSoft.Common/obj/Debug/net8.0/PurrSoft.Common.assets.cache
+/PurrSoft/PurrSoft.Common/obj/Debug/net8.0/PurrSoft.Common.GeneratedMSBuildEditorConfig.editorconfig
+/PurrSoft/PurrSoft.Common/obj/Debug/net8.0/PurrSoft.Common.GlobalUsings.g.cs
+/PurrSoft/PurrSoft.Common/obj/project.assets.json
+/PurrSoft/PurrSoft.Common/obj/project.nuget.cache
+/PurrSoft/PurrSoft.Common/obj/project.packagespec.json
+/PurrSoft/PurrSoft.Common/obj/PurrSoft.Common.csproj.nuget.dgspec.json
+/PurrSoft/PurrSoft.Common/obj/PurrSoft.Common.csproj.nuget.g.props
+/PurrSoft/PurrSoft.Common/obj/rider.project.restore.info
+/PurrSoft/PurrSoft.Domain/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/PurrSoft/PurrSoft.Domain/obj/Debug/net8.0/PurrSoft.Domain.AssemblyInfo.cs
+/PurrSoft/PurrSoft.Domain/obj/Debug/net8.0/PurrSoft.Domain.AssemblyInfoInputs.cache
+/PurrSoft/PurrSoft.Domain/obj/Debug/net8.0/PurrSoft.Domain.assets.cache
+/PurrSoft/PurrSoft.Domain/obj/Debug/net8.0/PurrSoft.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/PurrSoft/PurrSoft.Domain/obj/Debug/net8.0/PurrSoft.Domain.GlobalUsings.g.cs
+/PurrSoft/PurrSoft.Domain/obj/project.assets.json
+/PurrSoft/PurrSoft.Domain/obj/project.nuget.cache
+/PurrSoft/PurrSoft.Domain/obj/project.packagespec.json
+/PurrSoft/PurrSoft.Domain/obj/PurrSoft.Domain.csproj.nuget.dgspec.json
+/PurrSoft/PurrSoft.Domain/obj/PurrSoft.Domain.csproj.nuget.g.props
+/PurrSoft/PurrSoft.Domain/obj/rider.project.restore.info
+/PurrSoft/PurrSoft.Infrastructure/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/PurrSoft/PurrSoft.Infrastructure/obj/Debug/net8.0/PurrSoft.Infrastructure.AssemblyInfo.cs
+/PurrSoft/PurrSoft.Infrastructure/obj/Debug/net8.0/PurrSoft.Infrastructure.AssemblyInfoInputs.cache
+/PurrSoft/PurrSoft.Infrastructure/obj/Debug/net8.0/PurrSoft.Infrastructure.assets.cache
+/PurrSoft/PurrSoft.Infrastructure/obj/Debug/net8.0/PurrSoft.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/PurrSoft/PurrSoft.Infrastructure/obj/Debug/net8.0/PurrSoft.Infrastructure.GlobalUsings.g.cs
+/PurrSoft/PurrSoft.Infrastructure/obj/project.assets.json
+/PurrSoft/PurrSoft.Infrastructure/obj/project.nuget.cache
+/PurrSoft/PurrSoft.Infrastructure/obj/project.packagespec.json
+/PurrSoft/PurrSoft.Infrastructure/obj/PurrSoft.Infrastructure.csproj.nuget.dgspec.json
+/PurrSoft/PurrSoft.Infrastructure/obj/PurrSoft.Infrastructure.csproj.nuget.g.props
+/PurrSoft/PurrSoft.Infrastructure/obj/rider.project.restore.info
+/PurrSoft/PurrSoft.Persistence/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/PurrSoft/PurrSoft.Persistence/obj/Debug/net8.0/PurrSoft.Persistence.AssemblyInfo.cs
+/PurrSoft/PurrSoft.Persistence/obj/Debug/net8.0/PurrSoft.Persistence.AssemblyInfoInputs.cache
+/PurrSoft/PurrSoft.Persistence/obj/Debug/net8.0/PurrSoft.Persistence.GeneratedMSBuildEditorConfig.editorconfig
+/PurrSoft/PurrSoft.Persistence/obj/Debug/net8.0/PurrSoft.Persistence.GlobalUsings.g.cs
+/PurrSoft/PurrSoft.Persistence/obj/project.packagespec.json

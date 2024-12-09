@@ -8,7 +8,7 @@ public abstract class BaseResponse
 
     public bool IsValid => !Errors.Any();
 
-    protected BaseResponse(params string[] errors)
+	protected BaseResponse(params string[] errors)
     {
         if (errors.Length != 0)
         {
