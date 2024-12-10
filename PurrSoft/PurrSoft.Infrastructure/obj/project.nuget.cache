@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "RBM+bj11CNw=",
+  "dgSpecHash": "mh4xpOVZyos=",
   "success": true,
   "projectFilePath": "C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Infrastructure\\PurrSoft.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -32,8 +32,16 @@
     "C:\\Users\\Deea\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\8.1.2\\microsoft.identitymodel.jsonwebtokens.8.1.2.nupkg.sha512",
     "C:\\Users\\Deea\\.nuget\\packages\\microsoft.identitymodel.logging\\8.1.2\\microsoft.identitymodel.logging.8.1.2.nupkg.sha512",
     "C:\\Users\\Deea\\.nuget\\packages\\microsoft.identitymodel.tokens\\8.1.2\\microsoft.identitymodel.tokens.8.1.2.nupkg.sha512",
+    "C:\\Users\\Deea\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\Deea\\.nuget\\packages\\system.identitymodel.tokens.jwt\\8.1.2\\system.identitymodel.tokens.jwt.8.1.2.nupkg.sha512",
     "C:\\Users\\Deea\\.nuget\\packages\\system.text.encodings.web\\4.5.0\\system.text.encodings.web.4.5.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Infrastructure\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }

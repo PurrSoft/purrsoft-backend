@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PurrSoft.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fea7648e9e7e936b997fd77fa4819d866d41e238")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+33b779b7f68f25eb8f0724c4719df63520b4b991")]
 [assembly: System.Reflection.AssemblyProductAttribute("PurrSoft.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PurrSoft.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

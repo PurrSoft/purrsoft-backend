@@ -4,5 +4,12 @@
   "success": true,
   "projectFilePath": "C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
   "expectedPackageFiles": [],
-  "logs": []
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problem reading the cache file C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
+    }
+  ]
 }
