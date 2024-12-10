@@ -11,7 +11,7 @@ public class AnimalCreateCommandValidator : AbstractValidator<CreateAnimalComman
         RuleFor(e => e.animalDto.YearOfBirth).NotNull().NotEmpty();
         RuleFor(e => e.animalDto.AnimalType).NotNull().NotEmpty();
         RuleFor(e => e.animalDto.Gender).NotNull().NotEmpty();
-        RuleFor(e => e.animalDto.Sterilized).NotNull().NotEmpty();
+        RuleFor(e => e.animalDto.Sterilized).NotNull();
         RuleFor(e => e.animalDto.ImageUrl).NotNull();
     }
 }
@@ -25,7 +25,7 @@ public class AnimalUpdateCommandValidator : AbstractValidator<UpdateAnimalComman
         RuleFor(e => e.animalDto.YearOfBirth).NotNull().NotEmpty();
         RuleFor(e => e.animalDto.AnimalType).NotNull().NotEmpty();
         RuleFor(e => e.animalDto.Gender).NotNull().NotEmpty();
-        RuleFor(e => e.animalDto.Sterilized).NotNull().NotEmpty();
+        RuleFor(e => e.animalDto.Sterilized).NotNull();
         RuleFor(e => e.animalDto.ImageUrl).NotNull();
     }
 }

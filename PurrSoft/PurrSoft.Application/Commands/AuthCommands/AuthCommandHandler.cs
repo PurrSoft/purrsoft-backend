@@ -108,6 +108,13 @@ public class AuthCommandHandler(
 
             bool passwordMatch = request.NewPassword == request.ConfirmPassword;
 
+            bool passwordContainsRequestedCharacters = userManager.PasswordValidators.All(v => v.ValidateAsync(userManager, applicationUser, request.NewPassword).Result.Succeeded);
+
+            if (!passwordContainsRequestedCharacters)
+            {
+                return CommandResponse.Failed<UserLoginCommandResponse>("Password does not meet the requirements!");
+            }
+
             if (!passwordValid)
             {
                 return CommandResponse.Failed<UserLoginCommandResponse>("Invalid current Password!");
