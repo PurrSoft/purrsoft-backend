@@ -5,7 +5,6 @@ namespace PurrSoft.Domain.Entities;
 
 public class AnimalProfile
 {
-    public Guid Id { get; set; } // Unique identifier for the animal profile
     public string? CurrentDisease { get; set; } // The current medical condition of the animal
     public string? CurrentMedication { get; set; } // Medication the animal is currently taking
     public string? PastDisease { get; set; } // Past medical conditions

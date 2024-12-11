@@ -34,7 +34,7 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
         // Command to update an existing AnimalProfile
         public class AnimalProfileUpdateCommand : BaseRequest<CommandResponse>
         {
-            public Guid Id { get; set; }  // Profile ID to update
+            
             public Guid AnimalId { get; set; }  // Animal ID to associate with this profile
             public string? Passport { get; set; } // Animal's health or identification document
             public string? Microchip { get; set; } // Unique microchip identifier for the animal

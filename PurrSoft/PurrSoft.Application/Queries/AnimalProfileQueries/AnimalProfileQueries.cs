@@ -17,7 +17,9 @@ namespace PurrSoft.Application.Queries.AnimalProfileQueries
     // Query to retrieve a single animal profile by its ID
     public class GetAnimalProfileByIdQuery : BaseRequest<CommandResponse<AnimalProfileDto>>
     {
-        public string Id { get; set; } // The ID of the animal profile to retrieve
+
+
+        public required string Id { get; set; } // The ID of the animal profile to retrieve
     }
 
     // Query to search for animal profiles using passport or microchip
