@@ -37,7 +37,7 @@ namespace PurrSoft.Application.Queries.AnimalProfileQueries
 
         public async Task<CommandResponse<AnimalProfileDto>> Handle(GetAnimalProfileByIdQuery request, CancellationToken cancellationToken)
         {
-            if (!Guid.TryParse(request.Id, out var profileId))
+            if (!Guid.TryParse(request.AnimalId, out var profileId))
             {
                 return CommandResponse.Failed<AnimalProfileDto>(new[] { "Invalid Animal profile ID format." });
             }

@@ -5,12 +5,13 @@ namespace PurrSoft.Domain.Entities;
 
 public class AnimalProfile
 {
+    public Guid AnimalId { get; set; } // Foreign key referencing the associated animal
     public string? CurrentDisease { get; set; } // The current medical condition of the animal
     public string? CurrentMedication { get; set; } // Medication the animal is currently taking
     public string? PastDisease { get; set; } // Past medical conditions
 
     public Animal? Animal { get; set; } // Associated animal entity
-    public Guid AnimalId { get; set; } // Foreign key referencing the associated animal
+    
 
     
     public string?  Passport { get; set; } // Animal's health or identification document

@@ -19,7 +19,7 @@ namespace PurrSoft.Application.Queries.AnimalProfileQueries
     {
 
 
-        public required string Id { get; set; } // The ID of the animal profile to retrieve
+        public required string AnimalId { get; set; } // The ID of the animal profile to retrieve
     }
 
     // Query to search for animal profiles using passport or microchip
