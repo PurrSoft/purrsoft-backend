@@ -37,14 +37,14 @@ namespace PurrSoft.Application.Queries.AnimalProfileQueries
 
         public async Task<CommandResponse<AnimalProfileDto>> Handle(GetAnimalProfileByIdQuery request, CancellationToken cancellationToken)
         {
-            if (!Guid.TryParse(request.Id, out var profileId))
+            if (!Guid.TryParse(request.AnimalId, out var profileId))
             {
                 return CommandResponse.Failed<AnimalProfileDto>(new[] { "Invalid Animal profile ID format." });
             }
 
             // Retrieve and map a single profile
             var profile = await animalProfileRepository
-                .Query(x => x.Id == profileId)
+                .Query(x => x.AnimalId == profileId)
                 .Select(ap => MapToDto(ap))
                 .FirstOrDefaultAsync(cancellationToken);
 
@@ -55,7 +55,7 @@ namespace PurrSoft.Application.Queries.AnimalProfileQueries
         
         private static AnimalProfileDto MapToDto(AnimalProfile ap) => new AnimalProfileDto
         {
-            Id = ap.Id,
+            AnimalId = ap.AnimalId,
             Passport = ap.Passport,
             Microchip = ap.Microchip,
             CurrentDisease = ap.CurrentDisease,
@@ -63,7 +63,8 @@ namespace PurrSoft.Application.Queries.AnimalProfileQueries
             PastDisease = ap.PastDisease,
             CurrentTreatment = ap.CurrentTreatment,
             RabiesVaccine = ap.RabiesVaccine,
-            MultivalentVaccine = ap.MultivalentVaccine
+            MultivalentVaccine = ap.MultivalentVaccine,
+            UsefulLinks = ap.UsefulLinks
         };
     }
 }
