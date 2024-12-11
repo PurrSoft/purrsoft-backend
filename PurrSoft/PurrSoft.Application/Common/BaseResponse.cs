@@ -6,11 +6,11 @@ public abstract class BaseResponse
 {
     public IDictionary<string, IList<string>> Errors { get; set; } = new Dictionary<string, IList<string>>();
 
-    public bool IsValid => Errors.Keys.Any();
+    public bool IsValid => !Errors.Any();
 
-    protected BaseResponse(params string[] errors)
+	protected BaseResponse(params string[] errors)
     {
-        if (!errors.Any())
+        if (errors.Length != 0)
         {
             SetErrors(errors);
         }

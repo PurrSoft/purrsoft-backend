@@ -15,9 +15,9 @@ namespace PurrSoft.Api.Controllers;
 [ApiController]
 public class AnimalController : BaseController
 {
-    public AnimalController()
-    {
-    }
+	public AnimalController()
+	{
+	}
 
     [HttpGet("")]
     [AllowAnonymous]
@@ -51,10 +51,15 @@ public class AnimalController : BaseController
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> CreateAnimalAsync(CreateAnimalCommand animalCreateCommand)
     {
+      try {
         CommandResponse commandResponse = await Mediator.Send(animalCreateCommand, new CancellationToken());
-
-        return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
-    }
+			  return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
+      }
+      catch (FluentValidation.ValidationException ex)
+      {
+        return BadRequest(new CommandResponse(ex.Errors.ToList()));
+      }
+	  } 
 
     [HttpPut()]
     [Authorize(AuthenticationSchemes = "Bearer")]
@@ -62,10 +67,15 @@ public class AnimalController : BaseController
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> UpdateAnimalAsync(UpdateAnimalCommand animalUpdateCommand)
     {
+      try {
         CommandResponse commandResponse = await Mediator.Send(animalUpdateCommand, new CancellationToken());
-
         return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
-    }
+      }
+      catch (FluentValidation.ValidationException ex)
+      {
+        return BadRequest(new CommandResponse(ex.Errors.ToList()));
+      }
+	  }
 
     [HttpDelete("{id}")]
     [Authorize(AuthenticationSchemes = "Bearer")]
@@ -73,8 +83,14 @@ public class AnimalController : BaseController
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> DeleteAnimalAsync(string id)
     {
+      try {
         CommandResponse commandResponse = await Mediator.Send(new DeleteAnimalCommand { Id = id}, new CancellationToken());
 
         return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
-    }
+      }
+      catch (FluentValidation.ValidationException ex)
+      {
+        return BadRequest(new CommandResponse(ex.Errors.ToList()));
+      }
+	  }
 }

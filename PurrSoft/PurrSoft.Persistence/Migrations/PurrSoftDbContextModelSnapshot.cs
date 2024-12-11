@@ -142,6 +142,37 @@ namespace PurrSoft.Persistence.Migrations
                     b.ToTable("Animals");
                 });
 
+            modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalFosterMap", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AnimalId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("EndFosteringDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FosterId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("StartFosteringDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("SupervisingComment")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnimalId");
+
+                    b.HasIndex("FosterId");
+
+                    b.ToTable("AnimalFosters");
+                });
+
             modelBuilder.Entity("PurrSoft.Domain.Entities.ApplicationLog", b =>
                 {
                     b.Property<Guid>("Id")
@@ -435,6 +466,25 @@ namespace PurrSoft.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalFosterMap", b =>
+                {
+                    b.HasOne("PurrSoft.Domain.Entities.Animal", "Animal")
+                        .WithMany("FosteredBy")
+                        .HasForeignKey("AnimalId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PurrSoft.Domain.Entities.Foster", "Foster")
+                        .WithMany("FosteredAnimals")
+                        .HasForeignKey("FosterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Animal");
+
+                    b.Navigation("Foster");
+                });
+
             modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
                 {
                     b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
@@ -476,9 +526,19 @@ namespace PurrSoft.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("PurrSoft.Domain.Entities.Animal", b =>
+                {
+                    b.Navigation("FosteredBy");
+                });
+
             modelBuilder.Entity("PurrSoft.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
+                {
+                    b.Navigation("FosteredAnimals");
                 });
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.Role", b =>
