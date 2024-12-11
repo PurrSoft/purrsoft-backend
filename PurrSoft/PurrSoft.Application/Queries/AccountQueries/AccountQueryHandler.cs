@@ -46,7 +46,7 @@ public class AccountQueryHandler
 
 		if (userWithRoles == null)
 		{
-			throw new ArgumentException("User not found");
+			return new CollectionResponse<UserRoleStatusDto>([], 0);
 		}
 
 		var volunteerStatus = volunteerRepository.Query(v => v.UserId == request.Id).FirstOrDefault()?.Status.ToString();
@@ -69,9 +69,10 @@ public class AccountQueryHandler
 	public async Task<CollectionResponse<UserRoleDatesDto>> Handle(GetRolesAndDatesByUserIdQuery request, CancellationToken cancellationToken)
 	{
 		var userWithRoles = await GetUserWithRoles(request.Id, cancellationToken);
+
 		if (userWithRoles == null)
 		{
-			throw new ArgumentException("User not found");
+			return new CollectionResponse<UserRoleDatesDto>([], 0);
 		}
 
 		var roleDates = await GetRoleDates(request.Id, cancellationToken);
