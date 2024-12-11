@@ -27,3 +27,11 @@ public class UserLoginCommandResponse
     public string Token { get; set; }
     public ApplicationUserDto User { get; set; }
 }
+
+public class UserChangePasswordCommand : BaseRequest<CommandResponse>
+{
+    public string Email { get; set; }
+    public string CurrentPassword { get; set; }
+    public string NewPassword { get; set; }
+    public string ConfirmPassword { get; set; }
+}

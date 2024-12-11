@@ -13,11 +13,11 @@ public class AnimalCommandHandler(
     IRepository<Animal> animalRepository,
     IConfiguration configuration,
     ILogRepository<AnimalCommandHandler> logRepository)
-    : IRequestHandler<AnimalCreateCommand, CommandResponse<string>>,
-      IRequestHandler<AnimalUpdateCommand, CommandResponse>,
-      IRequestHandler<AnimalDeleteCommand, CommandResponse>
+    : IRequestHandler<CreateAnimalCommand, CommandResponse>,
+      IRequestHandler<UpdateAnimalCommand, CommandResponse>,
+      IRequestHandler<DeleteAnimalCommand, CommandResponse>
 {
-    public async Task<CommandResponse<string>> Handle(AnimalCreateCommand request, CancellationToken cancellationToken)
+    public async Task<CommandResponse> Handle(CreateAnimalCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -25,12 +25,12 @@ public class AnimalCommandHandler(
             animalRepository.Add(new Animal
             {
                 Id = guid,
-                AnimalType = Enum.Parse<AnimalType>(request.AnimalType),
-                Name = request.Name,
-                YearOfBirth = request.YearOfBirth,
-                Gender = request.Gender,
-                Sterilized = request.Sterilized,
-                ImageUrl = request.ImageUrl
+                AnimalType = Enum.Parse<AnimalType>(request.animalDto.AnimalType),
+                Name = request.animalDto.Name,
+                YearOfBirth = request.animalDto.YearOfBirth,
+                Gender = request.animalDto.Gender,
+                Sterilized = request.animalDto.Sterilized,
+                ImageUrl = request.animalDto.ImageUrl
             });
 
             await animalRepository.SaveChangesAsync(cancellationToken);
@@ -44,20 +44,20 @@ public class AnimalCommandHandler(
         }
     }
 
-    public async Task<CommandResponse> Handle(AnimalUpdateCommand request, CancellationToken cancellationToken)
+    public async Task<CommandResponse> Handle(UpdateAnimalCommand request, CancellationToken cancellationToken)
     {
         try
         {
             var animal = await animalRepository
-                .Query(x => x.Id == Guid.Parse(request.Id))
+                .Query(x => x.Id == Guid.Parse(request.animalDto.Id))
                 .FirstOrDefaultAsync();
 
-            animal.Name = request.Name;
-            animal.AnimalType = Enum.Parse<AnimalType>(request.AnimalType);
-            animal.YearOfBirth = request.YearOfBirth;
-            animal.Gender = request.Gender;
-            animal.Sterilized = request.Sterilized;
-            animal.ImageUrl = request.ImageUrl;
+            animal.Name = request.animalDto.Name;
+            animal.AnimalType = Enum.Parse<AnimalType>(request.animalDto.AnimalType);
+            animal.YearOfBirth = request.animalDto.YearOfBirth;
+            animal.Gender = request.animalDto.Gender;
+            animal.Sterilized = request.animalDto.Sterilized;
+            animal.ImageUrl = request.animalDto.ImageUrl;
             
             await animalRepository.SaveChangesAsync(cancellationToken);
 
@@ -70,7 +70,7 @@ public class AnimalCommandHandler(
         }
     }
 
-    public async Task<CommandResponse> Handle(AnimalDeleteCommand request, CancellationToken cancellationToken)
+    public async Task<CommandResponse> Handle(DeleteAnimalCommand request, CancellationToken cancellationToken)
     {
         try
         {

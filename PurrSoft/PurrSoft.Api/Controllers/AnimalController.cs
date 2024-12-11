@@ -5,6 +5,7 @@ using PurrSoft.Application.Commands.AnimalCommands;
 using PurrSoft.Application.Common;
 using PurrSoft.Application.Models;
 using PurrSoft.Application.Queries.AnimalQueries;
+using PurrSoft.Application.QueryOverviews;
 using PurrSoft.Domain.Entities;
 using System.Net;
 
@@ -18,82 +19,78 @@ public class AnimalController : BaseController
 	{
 	}
 
-	[HttpGet("GetAnimals")]
-	[AllowAnonymous]
-	[ProducesResponseType(typeof(CollectionResponse<AnimalDto>), (int)HttpStatusCode.OK)]
-	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
-	public async Task<CollectionResponse<AnimalDto>> GetAnimalsAsync()
-	{
-		CollectionResponse<AnimalDto> commandResponse =
-			await Mediator.Send(new GetAnimalsQuery());
+    [HttpGet("")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(CollectionResponse<AnimalOverview>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
+    public async Task<CollectionResponse<AnimalOverview>> GetAnimals([FromQuery] GetFilteredAnimalsQueries query)
+    {
+        return await Mediator.Send(query, new CancellationToken());
+    }
 
-		return commandResponse;
-	}
+    [HttpGet("{id}")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(AnimalDto), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+    public async Task<IActionResult> GetAnimal(string id)
+    {
+        AnimalDto animal = await Mediator.Send(new GetAnimalByIdQuery { Id = id }, new CancellationToken());
+        if (animal == null)
+        {
+            return NotFound();
+        }
 
-	[HttpGet("GetAnimalById")]
-	[AllowAnonymous]
-	[ProducesResponseType(typeof(CommandResponse<AnimalDto>), (int)HttpStatusCode.OK)]
-	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
-	public async Task<CommandResponse<AnimalDto>> GetAnimalByIdAsync()
-	{
-		CommandResponse<AnimalDto> commandResponse =
-			await Mediator.Send(new GetAnimalByIdQuery());
+        return Ok(animal);
 
-		return commandResponse;
-	}
+    }
 
-	[HttpPost("CreateAnimal")]
-	//[Authorize(AuthenticationSchemes = "Bearer")]
-	[AllowAnonymous]
-	[ProducesResponseType(typeof(CommandResponse<int>), (int)HttpStatusCode.OK)]
-	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
-	public async Task<IActionResult> CreateAnimalAsync(AnimalCreateCommand animalCreateCommand)
-	{
-		try
-		{
-			CommandResponse<string> commandResponse = await Mediator.Send(animalCreateCommand);
+    [HttpPost("")]
+    //[Authorize(AuthenticationSchemes = "Bearer")]
+    [AllowAnonymous]
+    [ProducesResponseType(typeof(CommandResponse<int>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> CreateAnimalAsync(CreateAnimalCommand animalCreateCommand)
+    {
+      try {
+        CommandResponse commandResponse = await Mediator.Send(animalCreateCommand, new CancellationToken());
+			  return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
+      }
+      catch (FluentValidation.ValidationException ex)
+      {
+        return BadRequest(new CommandResponse(ex.Errors.ToList()));
+      }
+	  } 
 
-			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
-		}
-		catch (FluentValidation.ValidationException ex)
-		{
-			return BadRequest(new CommandResponse(ex.Errors.ToList()));
-		}
-	}
+    [HttpPut()]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [ProducesResponseType(typeof(CommandResponse<Animal>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> UpdateAnimalAsync(UpdateAnimalCommand animalUpdateCommand)
+    {
+      try {
+        CommandResponse commandResponse = await Mediator.Send(animalUpdateCommand, new CancellationToken());
+        return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
+      }
+      catch (FluentValidation.ValidationException ex)
+      {
+        return BadRequest(new CommandResponse(ex.Errors.ToList()));
+      }
+	  }
 
-	[HttpPut("UpdateAnimal")]
-	[Authorize(AuthenticationSchemes = "Bearer")]
-	[ProducesResponseType(typeof(CommandResponse<Animal>), (int)HttpStatusCode.OK)]
-	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
-	public async Task<IActionResult> UpdateAnimalAsync(AnimalUpdateCommand animalUpdateCommand)
-	{
-		try
-		{
-			CommandResponse commandResponse = await Mediator.Send(animalUpdateCommand);
+    [HttpDelete("{id}")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [ProducesResponseType(typeof(CommandResponse<Animal>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
+    public async Task<IActionResult> DeleteAnimalAsync(string id)
+    {
+      try {
+        CommandResponse commandResponse = await Mediator.Send(new DeleteAnimalCommand { Id = id}, new CancellationToken());
 
-			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
-		}
-		catch (FluentValidation.ValidationException ex)
-		{
-			return BadRequest(new CommandResponse(ex.Errors.ToList()));
-		}
-	}
-
-	[HttpDelete("DeleteAnimalById")]
-	[Authorize(AuthenticationSchemes = "Bearer")]
-	[ProducesResponseType(typeof(CommandResponse<Animal>), (int)HttpStatusCode.OK)]
-	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
-	public async Task<IActionResult> DeleteAnimalAsync(AnimalDeleteCommand animalDeleteCommand)
-	{
-		try
-		{
-			CommandResponse commandResponse = await Mediator.Send(animalDeleteCommand);
-
-			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
-		}
-		catch (FluentValidation.ValidationException ex)
-		{
-			return BadRequest(new CommandResponse(ex.Errors.ToList()));
-		}
-	}
+        return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
+      }
+      catch (FluentValidation.ValidationException ex)
+      {
+        return BadRequest(new CommandResponse(ex.Errors.ToList()));
+      }
+	  }
 }
