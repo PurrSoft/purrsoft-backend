@@ -61,7 +61,25 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 			.HasForeignKey<Volunteer>(v => v.UserId)
 			.IsRequired()
 			.OnDelete(DeleteBehavior.Restrict);
-	}
+		builder.Entity<Volunteer>()
+			.HasOne(v => v.Supervisor)
+			.WithMany()
+			.OnDelete(DeleteBehavior.Restrict);
+		builder.Entity<Volunteer>()
+			.HasMany(v => v.Trainers)
+			.WithMany()
+			.UsingEntity<Dictionary<string, object>>(
+				"VolunteerTrainer",
+				j => j.HasOne<ApplicationUser>()
+					  .WithMany()
+					  .HasForeignKey("TrainerId")
+					  .OnDelete(DeleteBehavior.Restrict),
+				j => j.HasOne<Volunteer>()
+					  .WithMany()
+					  .HasForeignKey("VolunteerId")
+					  .OnDelete(DeleteBehavior.Cascade)
+			);
+    }
 	private static void ConfigureFosterAnimals(ModelBuilder builder)
 	{
 		builder.Entity<AnimalFosterMap>().HasKey(af => af.Id);
