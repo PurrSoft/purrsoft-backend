@@ -11,7 +11,6 @@ namespace PurrSoft.Application.Commands.AccountCommands;
 
 public class AccountCommandHandler(
 	IRepository<ApplicationUser> _userRepository,
-	IRepository<UserRole> _userRoleRepository,
 	IRepository<Role> _roleRepository,
 	ICurrentUserService _currentService,
 	ILogRepository<ApplicationUser> _logRepository) :
