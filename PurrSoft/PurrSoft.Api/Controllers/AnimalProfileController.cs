@@ -35,7 +35,7 @@ namespace PurrSoft.Api.Controllers
         [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetAnimalProfileByIdAsync(Guid id)
         {
-            var response = await Mediator.Send(new GetAnimalProfileByIdQuery { Id = id.ToString() });
+            var response = await Mediator.Send(new GetAnimalProfileByIdQuery { AnimalId = id.ToString() });
 
             // Assuming the data is stored in a 'Result' property
             return response.IsValid 

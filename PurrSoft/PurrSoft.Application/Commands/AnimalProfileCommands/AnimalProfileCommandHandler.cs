@@ -32,7 +32,6 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
 
                 var newProfile = new AnimalProfile
                 {
-                    Id = Guid.NewGuid(),
                     AnimalId = request.AnimalId,
                     Passport = request.Passport,
                     Microchip = request.Microchip,
@@ -59,7 +58,7 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
                 animalProfileRepository.Add(newProfile);
                 await animalProfileRepository.SaveChangesAsync(cancellationToken);
 
-                return CommandResponse.Ok(newProfile.Id);
+                return CommandResponse.Ok(newProfile.AnimalId);
             }
             catch (Exception ex)
             {
@@ -73,7 +72,7 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
             try
             {
                 var profile = await animalProfileRepository
-                    .Query(x => x.Id == request.Id)
+                    .Query(x => x.AnimalId == request.AnimalId)
                     .FirstOrDefaultAsync(cancellationToken);
 
                 if (profile == null)
@@ -124,7 +123,7 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
             try
             {
                 var profile = await animalProfileRepository
-                    .Query(x => x.Id == request.Id)
+                    .Query(x => x.AnimalId == request.Id)
                     .FirstOrDefaultAsync(cancellationToken);
 
                 if (profile == null)
