@@ -15,6 +15,8 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 	public DbSet<Volunteer> Volunteers { get; set; }
 	public DbSet<AnimalFosterMap> AnimalFosters { get; set; }
 	public DbSet<AnimalProfile> AnimalProfiles { get; set; }
+	public DbSet<Shift> Shifts { get; set; }
+
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		base.OnModelCreating(modelBuilder);
@@ -23,6 +25,7 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 		//ConfigureUserRole(modelBuilder);
 		ConfigureFosters(modelBuilder);
 		ConfigureVolunteers(modelBuilder);
+		ConfigureShifts(modelBuilder);
 		ConfigureAnimalProfile(modelBuilder);
 		ConfigureFosterAnimals(modelBuilder);
 		modelBuilder.SeederForRoles();
@@ -52,6 +55,16 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 			.OnDelete(DeleteBehavior.Restrict);
 	}
 
+	private static void ConfigureShifts(ModelBuilder builder)
+	{
+		builder.Entity<Shift>().HasKey(s => s.Id);
+		builder.Entity<Shift>()
+			.HasOne(s => s.Volunteer)
+			.WithMany(v => v.Shifts)
+			.HasForeignKey(s => s.VolunteerId)
+			.OnDelete(DeleteBehavior.Restrict);
+	}
+
 	private static void ConfigureVolunteers(ModelBuilder builder)
 	{
 		builder.Entity<Volunteer>().HasKey(v => v.UserId);
@@ -62,6 +75,7 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 			.IsRequired()
 			.OnDelete(DeleteBehavior.Restrict);
 	}
+
 	private static void ConfigureFosterAnimals(ModelBuilder builder)
 	{
 		builder.Entity<AnimalFosterMap>().HasKey(af => af.Id);
@@ -80,6 +94,7 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 			.IsRequired()
 			.OnDelete(DeleteBehavior.Restrict);
 	}
+
 	private static void ConfigureAnimalProfile(ModelBuilder builder)
 	{
 		builder.Entity<AnimalProfile>(entity =>
@@ -97,6 +112,5 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 			entity.Property(ap => ap.UsefulLinks)
 				.HasColumnType("jsonb");
 		});
-
 	}
 }
