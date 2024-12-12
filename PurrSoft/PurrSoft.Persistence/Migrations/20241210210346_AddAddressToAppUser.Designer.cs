@@ -3,15 +3,21 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using PurrSoft.Persistence;
 
 #nullable disable
 
 namespace PurrSoft.Persistence.Migrations
 {
-	[DbContext(typeof(PurrSoftDbContext))]
-    partial class PurrSoftDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(PurrSoftDbContext))]
+    [Migration("20241210210346_AddAddressToAppUser")]
+    partial class AddAddressToAppUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,7 +179,8 @@ namespace PurrSoft.Persistence.Migrations
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalProfile", b =>
                 {
-                    b.Property<Guid>("AnimalId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("AdditionalInfo")
@@ -181,6 +188,9 @@ namespace PurrSoft.Persistence.Migrations
 
                     b.Property<string>("AdditionalMedicalInfo")
                         .HasColumnType("text");
+
+                    b.Property<Guid>("AnimalId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("CoronavirusVaccine")
                         .HasColumnType("text");
@@ -236,7 +246,10 @@ namespace PurrSoft.Persistence.Migrations
                     b.PrimitiveCollection<List<string>>("UsefulLinks")
                         .HasColumnType("jsonb");
 
-                    b.HasKey("AnimalId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnimalId")
+                        .IsUnique();
 
                     b.ToTable("AnimalProfiles");
                 });
@@ -472,10 +485,6 @@ namespace PurrSoft.Persistence.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
-                    b.Property<string>("AvailableHours")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -491,41 +500,18 @@ namespace PurrSoft.Persistence.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<string>("SupervisorId")
-                        .HasColumnType("text");
-
                     b.PrimitiveCollection<string[]>("Tasks")
                         .HasColumnType("text[]");
 
                     b.Property<int>("Tier")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("TrainingStartDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("SupervisorId");
-
                     b.ToTable("Volunteers");
-                });
-
-            modelBuilder.Entity("VolunteerTrainer", b =>
-                {
-                    b.Property<string>("TrainerId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("VolunteerId")
-                        .HasColumnType("text");
-
-                    b.HasKey("TrainerId", "VolunteerId");
-
-                    b.HasIndex("VolunteerId");
-
-                    b.ToTable("VolunteerTrainer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -626,35 +612,13 @@ namespace PurrSoft.Persistence.Migrations
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.Volunteer", b =>
                 {
-                    b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "Supervisor")
-                        .WithMany()
-                        .HasForeignKey("SupervisorId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
                         .WithOne()
                         .HasForeignKey("PurrSoft.Domain.Entities.Volunteer", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Supervisor");
-
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("VolunteerTrainer", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("PurrSoft.Domain.Entities.Volunteer", null)
-                        .WithMany()
-                        .HasForeignKey("VolunteerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.Animal", b =>
