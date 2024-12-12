@@ -46,6 +46,41 @@ public static class ServiceBuilderExtensions
         };
 
         services.AddJwtAuthentication(configuration, jwtSettings, jwtConfig);
+        // Google Credentials
+        IConfigurationSection googleCredentialsSettings = configuration.GetSection("GoogleCredentialsConfig");
+        GoogleCredentialsConfig googleCredentialsConfig = new()
+        {
+            Type = googleCredentialsSettings["type"] ?? string.Empty,
+            ProjectId = googleCredentialsSettings["project_id"] ?? string.Empty,
+            PrivateKeyId = Environment.GetEnvironmentVariable("GOOGLE_PRIVATE_KEY_ID") ?? string.Empty,
+            PrivateKey = Environment.GetEnvironmentVariable("GOOGLE_PRIVATE_KEY") ?? string.Empty,
+            ClientEmail = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_EMAIL") ?? string.Empty,
+            ClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID") ?? string.Empty,
+            AuthUri = googleCredentialsSettings["auth_uri"] ?? string.Empty,
+            TokenUri = Environment.GetEnvironmentVariable("GOOGLE_TOKEN_URI") ?? string.Empty,
+            AuthProviderX509CertUrl = Environment.GetEnvironmentVariable("GOOGLE_AUTH_PROVIDER_X509_CERT_URL") ?? string.Empty,
+            ClientX509CertUrl = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_X509_CERT_URL") ?? string.Empty,
+            UniverseDomain = googleCredentialsSettings["universe_domain"] ?? string.Empty
+        };
+        if (string.IsNullOrEmpty(googleCredentialsConfig.Type) || string.IsNullOrEmpty(googleCredentialsConfig.ProjectId) || string.IsNullOrEmpty(googleCredentialsConfig.PrivateKeyId) || string.IsNullOrEmpty(googleCredentialsConfig.PrivateKey) || string.IsNullOrEmpty(googleCredentialsConfig.ClientEmail) || string.IsNullOrEmpty(googleCredentialsConfig.ClientId) || string.IsNullOrEmpty(googleCredentialsConfig.AuthUri) || string.IsNullOrEmpty(googleCredentialsConfig.TokenUri) || string.IsNullOrEmpty(googleCredentialsConfig.AuthProviderX509CertUrl) || string.IsNullOrEmpty(googleCredentialsConfig.ClientX509CertUrl) || string.IsNullOrEmpty(googleCredentialsConfig.UniverseDomain))
+        {
+            throw new InvalidOperationException("Invalid Google Credentials configuration.");
+        }
+        services.AddSingleton(googleCredentialsConfig);
+        // Google Sheets Api
+        IConfigurationSection googleSheetsApiSettings = configuration.GetSection("GoogleSheetsApiConfig");
+        GoogleSheetsApiConfig googleSheetsApiConfig = new()
+        {
+            ApplicationName = googleSheetsApiSettings["application_name"] ?? string.Empty,
+            SpreadsheetId = googleSheetsApiSettings["spreadsheet_id"] ?? string.Empty,
+            SheetName = googleSheetsApiSettings["sheet_name"] ?? string.Empty
+        };
+        if (string.IsNullOrEmpty(googleSheetsApiConfig.ApplicationName) || string.IsNullOrEmpty(googleSheetsApiConfig.SpreadsheetId) || string.IsNullOrEmpty(googleSheetsApiConfig.SheetName))
+        {
+            throw new InvalidOperationException("Invalid Google Sheets Api configuration.");
+        }
+        services.AddSingleton(googleSheetsApiConfig);
+        //identity
         services.AddSingleton(jwtConfig);
 
         // Configure SMTP
@@ -92,6 +127,10 @@ public static class ServiceBuilderExtensions
 
         // Singleton for Action Context Accessor
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+        // Register JwtConfig as a singleton
+        services.AddSingleton(jwtConfig);
+        services.AddTransient<IGoogleSheetsService, GoogleSheetsService>();
+        // scope for action context and url helper
 
         // Register Email Service
         services.AddTransient<IEmailService, EmailService>();
