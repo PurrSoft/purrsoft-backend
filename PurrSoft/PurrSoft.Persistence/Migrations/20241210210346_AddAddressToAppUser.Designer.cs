@@ -3,15 +3,21 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using PurrSoft.Persistence;
 
 #nullable disable
 
 namespace PurrSoft.Persistence.Migrations
 {
-	[DbContext(typeof(PurrSoftDbContext))]
-    partial class PurrSoftDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(PurrSoftDbContext))]
+    [Migration("20241210210346_AddAddressToAppUser")]
+    partial class AddAddressToAppUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,7 +179,8 @@ namespace PurrSoft.Persistence.Migrations
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalProfile", b =>
                 {
-                    b.Property<Guid>("AnimalId")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("AdditionalInfo")
@@ -181,6 +188,9 @@ namespace PurrSoft.Persistence.Migrations
 
                     b.Property<string>("AdditionalMedicalInfo")
                         .HasColumnType("text");
+
+                    b.Property<Guid>("AnimalId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("CoronavirusVaccine")
                         .HasColumnType("text");
@@ -236,7 +246,10 @@ namespace PurrSoft.Persistence.Migrations
                     b.PrimitiveCollection<List<string>>("UsefulLinks")
                         .HasColumnType("jsonb");
 
-                    b.HasKey("AnimalId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnimalId")
+                        .IsUnique();
 
                     b.ToTable("AnimalProfiles");
                 });
