@@ -1,15 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "E9jjgTW5GIs=",
+  "dgSpecHash": "lmULN9/qhKhMU/ov2eGsoYg3VRw4Qx7bN3NBWsGHgydN6ozgC6sr5LaS6UbpldxhXcJTYAP/oz28svoXaN6xUQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
+  "projectFilePath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
   "expectedPackageFiles": [],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  "logs": []
 }

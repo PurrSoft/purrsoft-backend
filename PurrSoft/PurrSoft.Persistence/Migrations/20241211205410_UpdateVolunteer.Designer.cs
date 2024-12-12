@@ -3,15 +3,21 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using PurrSoft.Persistence;
 
 #nullable disable
 
 namespace PurrSoft.Persistence.Migrations
 {
-	[DbContext(typeof(PurrSoftDbContext))]
-    partial class PurrSoftDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(PurrSoftDbContext))]
+    [Migration("20241211205410_UpdateVolunteer")]
+    partial class UpdateVolunteer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -291,9 +297,6 @@ namespace PurrSoft.Persistence.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
@@ -452,28 +455,6 @@ namespace PurrSoft.Persistence.Migrations
                         });
                 });
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Shift", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("ShiftType")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("VolunteerId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VolunteerId");
-
-                    b.ToTable("Shifts");
-                });
-
             modelBuilder.Entity("PurrSoft.Domain.Entities.UserRole", b =>
                 {
                     b.Property<string>("UserId")
@@ -627,16 +608,6 @@ namespace PurrSoft.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Shift", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.Volunteer", "Volunteer")
-                        .WithMany("Shifts")
-                        .HasForeignKey("VolunteerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Volunteer");
-                });
-
             modelBuilder.Entity("PurrSoft.Domain.Entities.UserRole", b =>
                 {
                     b.HasOne("PurrSoft.Domain.Entities.Role", "Role")
@@ -709,11 +680,6 @@ namespace PurrSoft.Persistence.Migrations
             modelBuilder.Entity("PurrSoft.Domain.Entities.Role", b =>
                 {
                     b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Volunteer", b =>
-                {
-                    b.Navigation("Shifts");
                 });
 #pragma warning restore 612, 618
         }

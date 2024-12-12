@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
 using PurrSoft.Common.Identity;
 using PurrSoft.Domain.Entities;
-using PurrSoft.Domain.Entities.Enum;
+using PurrSoft.Domain.Entities.Enums;
 using PurrSoft.Domain.Repositories;
 
 namespace PurrSoft.Application.Commands.VolunteerCommands;
@@ -36,7 +36,18 @@ public class VolunteerCommandHandler(
                 LastShiftDate = null,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
-                Tasks = request.VolunteerDto.Tasks
+                Tasks = request.VolunteerDto.Tasks,
+                AvailableHours = request.VolunteerDto.AvailableHours,
+                TrainingStartDate = request.VolunteerDto.TrainingStartDate != null ?
+                                   DateTime.SpecifyKind(
+                                       DateTime.Parse(request.VolunteerDto.TrainingStartDate),
+                                       DateTimeKind.Utc) : null,
+                Supervisor = request.VolunteerDto.SupervisorId != null ?
+                             await _userRepository.Query(u => u.Id == request.VolunteerDto.SupervisorId)
+                             .FirstOrDefaultAsync() : null,
+                Trainers = request.VolunteerDto.TrainersId != null ?
+                await _userRepository.Query(u => request.VolunteerDto.TrainersId.Contains(u.Id))
+                            .ToListAsync() : null
             };
 
             _volunteerRepository.Add(volunteer);
@@ -100,6 +111,17 @@ public class VolunteerCommandHandler(
             // LastShiftDate logic when Shifts are implemented
             volunteer.UpdatedAt = DateTime.UtcNow;
             volunteer.Tasks = request.VolunteerDto.Tasks;
+            volunteer.AvailableHours = request.VolunteerDto.AvailableHours;
+            volunteer.TrainingStartDate = request.VolunteerDto.TrainingStartDate != null ?
+                                          DateTime.SpecifyKind(
+                                              DateTime.Parse(request.VolunteerDto.TrainingStartDate),
+                                              DateTimeKind.Utc) : null;
+            volunteer.Supervisor = request.VolunteerDto.SupervisorId != null ?
+                await _userRepository.Query(u => u.Id == request.VolunteerDto.SupervisorId)
+                                      .FirstOrDefaultAsync() : null;
+            volunteer.Trainers = request.VolunteerDto.TrainersId != null ?
+                await _userRepository.Query(u => request.VolunteerDto.TrainersId.Contains(u.Id))
+                                    .ToListAsync() : null;
 
             await _volunteerRepository.SaveChangesAsync(cancellationToken);
 

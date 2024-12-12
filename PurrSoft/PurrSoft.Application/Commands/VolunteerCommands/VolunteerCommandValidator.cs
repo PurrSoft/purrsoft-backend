@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using PurrSoft.Application.Helpers;
-using PurrSoft.Domain.Entities.Enum;
+using PurrSoft.Domain.Entities.Enums;
 
 namespace PurrSoft.Application.Commands.VolunteerCommands;
 
@@ -22,7 +22,9 @@ public class CreateVolunteerCommandValidator : AbstractValidator<CreateVolunteer
 		RuleFor(x => x.VolunteerDto.Tier)
 			.NotNull().NotEmpty()
 			.Must(VolunteerCommandEnumValidator.BeAValidTier);
-	}
+		RuleFor(x => x.VolunteerDto.AvailableHours)
+			.NotNull().NotEmpty();
+    }
 }
 
 public class UpdateVolunteerCommandValidator : AbstractValidator<UpdateVolunteerCommand>
@@ -51,7 +53,9 @@ public class UpdateVolunteerCommandValidator : AbstractValidator<UpdateVolunteer
 		RuleFor(x => x.VolunteerDto.Tier)
 			.NotNull().NotEmpty()
 			.Must(VolunteerCommandEnumValidator.BeAValidTier);
-	}
+        RuleFor(x => x.VolunteerDto.AvailableHours)
+            .NotNull().NotEmpty();
+    }
 }
 
 public class DeleteVolunteerCommandValidator : AbstractValidator<DeleteVolunteerCommand>

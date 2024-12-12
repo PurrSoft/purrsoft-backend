@@ -1,4 +1,6 @@
-﻿using PurrSoft.Domain.Entities.Enum;
+﻿using PurrSoft.Domain.Entities.Enums;
+using System;
+using System.Collections.Generic;
 
 namespace PurrSoft.Domain.Entities;
 
@@ -13,7 +15,11 @@ public class Volunteer
 	public DateTime CreatedAt { get; set; }
 	public DateTime UpdatedAt { get; set; }
 	public IList<string>? Tasks { get; set; }
-	public virtual ApplicationUser User { get; set; }
+    public string AvailableHours { get; set; }
+    public DateTime? TrainingStartDate { get; set; }
+    public virtual ApplicationUser? Supervisor { get; set; }
+    public virtual IList<ApplicationUser>? Trainers { get; set; }
+    public virtual ApplicationUser User { get; set; }
 	public virtual IList<Shift> Shifts { get; set; }
 	// public virtual ICollection<LeaveRequest> LeaveRequests { get; set; }
 
@@ -21,6 +27,7 @@ public class Volunteer
 	{
 		Tasks = new List<string>();
 		Shifts = new List<Shift>();
-		// LeaveRequests = new List<LeaveRequest>();
-	}
+        Trainers = new List<ApplicationUser>();
+        // LeaveRequests = new List<LeaveRequest>();
+    }
 }

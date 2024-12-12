@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\PurrSoft.Domain.csproj": {}
+    "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\PurrSoft.Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\PurrSoft.Domain.csproj": {
+    "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\PurrSoft.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\PurrSoft.Domain.csproj",
+        "projectUniqueName": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\PurrSoft.Domain.csproj",
         "projectName": "PurrSoft.Domain",
-        "projectPath": "C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\PurrSoft.Domain.csproj",
-        "packagesPath": "C:\\Users\\Deea\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\obj\\",
+        "projectPath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\PurrSoft.Domain.csproj",
+        "packagesPath": "C:\\Users\\Dominic\\.nuget\\packages\\",
+        "outputPath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Deea\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Dominic\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -75,7 +74,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
