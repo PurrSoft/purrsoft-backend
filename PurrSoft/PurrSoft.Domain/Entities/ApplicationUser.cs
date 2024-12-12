@@ -7,7 +7,8 @@ public class ApplicationUser : IdentityUser
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string FullName => $"{FirstName} {LastName}";
-    public virtual ICollection<UserRole> UserRoles { get; set; }
+	public string? Address { get; set; }
+	public virtual ICollection<UserRole> UserRoles { get; set; }
 
     public ApplicationUser()
     {

@@ -3,15 +3,12 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using PurrSoft.Persistence;
 
 #nullable disable
 
 namespace PurrSoft.Persistence.Migrations
 {
-    [DbContext(typeof(PurrSoftDbContext))]
+	[DbContext(typeof(PurrSoftDbContext))]
     partial class PurrSoftDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -176,8 +173,7 @@ namespace PurrSoft.Persistence.Migrations
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalProfile", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("AnimalId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("AdditionalInfo")
@@ -185,9 +181,6 @@ namespace PurrSoft.Persistence.Migrations
 
                     b.Property<string>("AdditionalMedicalInfo")
                         .HasColumnType("text");
-
-                    b.Property<Guid>("AnimalId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("CoronavirusVaccine")
                         .HasColumnType("text");
@@ -243,10 +236,7 @@ namespace PurrSoft.Persistence.Migrations
                     b.PrimitiveCollection<List<string>>("UsefulLinks")
                         .HasColumnType("jsonb");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnimalId")
-                        .IsUnique();
+                    b.HasKey("AnimalId");
 
                     b.ToTable("AnimalProfiles");
                 });
@@ -300,6 +290,9 @@ namespace PurrSoft.Persistence.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
