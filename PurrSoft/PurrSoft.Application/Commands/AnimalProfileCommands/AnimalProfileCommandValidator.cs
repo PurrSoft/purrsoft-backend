@@ -37,7 +37,7 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
     {
         public AnimalProfileUpdateCommandValidator()
         {
-            RuleFor(x => x.Id)
+            RuleFor(x => x.AnimalId)
                 .NotEmpty().WithMessage("Id is required.");
 
             RuleFor(x => x.Passport)

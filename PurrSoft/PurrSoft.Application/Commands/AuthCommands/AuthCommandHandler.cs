@@ -9,6 +9,7 @@ using PurrSoft.Application.Models;
 using PurrSoft.Application.QueryOverviews.Mappers;
 using PurrSoft.Domain.Entities;
 using PurrSoft.Domain.Repositories;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace PurrSoft.Application.Commands.AuthCommands;
 
@@ -20,7 +21,8 @@ public class AuthCommandHandler(
     IConfiguration configuration,
     ILogRepository<AuthCommandHandler> logRepository)
     : IRequestHandler<UserRegistrationCommand, CommandResponse>,
-        IRequestHandler<UserLoginCommand, CommandResponse<UserLoginCommandResponse>>
+        IRequestHandler<UserLoginCommand, CommandResponse<UserLoginCommandResponse>>,
+        IRequestHandler<UserChangePasswordCommand, CommandResponse>
 {
     public async Task<CommandResponse> Handle(UserRegistrationCommand command, CancellationToken cancellationToken)
     {
@@ -82,6 +84,57 @@ public class AuthCommandHandler(
             }
 
             return await GetApplicationUserDto(applicationUser, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            logRepository.LogException(LogLevel.Error, ex);
+            throw;
+        }
+    }
+
+    public async Task<CommandResponse> Handle(UserChangePasswordCommand request, CancellationToken cancellationToken)
+    {
+        try
+        {
+            ApplicationUser? applicationUser = await userManager.FindByEmailAsync(request.Email);
+
+            CommandResponse<UserLoginCommandResponse> validationResult = ValidateUser(applicationUser);
+            if (validationResult != null)
+            {
+                return validationResult;
+            }
+
+            bool passwordValid = await userManager.CheckPasswordAsync(applicationUser, request.CurrentPassword);
+
+            bool passwordMatch = request.NewPassword == request.ConfirmPassword;
+
+            bool passwordContainsRequestedCharacters = userManager.PasswordValidators.All(v => v.ValidateAsync(userManager, applicationUser, request.NewPassword).Result.Succeeded);
+
+            if (!passwordContainsRequestedCharacters)
+            {
+                return CommandResponse.Failed<UserLoginCommandResponse>("Password does not meet the requirements!");
+            }
+
+            if (!passwordValid)
+            {
+                return CommandResponse.Failed<UserLoginCommandResponse>("Invalid current Password!");
+            }
+
+            if (!passwordMatch)
+            {
+                return CommandResponse.Failed<UserLoginCommandResponse>("Passwords do not match!");
+            }
+
+            applicationUser.PasswordHash = userManager.PasswordHasher.HashPassword(applicationUser, request.NewPassword);
+
+            IdentityResult result = await userManager.UpdateAsync(applicationUser);
+
+            if (!result.Succeeded)
+            {
+                return CommandResponse.Failed(result.Errors.Select(e => e.Description).ToArray());
+            }
+
+            return CommandResponse.Ok();
         }
         catch (Exception ex)
         {

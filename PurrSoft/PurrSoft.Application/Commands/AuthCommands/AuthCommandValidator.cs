@@ -22,3 +22,14 @@ public class UserLoginCommandValidator : AbstractValidator<UserLoginCommand>
         RuleFor(e => e.Password).NotNull().NotEmpty();
     }
 }
+
+public class UserChangePasswordValidator : AbstractValidator<UserChangePasswordCommand>
+{
+    public UserChangePasswordValidator()
+    {
+        RuleFor(e => e.Email).NotNull().NotEmpty().EmailAddress();
+        RuleFor(e => e.CurrentPassword).NotNull().NotEmpty();
+        RuleFor(e => e.NewPassword).NotNull().NotEmpty();
+        RuleFor(e => e.ConfirmPassword).Equal(e => e.NewPassword);
+    }
+}
