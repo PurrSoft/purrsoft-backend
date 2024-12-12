@@ -16,6 +16,7 @@ using PurrSoft.Persistence.Bootstrap;
 using PurrSoft.Persistence.Repositories;
 
 namespace PurrSoft.Api.Bootstrap;
+
 public static class ServiceBuilderExtensions
 {
     public static void RegisterWebApiServices(this IServiceCollection services)
@@ -24,23 +25,26 @@ public static class ServiceBuilderExtensions
 
     public static IServiceCollection AddAppServices(this IServiceCollection services, IConfiguration configuration)
     {
+        // Load environment variables from .env file
         Env.Load();
 
-        // register cors
+        // Register CORS
         services.AddCorsPolicy();
         services.RegisterWebApiServices();
-        // register dbcontext
+
+        // Register DbContext
         services.AddDbContext(configuration);
-        // jwt
+
+        // Configure JWT
         IConfigurationSection jwtSettings = configuration.GetSection("JwtConfig");
-        string jwtSecret = jwtSettings["secret"] ?? string.Empty;
         JwtConfig jwtConfig = new()
         {
             Audience = jwtSettings["validAudience"] ?? string.Empty,
-            ExpiresIn = Convert.ToDouble(jwtSettings["expiresIn"]),
+            ExpiresIn = Convert.ToDouble(jwtSettings["expiresIn"] ?? "0"),
             Issuer = jwtSettings["validIssuer"] ?? string.Empty,
             Secret = jwtSettings["secret"] ?? string.Empty
         };
+
         services.AddJwtAuthentication(configuration, jwtSettings, jwtConfig);
         // Google Credentials
         IConfigurationSection googleCredentialsSettings = configuration.GetSection("GoogleCredentialsConfig");
@@ -77,31 +81,61 @@ public static class ServiceBuilderExtensions
         }
         services.AddSingleton(googleSheetsApiConfig);
         //identity
+        services.AddSingleton(jwtConfig);
+
+        // Configure SMTP
+        IConfigurationSection smtpSettings = configuration.GetSection("SmtpConfig");
+        SmtpClientConfig smtpConfig = new()
+        {
+            Host = smtpSettings["Host"] ?? string.Empty,
+            Port = Convert.ToInt32(smtpSettings["Port"] ?? "0"),
+            Username = smtpSettings["Username"] ?? string.Empty,
+            Password = Environment.GetEnvironmentVariable("PASSWORD_EMAIL") ?? string.Empty
+        };
+
+        if (string.IsNullOrEmpty(smtpConfig.Host) || smtpConfig.Port == 0 ||
+            string.IsNullOrEmpty(smtpConfig.Username) || string.IsNullOrEmpty(smtpConfig.Password))
+        {
+            throw new InvalidOperationException("Invalid SMTP configuration.");
+        }
+
+        services.AddSingleton(smtpConfig);
+
+        // Configure Identity
         services.ConfigureIdentity();
-        //mediatr
+
+        // Register MediatR
         services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblies(typeof(GetLoggedInUserQuery).Assembly));
-        // validators
+
+        // Register Validators
         services.AddValidatorsFromAssembly(typeof(GetLoggedInUserQuery).Assembly);
         services.AddHttpContextAccessor();
-        //register infrastructure services
+
+        // Register Infrastructure and Application Services
         services.RegisterInfrastructureServices();
-        //register application services
         services.RegisterApplicationServices();
-        // register repositories
+
+        // Register Repositories
         services.AddScoped(typeof(ILogRepository<>), typeof(LogRepository<>));
         services.RegisterRepositories();
-        // web api
-        services.RegisterWebApiServices();
+
+        // Register Swagger and Controllers
         services.AddEndpointsApiExplorer();
         services.AddSwaggerConfig();
         services.AddControllers();
-        // singleton for action context accessor
+
+        // Singleton for Action Context Accessor
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         // Register JwtConfig as a singleton
         services.AddSingleton(jwtConfig);
         services.AddTransient<IGoogleSheetsService, GoogleSheetsService>();
         // scope for action context and url helper
+
+        // Register Email Service
+        services.AddTransient<IEmailService, EmailService>();
+
+        // Register URL Helper
         services.AddScoped(x =>
         {
             ActionContext actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
@@ -119,21 +153,20 @@ public static class ServiceBuilderExtensions
         {
             throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
         }
+
         services.AddDbContext<PurrSoftDbContext>(options =>
             options.UseNpgsql(connectionString));
     }
 
     private static void AddCorsPolicy(this IServiceCollection services)
     {
-        services.AddCors(
-            options =>
-            {
-                options.AddPolicy("_myAllowSpecificOrigins",
-                    policy =>
-                        policy.WithOrigins("https://localhost:7233", "https://localhost:5173")
-                            .AllowAnyHeader()
-                            .AllowAnyMethod()
-                            .AllowCredentials());
-            });
+        services.AddCors(options =>
+        {
+            options.AddPolicy("_myAllowSpecificOrigins", policy =>
+                policy.WithOrigins("https://localhost:7233", "https://localhost:5173")
+                      .AllowAnyHeader()
+                      .AllowAnyMethod()
+                      .AllowCredentials());
+        });
     }
 }

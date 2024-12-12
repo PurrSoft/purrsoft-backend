@@ -1,4 +1,4 @@
-﻿namespace PurrSoft.Domain.Entities.Enum;
+﻿namespace PurrSoft.Domain.Entities.Enums;
 
 public enum TierLevel
 {
