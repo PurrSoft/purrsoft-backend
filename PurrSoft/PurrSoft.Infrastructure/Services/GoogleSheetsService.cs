@@ -26,8 +26,8 @@ public class GoogleSheetsService(GoogleCredentialsConfig googleApiConfig, Google
             {
                 GoogleFormsResponseDto googleFormsResponseDto = new GoogleFormsResponseDto
                 {
-                    Name = row[1].ToString() ?? "",
-                    Email = row[2].ToString() ?? "",
+                    Name = row[2].ToString() ?? "",
+                    Email = row[1].ToString() ?? "",
                     Description = row[3].ToString() ?? "",
                 };
                 formsResponses.Add(googleFormsResponseDto);
