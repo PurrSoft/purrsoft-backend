@@ -28,6 +28,10 @@ public class AuthCommandHandler(
     {
         try
         {
+            if (command.Role.Length == 0)
+            {
+                return CommandResponse.Failed("Role should not be empty.");
+            }
             if (!await roleRepository.Query(r => r.Name == command.Role).AnyAsync(cancellationToken: cancellationToken))
             {
                 return CommandResponse.Failed($"Role '{command.Role}' does not exist.");
