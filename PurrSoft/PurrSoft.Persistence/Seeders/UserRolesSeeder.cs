@@ -25,6 +25,12 @@ public static class RolesSeeder
                 Id = "16f9f85a-1389-489a-87d4-cef974323047",
                 Name = "Foster",
                 NormalizedName = "FOSTER"
+            },
+            new Role()
+            {
+                Id = "45422d1a-dcce-4b72-a93b-dcf6356e4106",
+                Name = "Admin",
+                NormalizedName = "ADMIN"
             });
     }
 }
