@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj": {}
+    "C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj": {}
   },
   "projects": {
-    "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj": {
+    "C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
+        "projectUniqueName": "C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
         "projectName": "PurrSoft.Common",
-        "projectPath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
-        "packagesPath": "C:\\Users\\Dominic\\.nuget\\packages\\",
-        "outputPath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\obj\\",
+        "projectPath": "C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
+        "packagesPath": "C:\\Users\\Deea\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Deea\\Desktop\\Purrsoft-Nou\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Dominic\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Deea\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +22,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -44,6 +45,12 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -60,7 +67,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

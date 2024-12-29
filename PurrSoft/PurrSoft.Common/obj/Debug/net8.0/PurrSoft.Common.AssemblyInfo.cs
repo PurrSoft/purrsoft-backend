@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PurrSoft.Common")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+721cd6458651dd413d28c98abb5b9d767d6d77ed")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e0ab0cceeb76b4878bf4a5ed80dbda254fcd0343")]
 [assembly: System.Reflection.AssemblyProductAttribute("PurrSoft.Common")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PurrSoft.Common")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
