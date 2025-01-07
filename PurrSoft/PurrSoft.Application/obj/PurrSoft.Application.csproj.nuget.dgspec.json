@@ -1,38 +1,36 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Application\\PurrSoft.Application.csproj": {}
+    "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Application/PurrSoft.Application.csproj": {}
   },
   "projects": {
-    "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Application\\PurrSoft.Application.csproj": {
+    "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Application/PurrSoft.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Application\\PurrSoft.Application.csproj",
+        "projectUniqueName": "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Application/PurrSoft.Application.csproj",
         "projectName": "PurrSoft.Application",
-        "projectPath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Application\\PurrSoft.Application.csproj",
-        "packagesPath": "C:\\Users\\Dominic\\.nuget\\packages\\",
-        "outputPath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Application\\obj\\",
+        "projectPath": "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Application/PurrSoft.Application.csproj",
+        "packagesPath": "/home/robert12/.nuget/packages/",
+        "outputPath": "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Application/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Dominic\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/robert12/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj": {
-                "projectPath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj"
+              "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Common/PurrSoft.Common.csproj": {
+                "projectPath": "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Common/PurrSoft.Common.csproj"
               },
-              "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\PurrSoft.Domain.csproj": {
-                "projectPath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\PurrSoft.Domain.csproj"
+              "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Domain/PurrSoft.Domain.csproj": {
+                "projectPath": "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Domain/PurrSoft.Domain.csproj"
               }
             }
           }
@@ -41,11 +39,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -99,28 +92,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj": {
+    "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Common/PurrSoft.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
+        "projectUniqueName": "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Common/PurrSoft.Common.csproj",
         "projectName": "PurrSoft.Common",
-        "projectPath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\PurrSoft.Common.csproj",
-        "packagesPath": "C:\\Users\\Dominic\\.nuget\\packages\\",
-        "outputPath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Common\\obj\\",
+        "projectPath": "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Common/PurrSoft.Common.csproj",
+        "packagesPath": "/home/robert12/.nuget/packages/",
+        "outputPath": "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Common/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Dominic\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/robert12/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -133,11 +124,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -159,28 +145,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\PurrSoft.Domain.csproj": {
+    "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Domain/PurrSoft.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\PurrSoft.Domain.csproj",
+        "projectUniqueName": "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Domain/PurrSoft.Domain.csproj",
         "projectName": "PurrSoft.Domain",
-        "projectPath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\PurrSoft.Domain.csproj",
-        "packagesPath": "C:\\Users\\Dominic\\.nuget\\packages\\",
-        "outputPath": "C:\\Dominic\\Domi\\PurrSoft\\purrsoft-backend\\PurrSoft\\PurrSoft.Domain\\obj\\",
+        "projectPath": "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Domain/PurrSoft.Domain.csproj",
+        "packagesPath": "/home/robert12/.nuget/packages/",
+        "outputPath": "/home/robert12/Desktop/PurrSoft/purrsoft-backend/PurrSoft/PurrSoft.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Dominic\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/robert12/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -193,11 +177,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -233,7 +212,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
