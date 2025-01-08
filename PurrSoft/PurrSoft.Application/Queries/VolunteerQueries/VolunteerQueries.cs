@@ -13,6 +13,10 @@ public class GetFilteredVolunteersQueries : BaseRequest<CollectionResponse<Volun
     public string? Search { get; set; }
     public string? Status { get; set; }
     public string? Tier { get; set; }
+    public DateTime? LowerStartDate { get; set; }
+	public DateTime? UpperStartDate { get; set; }
+	public DateTime? LowerEndDate { get; set; }
+	public DateTime? UpperEndDate { get; set; }
 }
 
 public class GetVolunteerQuery : BaseRequest<VolunteerDto>
