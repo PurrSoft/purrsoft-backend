@@ -7,6 +7,7 @@ using PurrSoft.Application.Common;
 using PurrSoft.Application.Models;
 using PurrSoft.Application.Queries.ShiftQueries;
 using PurrSoft.Application.QueryOverviews;
+using PurrSoft.Application.QueryResponses;
 using System.Net;
 
 namespace PurrSoft.Api.Controllers;
@@ -92,6 +93,25 @@ public class ShiftController : BaseController
 			CommandResponse commandResponse = await Mediator.Send(new DeleteShiftCommand { Id = id }, new CancellationToken());
 
 			return commandResponse.IsValid ? Ok(commandResponse) : BadRequest(commandResponse);
+		}
+		catch (ValidationException ex)
+		{
+			return BadRequest(new CommandResponse(ex.Errors.ToList()));
+		}
+	}
+
+	[HttpGet("GetCountByDate")]
+	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer, Admin")]
+	[ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
+	public async Task<IActionResult> GetShiftCountByDate([FromQuery] GetShiftCountQuery getShiftCountQuery)
+	{
+		try
+		{
+			ShiftCountByDateResponse shiftCountByDateResponse =
+				await Mediator.Send(getShiftCountQuery, new CancellationToken());
+
+			return Ok(shiftCountByDateResponse);
 		}
 		catch (ValidationException ex)
 		{
