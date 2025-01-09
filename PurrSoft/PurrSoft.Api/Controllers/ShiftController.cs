@@ -102,7 +102,7 @@ public class ShiftController : BaseController
 
 	[HttpGet("GetCountByDate")]
 	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer, Admin")]
-	[ProducesResponseType(typeof(int), (int)HttpStatusCode.OK)]
+	[ProducesResponseType(typeof(ShiftCountByDateResponse), (int)HttpStatusCode.OK)]
 	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
 	public async Task<IActionResult> GetShiftCountByDate([FromQuery] GetShiftCountQuery getShiftCountQuery)
 	{
