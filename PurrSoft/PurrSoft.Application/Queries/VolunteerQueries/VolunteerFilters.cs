@@ -26,7 +26,31 @@ public static class VolunteerFilters
                 .Where(v => v.Tier.ToString() == query.Tier);
         }
 
-        return volunteersQuery;
+        if (query.LowerStartDate != null)
+        {
+			volunteersQuery = volunteersQuery
+				.Where(v => v.StartDate >= query.LowerStartDate);
+		}
+
+		if (query.UpperStartDate != null)
+		{
+			volunteersQuery = volunteersQuery
+				.Where(v => v.StartDate <= query.UpperStartDate);
+		}
+
+		if (query.LowerEndDate != null)
+		{
+            volunteersQuery = volunteersQuery
+                .Where(v => v.EndDate >= query.LowerEndDate);
+		}
+
+		if (query.UpperEndDate != null)
+		{
+            volunteersQuery = volunteersQuery
+                .Where(v => v.EndDate <= query.UpperEndDate);
+		}
+
+		return volunteersQuery;
     }
 }
 

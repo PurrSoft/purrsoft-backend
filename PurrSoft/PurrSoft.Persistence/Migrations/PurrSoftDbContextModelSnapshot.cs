@@ -678,6 +678,7 @@ namespace PurrSoft.Persistence.Migrations
 			                    b.Navigation("User");
 			                });
 			                
+
             modelBuilder.Entity("PurrSoft.Domain.Entities.Shift", b =>
                 {
                     b.HasOne("PurrSoft.Domain.Entities.Volunteer", "Volunteer")
@@ -752,6 +753,11 @@ namespace PurrSoft.Persistence.Migrations
                     b.Navigation("UserRoles");
                     
                     b.Navigation("Notifications");
+                });
+
+            modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
+                {
+                    b.Navigation("FosteredAnimals");
                 });
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>

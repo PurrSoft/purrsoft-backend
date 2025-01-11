@@ -45,8 +45,7 @@ public class AnimalController : BaseController
     }
 
     [HttpPost("")]
-    //[Authorize(AuthenticationSchemes = "Bearer")]
-    [AllowAnonymous]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Admin")]
     [ProducesResponseType(typeof(CommandResponse<int>), (int)HttpStatusCode.OK)]
     [ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
     public async Task<IActionResult> CreateAnimalAsync(CreateAnimalCommand animalCreateCommand)

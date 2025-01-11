@@ -11,6 +11,7 @@ public static class VolunteerMappers
             UserId = v.UserId,
             FirstName = v.User.FirstName,
             LastName = v.User.LastName,
+            Email = v.User.Email ?? "",
             Status = v.Status.ToString(),
             Tier = v.Tier.ToString()
         });
@@ -26,7 +27,11 @@ public static class VolunteerMappers
             LastShiftDate = v.LastShiftDate.ToString(),
             CreatedAt = v.CreatedAt.ToString(),
             UpdatedAt = v.UpdatedAt.ToString(),
-            Tasks = v.Tasks
+            Tasks = v.Tasks,
+            AvailableHours = v.AvailableHours,
+            TrainingStartDate = v.TrainingStartDate.ToString(),
+            SupervisorId = v.Supervisor != null ? v.Supervisor.Id : null,
+            TrainersId = v.Trainers != null ? v.Trainers.Select(t => t.Id).ToList() : null
         });
 }
 
