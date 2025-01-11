@@ -33,10 +33,17 @@ namespace PurrSoft.Application.Commands.NotificationsCommands
 
                 return CommandResponse.Ok(newNotification.Id);
             }
+            catch (FluentValidation.ValidationException ex)
+            {
+                return (CommandResponse<Guid>)CommandResponse.Failed(ex.Errors.ToList());
+            }
             catch (Exception ex)
             {
                 logRepository.LogException(LogLevel.Error, ex);
-                throw;
+                return (CommandResponse<Guid>)CommandResponse.Failed(new List<ValidationFailure>
+                {
+                    new("Notification", "An error occurred while creating the notification.")
+                });
             }
         }
 
@@ -67,12 +74,16 @@ namespace PurrSoft.Application.Commands.NotificationsCommands
 
                 return CommandResponse.Ok();
             }
+            catch (FluentValidation.ValidationException ex)
+            {
+                return CommandResponse.Failed(ex.Errors.ToList());
+            }
             catch (Exception ex)
             {
                 logRepository.LogException(LogLevel.Error, ex);
                 return CommandResponse.Failed(new List<ValidationFailure>
                 {
-                    new("Notification", "Failed to update notification.")
+                    new("Notification", "An error occurred while updating the notification.")
                 });
             }
         }
@@ -98,12 +109,16 @@ namespace PurrSoft.Application.Commands.NotificationsCommands
 
                 return CommandResponse.Ok();
             }
+            catch (FluentValidation.ValidationException ex)
+            {
+                return CommandResponse.Failed(ex.Errors.ToList());
+            }
             catch (Exception ex)
             {
                 logRepository.LogException(LogLevel.Error, ex);
                 return CommandResponse.Failed(new List<ValidationFailure>
                 {
-                    new("Notification", "Failed to delete notification.")
+                    new("Notification", "An error occurred while deleting the notification.")
                 });
             }
         }
