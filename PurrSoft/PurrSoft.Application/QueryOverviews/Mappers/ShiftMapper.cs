@@ -22,4 +22,14 @@ public static class ShiftMapper
 			ShiftType = s.ShiftType.ToString(),
 			VolunteerId = s.VolunteerId
 		});
+
+    public static IQueryable<ShiftVolunteerDto> ProjectToShiftVolunteerDto(this IQueryable<Shift> query)
+        => query.Select(s => new ShiftVolunteerDto
+        {
+            ShiftId = s.Id.ToString(),
+            VolunteerId = s.VolunteerId,
+            ShiftType = s.ShiftType.ToString(),
+            FullName = s.Volunteer.User.FullName,
+            Email = s.Volunteer.User.Email
+        });
 }
