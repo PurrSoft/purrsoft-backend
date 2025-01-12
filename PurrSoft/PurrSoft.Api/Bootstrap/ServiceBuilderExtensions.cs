@@ -65,6 +65,7 @@ public static class ServiceBuilderExtensions
         if (string.IsNullOrEmpty(googleCredentialsConfig.Type) || string.IsNullOrEmpty(googleCredentialsConfig.ProjectId) || string.IsNullOrEmpty(googleCredentialsConfig.PrivateKeyId) || string.IsNullOrEmpty(googleCredentialsConfig.PrivateKey) || string.IsNullOrEmpty(googleCredentialsConfig.ClientEmail) || string.IsNullOrEmpty(googleCredentialsConfig.ClientId) || string.IsNullOrEmpty(googleCredentialsConfig.AuthUri) || string.IsNullOrEmpty(googleCredentialsConfig.TokenUri) || string.IsNullOrEmpty(googleCredentialsConfig.AuthProviderX509CertUrl) || string.IsNullOrEmpty(googleCredentialsConfig.ClientX509CertUrl) || string.IsNullOrEmpty(googleCredentialsConfig.UniverseDomain))
         {
             throw new InvalidOperationException("Invalid Google Credentials configuration.");
+            
         }
         services.AddSingleton(googleCredentialsConfig);
         // Google Sheets Api

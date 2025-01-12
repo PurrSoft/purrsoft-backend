@@ -16,7 +16,7 @@ namespace PurrSoft.Api.Controllers;
 public class ShiftController : BaseController
 {
 	[HttpGet()]
-	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer")]
+	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer, Admin")]
 	[ProducesResponseType(typeof(CollectionResponse<ShiftOverview>), (int)HttpStatusCode.OK)]
 	public async Task<CollectionResponse<ShiftOverview>> GetShifts([FromQuery] GetFilteredShiftsQueries getFilteredShiftsQueries)
 	{
@@ -24,7 +24,7 @@ public class ShiftController : BaseController
 	}
 
 	[HttpGet("{id}")]
-	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer")]
+	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer, Admin")]
 	[ProducesResponseType(typeof(ShiftDto), (int)HttpStatusCode.OK)]
 	[ProducesResponseType((int)HttpStatusCode.NotFound)]
 	public async Task<IActionResult> GetShiftById([FromRoute] Guid Id)
@@ -42,7 +42,7 @@ public class ShiftController : BaseController
 	}
 
 	[HttpPost()]
-	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer")]
+	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer, Admin")]
 	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
 	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
 	public async Task<IActionResult> CreateShift([FromBody] CreateShiftCommand createShiftCommand)
@@ -60,7 +60,7 @@ public class ShiftController : BaseController
 	}
 
 	[HttpPut()]
-	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer")]
+	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer, Admin")]
 	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
 	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
 	[ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -82,7 +82,7 @@ public class ShiftController : BaseController
 	}
 
 	[HttpDelete("{id}")]
-	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer")]
+	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer, Admin")]
 	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
 	[ProducesResponseType((int)HttpStatusCode.BadRequest)]
 	public async Task<IActionResult> DeleteShift([FromRoute] string id)
