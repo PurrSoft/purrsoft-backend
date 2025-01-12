@@ -16,6 +16,7 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 	public DbSet<AnimalFosterMap> AnimalFosters { get; set; }
 	public DbSet<AnimalProfile> AnimalProfiles { get; set; }
 	public DbSet<Shift> Shifts { get; set; }
+	public DbSet<Request> Requests { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -28,6 +29,7 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 		ConfigureShifts(modelBuilder);
 		ConfigureAnimalProfile(modelBuilder);
 		ConfigureFosterAnimals(modelBuilder);
+		ConfigureRequests(modelBuilder);
 		modelBuilder.SeederForRoles();
 	}
 
@@ -129,5 +131,15 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 			entity.Property(ap => ap.UsefulLinks)
 				.HasColumnType("jsonb");
 		});
+	}
+
+	private static void ConfigureRequests(ModelBuilder builder)
+	{
+		builder.Entity<Request>().HasKey(r => r.Id);
+		builder.Entity<Request>()
+			.HasOne(r => r.User)
+			.WithMany(u => u.Requests)
+			.HasForeignKey(r => r.UserId)
+			.IsRequired();
 	}
 }

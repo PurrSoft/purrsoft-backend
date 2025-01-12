@@ -9,9 +9,11 @@ public class ApplicationUser : IdentityUser
     public string FullName => $"{FirstName} {LastName}";
 	public string? Address { get; set; }
 	public virtual ICollection<UserRole> UserRoles { get; set; }
+    public virtual ICollection<Request> Requests { get; set; }
 
-    public ApplicationUser()
+	public ApplicationUser()
     {
         UserRoles = [];
-    }
+		Requests = [];
+	}
 }
