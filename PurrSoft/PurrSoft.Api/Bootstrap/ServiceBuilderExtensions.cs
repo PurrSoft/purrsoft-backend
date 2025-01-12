@@ -104,6 +104,9 @@ public static class ServiceBuilderExtensions
         // Configure Identity
         services.ConfigureIdentity();
 
+        // Register SignalR
+        services.AddSignalR();
+
         // Register MediatR
         services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblies(typeof(GetLoggedInUserQuery).Assembly));

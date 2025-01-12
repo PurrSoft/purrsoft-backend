@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using PurrSoft.Application.Interfaces;
 using PurrSoft.Common.Identity;
 using PurrSoft.Infrastructure.RequestBehaviors;
 using PurrSoft.Infrastructure.Services;
@@ -16,5 +17,7 @@ public static class ServiceBuilderExtensions
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
         //add current user service
         services.AddScoped<ICurrentUserService, CurrentUserService>();
+        //add signalr service
+        services.AddScoped<ISignalRService, SignalRService>();
     }
 }
