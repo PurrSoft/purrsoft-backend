@@ -39,7 +39,7 @@ namespace PurrSoft.Application.Queries.AnimalProfileQueries
         {
             if (!Guid.TryParse(request.AnimalId, out var profileId))
             {
-                return CommandResponse.Failed<AnimalProfileDto>(new[] { "Invalid Animal profile ID format." });
+                return CommandResponse.Failed<AnimalProfileDto>("Invalid Animal profile ID format.");
             }
 
             // Retrieve and map a single profile
@@ -49,22 +49,34 @@ namespace PurrSoft.Application.Queries.AnimalProfileQueries
                 .FirstOrDefaultAsync(cancellationToken);
 
             return profile == null
-                ? CommandResponse.Failed<AnimalProfileDto>(new[] { "Animal profile not found." })
+                ? CommandResponse.Failed<AnimalProfileDto>("Animal profile not found.")
                 : CommandResponse.Ok(profile);
         }
         
-        private static AnimalProfileDto MapToDto(AnimalProfile ap) => new AnimalProfileDto
+        private static AnimalProfileDto MapToDto(AnimalProfile ap) => new()
         {
             AnimalId = ap.AnimalId,
-            Passport = ap.Passport,
-            Microchip = ap.Microchip,
             CurrentDisease = ap.CurrentDisease,
             CurrentMedication = ap.CurrentMedication,
             PastDisease = ap.PastDisease,
+            Passport = ap.Passport,
+            Microchip = ap.Microchip,
+            ExternalDeworming = ap.ExternalDeworming,
+            InternalDeworming = ap.InternalDeworming,
             CurrentTreatment = ap.CurrentTreatment,
-            RabiesVaccine = ap.RabiesVaccine,
             MultivalentVaccine = ap.MultivalentVaccine,
+            RabiesVaccine = ap.RabiesVaccine,
+            FIVFeLVTest = ap.FIVFeLVTest,
+            CoronavirusVaccine = ap.CoronavirusVaccine,
+            GiardiaTest = ap.GiardiaTest,
+            EarMiteTreatment = ap.EarMiteTreatment,
+            IntakeNotes = ap.IntakeNotes,
+            AdditionalMedicalInfo = ap.AdditionalMedicalInfo,
+            AdditionalInfo = ap.AdditionalInfo,
+            MedicalAppointments = ap.MedicalAppointments,
+            RefillReminders = ap.RefillReminders,
             UsefulLinks = ap.UsefulLinks
         };
+
     }
 }
