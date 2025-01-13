@@ -31,4 +31,11 @@ public static class ShiftFilters
 		}
 		return shiftQuery;
 	}
+
+    public static IQueryable<Shift> ApplyDateFilter(
+        this IQueryable<Shift> shiftQuery,
+        GetShiftVolunteersQuery query)
+    {
+        return shiftQuery.Where(s => s.Start.Date == query.DayOfShift.Date);
+    }
 }
