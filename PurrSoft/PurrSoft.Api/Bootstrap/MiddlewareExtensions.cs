@@ -1,4 +1,6 @@
-﻿namespace PurrSoft.Api.Bootstrap;
+﻿using PurrSoft.Infrastructure.Hubs;
+
+namespace PurrSoft.Api.Bootstrap;
 
 public static class MiddlewareExtensions
 {
@@ -24,6 +26,7 @@ public static class MiddlewareExtensions
         app.UseAuthorization();
 
         app.MapControllers();
+        app.MapHub<GeneralHub>("/hubs/general");
 
         return app;
     }

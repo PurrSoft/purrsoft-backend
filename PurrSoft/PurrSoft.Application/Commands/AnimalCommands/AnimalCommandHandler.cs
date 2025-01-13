@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
+using PurrSoft.Application.Interfaces;
+using PurrSoft.Application.Models;
+using PurrSoft.Application.QueryOverviews.Mappers;
 using PurrSoft.Domain.Entities;
 using PurrSoft.Domain.Entities.Enums;
 using PurrSoft.Domain.Repositories;
@@ -12,6 +15,7 @@ namespace PurrSoft.Application.Commands.AnimalCommands;
 public class AnimalCommandHandler(
     IRepository<Animal> animalRepository,
     IConfiguration configuration,
+    ISignalRService signalRService,
     ILogRepository<AnimalCommandHandler> logRepository)
     : IRequestHandler<CreateAnimalCommand, CommandResponse>,
       IRequestHandler<UpdateAnimalCommand, CommandResponse>,
@@ -60,6 +64,10 @@ public class AnimalCommandHandler(
             animal.ImageUrl = request.animalDto.ImageUrl;
             
             await animalRepository.SaveChangesAsync(cancellationToken);
+
+            var animalDto = Queryable.AsQueryable(new List<Animal> { animal }).ProjectToDto().FirstOrDefault();
+
+            await signalRService.NotifyAllAsync<AnimalDto>(OperationType.Update, animalDto);
 
             return CommandResponse.Ok();
         }
