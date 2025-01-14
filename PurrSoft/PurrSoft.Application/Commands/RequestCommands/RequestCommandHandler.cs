@@ -30,13 +30,34 @@ public class RequestCommandHandler(
 				}
 			}
 
-			Request Request = new()
+			Request Request;
+
+			var requestType = Enum.Parse<RequestType>(request.RequestDto.RequestType);
+			if (requestType.Equals(RequestType.Leave))
 			{
-				CreatedAt = DateTime.SpecifyKind(request.RequestDto.CreatedAt, DateTimeKind.Utc),
-				RequestType = Enum.Parse<RequestType>(request.RequestDto.RequestType),
-				Description = request.RequestDto.Description,
-				UserId = request.RequestDto.UserId,
-				Images = request.RequestDto.Images
+				Request = new LeaveRequest
+				{
+					CreatedAt = DateTime.UtcNow,
+					RequestType = Enum.Parse<RequestType>(request.RequestDto.RequestType),
+					Description = request.RequestDto.Description,
+					UserId = request.RequestDto.UserId,
+					Images = request.RequestDto.Images,
+
+					Approved = request.RequestDto.Approved ?? false, // should be handled in the validator
+					StartDate = request.RequestDto.StartDate ?? DateTime.UtcNow,
+					EndDate = request.RequestDto.EndDate ?? DateTime.UtcNow.AddDays(1),
+				};
+			}
+			else
+			{
+				Request = new Request
+				{
+					CreatedAt = DateTime.UtcNow,
+					RequestType = Enum.Parse<RequestType>(request.RequestDto.RequestType),
+					Description = request.RequestDto.Description,
+					UserId = request.RequestDto.UserId,
+					Images = request.RequestDto.Images
+				};
 			};
 
 			_requestRepository.Add(Request);
@@ -73,8 +94,18 @@ public class RequestCommandHandler(
 				}
 			}
 
+			if (Request is LeaveRequest leaveRequest)
+			{
+				if (request.RequestDto.Approved.HasValue)
+					leaveRequest.Approved = request.RequestDto.Approved.Value;
+				if (request.RequestDto.StartDate.HasValue)
+					leaveRequest.StartDate = request.RequestDto.StartDate.Value;
+				if (request.RequestDto.EndDate.HasValue)
+					leaveRequest.EndDate = request.RequestDto.EndDate.Value;
+			}
+
 			Request.Description = request.RequestDto.Description;
-			Request.RequestType = Enum.Parse<RequestType>(request.RequestDto.RequestType);
+			//Request.RequestType = Enum.Parse<RequestType>(request.RequestDto.RequestType);
 			Request.CreatedAt = request.RequestDto.CreatedAt;
 			Request.UserId = request.RequestDto.UserId;
 			Request.Images = request.RequestDto.Images;

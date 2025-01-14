@@ -43,10 +43,38 @@ public class RequestQueryHandler(IRepository<Request> requestRepository, ILogRep
 
 	public async Task<RequestDto?> Handle(GetRequestQuery request, CancellationToken cancellationToken)
 	{
-		RequestDto? requestDto = await requestRepository.Query(s => s.Id == request.Id)
-			.ProjectToDto()
+		var requestEntity = await requestRepository.Query(s => s.Id == request.Id)
 			.FirstOrDefaultAsync(cancellationToken);
 
-		return requestDto;
+		if (requestEntity == null)
+		{
+			return null;
+		}
+
+		return requestEntity switch
+		{
+			LeaveRequest leaveRequest => new RequestDto
+			{
+				Id = leaveRequest.Id,
+				CreatedAt = leaveRequest.CreatedAt,
+				UserId = leaveRequest.UserId,
+				RequestType = leaveRequest.RequestType.ToString(),
+				Description = leaveRequest.Description,
+				Images = leaveRequest.Images,
+				Approved = leaveRequest.Approved,
+				StartDate = leaveRequest.StartDate,
+				EndDate = leaveRequest.EndDate,
+				Duration = leaveRequest.Duration
+			},
+			_ => new RequestDto
+			{
+				Id = requestEntity.Id,
+				CreatedAt = requestEntity.CreatedAt,
+				UserId = requestEntity.UserId,
+				RequestType = requestEntity.RequestType.ToString(),
+				Description = requestEntity.Description,
+				Images = requestEntity.Images
+			}
+		};
 	}
 }
