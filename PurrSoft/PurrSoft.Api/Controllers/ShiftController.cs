@@ -42,7 +42,16 @@ public class ShiftController : BaseController
 		}
 	}
 
-	[HttpPost()]
+	[HttpGet("Volunteers")]
+    [Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer, Admin")]
+    [ProducesResponseType(typeof(CollectionResponse<ShiftVolunteerDto>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.NotFound)]
+	public async Task<CollectionResponse<ShiftVolunteerDto>> GetShiftVolunteers([FromQuery] GetShiftVolunteersQuery query)
+	{
+        return await Mediator.Send(query, new CancellationToken());
+    }
+
+    [HttpPost()]
 	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Volunteer, Admin")]
 	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.OK)]
 	[ProducesResponseType((int)HttpStatusCode.BadRequest)]

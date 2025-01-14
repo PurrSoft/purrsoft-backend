@@ -16,7 +16,8 @@ namespace PurrSoft.Application.Queries.ShiftQueries;
 public class ShiftQueryHandler(IRepository<Shift> shiftRepository, ILogRepository<Shift> logRepository) :
 	IRequestHandler<GetFilteredShiftsQueries, CollectionResponse<ShiftOverview>>,
 	IRequestHandler<GetShiftQuery, ShiftDto?>,
-	IRequestHandler<GetShiftCountQuery, ShiftCountByDateResponse>
+	IRequestHandler<GetShiftCountQuery, ShiftCountByDateResponse>,
+	IRequestHandler<GetShiftVolunteersQuery, CollectionResponse<ShiftVolunteerDto>>
 {
 	public async Task<CollectionResponse<ShiftOverview>> Handle(GetFilteredShiftsQueries request, CancellationToken cancellationToken)
 	{
@@ -51,6 +52,7 @@ public class ShiftQueryHandler(IRepository<Shift> shiftRepository, ILogRepositor
 		return shiftDto;
 	}
 
+
 	public async Task<ShiftCountByDateResponse> Handle(GetShiftCountQuery request, CancellationToken cancellationToken)
 	{
 		var shifts = await shiftRepository.Query(s => s.Start.Date == request.Date.Date).ToListAsync(cancellationToken);	
@@ -64,4 +66,27 @@ public class ShiftQueryHandler(IRepository<Shift> shiftRepository, ILogRepositor
 
 		return shiftCountByDateResponse;
 	}
+
+	public async Task<CollectionResponse<ShiftVolunteerDto>> Handle(GetShiftVolunteersQuery request, CancellationToken cancellationToken)
+	{
+        IQueryable<Shift> query = shiftRepository.Query();
+
+		request.DayOfShift = DateTime.SpecifyKind(request.DayOfShift, DateTimeKind.Utc);
+
+        try
+        {
+            query = query.ApplyDateFilter(request);
+        }
+        catch (ArgumentException ex)
+        {
+            logRepository.Log(LogLevel.Error, ex.Message);
+            return new CollectionResponse<ShiftVolunteerDto>([], 0);
+        }
+
+        IQueryable<ShiftVolunteerDto> shiftVolunteerDtos = query.ProjectToShiftVolunteerDto();
+        shiftVolunteerDtos = shiftVolunteerDtos
+            .SortAndPaginate(request.SortBy, request.SortOrder, request.Skip, request.Take);
+        List<ShiftVolunteerDto> shiftVolunteersList = await shiftVolunteerDtos.ToListAsync(cancellationToken);
+        return new CollectionResponse<ShiftVolunteerDto>(shiftVolunteersList, shiftVolunteersList.Count);
+  }
 }

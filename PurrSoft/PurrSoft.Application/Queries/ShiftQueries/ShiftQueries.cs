@@ -21,7 +21,17 @@ public class GetShiftQuery : BaseRequest<ShiftDto?>
 	public Guid Id { get; set; }
 }
 
+
 public class GetShiftCountQuery : BaseRequest<ShiftCountByDateResponse>
 {
 	public DateTime Date { get; set; }
+}
+
+public class GetShiftVolunteersQuery: BaseRequest<CollectionResponse<ShiftVolunteerDto>>
+{
+	public required DateTime DayOfShift { get; set; }
+    public int Skip { get; set; }
+    public int Take { get; set; }
+    public string? SortBy { get; set; }
+    public string? SortOrder { get; set; }
 }
