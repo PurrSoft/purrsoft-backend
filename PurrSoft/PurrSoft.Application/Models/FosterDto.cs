@@ -1,6 +1,4 @@
-﻿using PurrSoft.Domain.Entities.Enums;
-
-namespace PurrSoft.Application.Models;
+﻿namespace PurrSoft.Application.Models;
 
 public class FosterDto
 {

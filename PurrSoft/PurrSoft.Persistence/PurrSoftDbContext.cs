@@ -6,9 +6,10 @@ using PurrSoft.Persistence.Seeders;
 
 namespace PurrSoft.Persistence;
 
-public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<ApplicationUser, Role, string, IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>
-	, IdentityRoleClaim<string>, IdentityUserToken<string>>(options)
+public class PurrSoftDbContext(DbContextOptions options) 
+    : IdentityDbContext<ApplicationUser, Role, string, IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>(options)
 {
+
 	public DbSet<ApplicationLog> ApplicationLogs { get; set; }
 	public DbSet<Foster> Fosters { get; set; }
 	public DbSet<Animal> Animals { get; set; }
@@ -17,6 +18,7 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 	public DbSet<AnimalProfile> AnimalProfiles { get; set; }
 	public DbSet<Shift> Shifts { get; set; }
 	public DbSet<Request> Requests { get; set; }
+  public DbSet<Notifications> Notifications { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -30,6 +32,8 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 		ConfigureAnimalProfile(modelBuilder);
 		ConfigureFosterAnimals(modelBuilder);
 		ConfigureRequests(modelBuilder);
+    ConfigureNotifications(modelBuilder);
+
 		modelBuilder.SeederForRoles();
 	}
 
@@ -44,8 +48,8 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 		builder.Entity<Role>().Property(r => r.Id).ValueGeneratedNever();
 		builder.Entity<Role>().HasMany(r => r.UserRoles).WithOne(ur => ur.Role).HasForeignKey(ur => ur.RoleId);
 	}
-
-	private static void ConfigureFosters(ModelBuilder builder)
+    
+  private static void ConfigureFosters(ModelBuilder builder)
 	{
 		builder.Entity<Foster>().HasKey(f => f.UserId);
 		builder.Entity<Foster>().Property(f => f.UserId).ValueGeneratedNever();
@@ -56,7 +60,7 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 			.IsRequired()
 			.OnDelete(DeleteBehavior.Restrict);
 	}
-
+      
 	private static void ConfigureShifts(ModelBuilder builder)
 	{
 		builder.Entity<Shift>().HasKey(s => s.Id);
@@ -66,8 +70,9 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 			.HasForeignKey(s => s.VolunteerId)
 			.OnDelete(DeleteBehavior.Restrict);
 	}
+  
 
-	private static void ConfigureVolunteers(ModelBuilder builder)
+private static void ConfigureVolunteers(ModelBuilder builder)
 	{
 		builder.Entity<Volunteer>().HasKey(v => v.UserId);
 		builder.Entity<Volunteer>()
@@ -95,6 +100,7 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 					  .OnDelete(DeleteBehavior.Cascade)
 			);
     }
+      
 	private static void ConfigureFosterAnimals(ModelBuilder builder)
 	{
 		builder.Entity<AnimalFosterMap>().HasKey(af => af.Id);
@@ -142,4 +148,18 @@ public class PurrSoftDbContext(DbContextOptions options) : IdentityDbContext<App
 			.HasForeignKey(r => r.UserId)
 			.IsRequired();
 	}
+
+
+  private static void ConfigureNotifications(ModelBuilder builder)
+  {
+      builder.Entity<Notifications>()
+          .HasKey(n => n.Id); // Primary key
+
+      builder.Entity<Notifications>()
+          .HasOne(n => n.User) // Navigation property to ApplicationUser
+          .WithMany(u => u.Notifications) // Specify collection navigation in ApplicationUser
+          .HasForeignKey(n => n.UserId) // Foreign key in Notifications
+          .IsRequired() // UserId is required
+          .OnDelete(DeleteBehavior.Cascade); // Cascade delete notifications when the user is deleted
+  }
 }
