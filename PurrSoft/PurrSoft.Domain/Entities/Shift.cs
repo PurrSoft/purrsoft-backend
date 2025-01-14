@@ -7,6 +7,7 @@ public class Shift
 	public Guid Id { get; set; }
 	public DateTime Start { get; set; }
 	public ShiftType ShiftType { get; set; }
+	public ShiftStatus ShiftStatus { get; set; }
 	public Volunteer? Volunteer { get; set; }
 	public string? VolunteerId { get; set; }
 }

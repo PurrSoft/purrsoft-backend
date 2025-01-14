@@ -12,6 +12,9 @@ public class CreateShiftCommandValidator : AbstractValidator<CreateShiftCommand>
 		RuleFor(x => x.ShiftDto.ShiftType)
 			.NotNull().NotEmpty()
 			.Must(x => Enum.IsDefined(typeof(ShiftType), x));
+		RuleFor(x => x.ShiftDto.ShiftStatus)
+			.NotNull().NotEmpty()
+			.Must(x => Enum.IsDefined(typeof(ShiftStatus), x));
 		RuleFor(x => x.ShiftDto.VolunteerId)
 			.NotEmpty()
 			.When(x => x.ShiftDto.VolunteerId != null);
@@ -29,6 +32,9 @@ public class UpdateShiftCommandValidator : AbstractValidator<UpdateShiftCommand>
 		RuleFor(x => x.ShiftDto.ShiftType)
 			.NotNull().NotEmpty()
 			.Must(x => Enum.IsDefined(typeof(ShiftType), x));
+		RuleFor(x => x.ShiftDto.ShiftStatus)
+			.NotNull().NotEmpty()
+			.Must(x => Enum.IsDefined(typeof(ShiftStatus), x));
 		RuleFor(x => x.ShiftDto.VolunteerId)
 			.NotEmpty()
 			.When(x => x.ShiftDto.VolunteerId != null);

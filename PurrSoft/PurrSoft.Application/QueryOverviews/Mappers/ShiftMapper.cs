@@ -11,6 +11,7 @@ public static class ShiftMapper
 			Id = s.Id,
 			Start = s.Start,
 			ShiftType = s.ShiftType.ToString(),
+			ShiftStatus = s.ShiftStatus.ToString(),
 			VolunteerId = s.VolunteerId
 		});
 
@@ -20,6 +21,7 @@ public static class ShiftMapper
 			Id = s.Id,
 			Start = s.Start,
 			ShiftType = s.ShiftType.ToString(),
+			ShiftStatus = s.ShiftStatus.ToString(),
 			VolunteerId = s.VolunteerId
 		});
 

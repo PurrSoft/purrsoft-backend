@@ -20,9 +20,26 @@ public static class ShiftFilters
 			}
 		}
 
-		if (query.Start != null)
+		if (!string.IsNullOrEmpty(query.ShiftStatus))
 		{
-			shiftQuery = shiftQuery.Where(s => s.Start >= query.Start);
+			if (Enum.TryParse(query.ShiftStatus, out ShiftStatus shiftStatus))
+			{
+				shiftQuery = shiftQuery.Where(s => s.ShiftStatus == shiftStatus);
+			}
+			else
+			{
+				throw new ArgumentException("Invalid shift status");
+			}
+		}
+
+		if (query.UpperStartTime != null)
+		{
+			shiftQuery = shiftQuery.Where(s => s.Start <= query.UpperStartTime);
+		}
+
+		if (query.LowerStartTime != null)
+		{
+			shiftQuery = shiftQuery.Where(s => s.Start >= query.LowerStartTime);
 		}
 
 		if (!string.IsNullOrEmpty(query.VolunteerId))
