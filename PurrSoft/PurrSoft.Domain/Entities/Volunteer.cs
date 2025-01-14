@@ -1,6 +1,4 @@
 ﻿using PurrSoft.Domain.Entities.Enums;
-using System;
-using System.Collections.Generic;
 
 namespace PurrSoft.Domain.Entities;
 

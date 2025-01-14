@@ -17,6 +17,7 @@ public class PurrSoftDbContext(DbContextOptions options)
 	public DbSet<AnimalFosterMap> AnimalFosters { get; set; }
 	public DbSet<AnimalProfile> AnimalProfiles { get; set; }
 	public DbSet<Shift> Shifts { get; set; }
+	public DbSet<Request> Requests { get; set; }
   public DbSet<Notifications> Notifications { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,7 +31,9 @@ public class PurrSoftDbContext(DbContextOptions options)
 		ConfigureShifts(modelBuilder);
 		ConfigureAnimalProfile(modelBuilder);
 		ConfigureFosterAnimals(modelBuilder);
+		ConfigureRequests(modelBuilder);
     ConfigureNotifications(modelBuilder);
+
 		modelBuilder.SeederForRoles();
 	}
 
@@ -136,6 +139,17 @@ private static void ConfigureVolunteers(ModelBuilder builder)
 		});
 	}
 
+	private static void ConfigureRequests(ModelBuilder builder)
+	{
+		builder.Entity<Request>().HasKey(r => r.Id);
+		builder.Entity<Request>()
+			.HasOne(r => r.User)
+			.WithMany(u => u.Requests)
+			.HasForeignKey(r => r.UserId)
+			.IsRequired();
+	}
+
+
   private static void ConfigureNotifications(ModelBuilder builder)
   {
       builder.Entity<Notifications>()
@@ -149,4 +163,3 @@ private static void ConfigureVolunteers(ModelBuilder builder)
           .OnDelete(DeleteBehavior.Cascade); // Cascade delete notifications when the user is deleted
   }
 }
-
