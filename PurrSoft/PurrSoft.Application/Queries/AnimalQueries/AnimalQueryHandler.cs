@@ -19,16 +19,7 @@ public class AnimalQueryHandler(IRepository<Animal> animalRepository) :
     {
         var animal = await animalRepository
             .Query(x => x.Id.ToString() == request.Id)
-            .Select(a => new AnimalDto
-            {
-                Id = a.Id.ToString(),
-                Name = a.Name,
-                AnimalType = a.AnimalType.ToString(),
-                Gender = a.Gender,
-                YearOfBirth = a.YearOfBirth,
-                Sterilized = a.Sterilized,
-                ImageUrl = a.ImageUrl
-            })
+            .ProjectToDto()
             .FirstOrDefaultAsync(cancellationToken);
 
         return animal;

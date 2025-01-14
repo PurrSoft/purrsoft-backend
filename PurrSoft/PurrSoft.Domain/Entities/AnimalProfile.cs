@@ -1,37 +1,58 @@
 ﻿using Newtonsoft.Json;
+using PurrSoft.Domain.Entities.Enums;
 using PurrSoft.Domain.Entities.JsonConvertor;
 
 namespace PurrSoft.Domain.Entities;
 
 public class AnimalProfile
 {
-    public Guid AnimalId { get; set; } // Foreign key referencing the associated animal
-    public string? CurrentDisease { get; set; } // The current medical condition of the animal
-    public string? CurrentMedication { get; set; } // Medication the animal is currently taking
-    public string? PastDisease { get; set; } // Past medical conditions
+    public Guid AnimalId { get; set; }
 
-    public Animal? Animal { get; set; } // Associated animal entity
-    
+    public string? Contract { get; set; }
 
-    
-    public string?  Passport { get; set; } // Animal's health or identification document
-    public string? Microchip { get; set; } // Unique microchip identifier for the animal
-    public string? ExternalDeworming { get; set; } // Records of external parasite treatments
-    public string? InternalDeworming { get; set; } // Records of internal parasite treatments
-    public string? CurrentTreatment { get; set; } // Ongoing treatments for the animal
-    public string? MultivalentVaccine { get; set; } // Details of multivalent vaccine status
-    public string? RabiesVaccine { get; set; } // Rabies vaccination status
-    public string? FIVFeLVTest { get; set; } // FIV/FeLV test results (Feline diseases)
-    public string? CoronavirusVaccine { get; set; } // Status of coronavirus vaccination
-    public string? GiardiaTest { get; set; } // Results of Giardia infection test
-    public string? EarMiteTreatment { get; set; } // Ear mite (Auricular mange) treatment details
-    public string? IntakeNotes { get; set; } // Notes recorded when the animal was taken in
-    public string? AdditionalMedicalInfo { get; set; } // Other medical information not covered elsewhere
-    public string? AdditionalInfo { get; set; } // General additional notes
-    public string? MedicalAppointments { get; set; } // Upcoming or past medical appointments
-    public string? RefillReminders { get; set; } // Medication refill reminders or notes
-    
+    public ContractState? ContractState { get; set; }
+
+    public DateTime? ShelterCheckIn { get; set; }
+
+    public string? CurrentDisease { get; set; }
+
+    public string? CurrentMedication { get; set; }
+
+    public string? PastDisease { get; set; }
+
+    public Animal? Animal { get; set; }
+
+    public string? Microchip { get; set; } 
+
+    public string? ExternalDeworming { get; set; } 
+
+    public string? InternalDeworming { get; set; }
+
+    public string? CurrentTreatment { get; set; }
+
+    public string? MultivalentVaccine { get; set; }
+
+    public string? RabiesVaccine { get; set; }
+
+    public string? FIVFeLVTest { get; set; } 
+
+    public string? CoronavirusVaccine { get; set; }
+
+    public string? GiardiaTest { get; set; }
+
+    public string? EarMiteTreatment { get; set; } 
+
+    public string? IntakeNotes { get; set; }
+
+    public string? AdditionalMedicalInfo { get; set; }
+
+    public string? AdditionalInfo { get; set; }
+
+    public string? MedicalAppointments { get; set; }
+
+    public string? RefillReminders { get; set; }
+
     [JsonProperty("UsefulLinks")]
     [JsonConverter(typeof(SingleOrArrayJsonConverter<string>))]
-    public List<string>? UsefulLinks { get; set; } = new(); // Helpful links related to the profile
+    public List<string>? UsefulLinks { get; set; } = new();
 }
