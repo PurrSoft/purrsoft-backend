@@ -17,7 +17,9 @@ public class PurrSoftDbContext(DbContextOptions options)
 	public DbSet<AnimalFosterMap> AnimalFosters { get; set; }
 	public DbSet<AnimalProfile> AnimalProfiles { get; set; }
 	public DbSet<Shift> Shifts { get; set; }
-  public DbSet<Notifications> Notifications { get; set; }
+	public DbSet<Notifications> Notifications { get; set; }
+	public DbSet<Event> Events { get; set; }
+	public DbSet<EventVolunteerMap> EventVolunteerMaps {  get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -30,7 +32,8 @@ public class PurrSoftDbContext(DbContextOptions options)
 		ConfigureShifts(modelBuilder);
 		ConfigureAnimalProfile(modelBuilder);
 		ConfigureFosterAnimals(modelBuilder);
-    ConfigureNotifications(modelBuilder);
+		ConfigureNotifications(modelBuilder);
+		ConfigureEvents(modelBuilder);
 		modelBuilder.SeederForRoles();
 	}
 
@@ -96,6 +99,11 @@ private static void ConfigureVolunteers(ModelBuilder builder)
 					  .HasForeignKey("VolunteerId")
 					  .OnDelete(DeleteBehavior.Cascade)
 			);
+		builder.Entity<Volunteer>()
+			.HasMany(v => v.EventVolunteerMaps)
+			.WithOne(evm => evm.Volunteer)
+			.HasForeignKey(evm => evm.VolunteerId)
+			.OnDelete(DeleteBehavior.Cascade);
     }
       
 	private static void ConfigureFosterAnimals(ModelBuilder builder)
@@ -121,32 +129,44 @@ private static void ConfigureVolunteers(ModelBuilder builder)
 	{
 		builder.Entity<AnimalProfile>(entity =>
 		{
-			// Configure the primary key to use AnimalId
 			entity.HasKey(ap => ap.AnimalId);
 
-			// Configure one-to-one relationship between Animal and AnimalProfile
 			entity.HasOne(ap => ap.Animal)
-				.WithOne(a => a.AnimalProfile) // Define the one-to-one relationship
-				.HasForeignKey<AnimalProfile>(ap => ap.AnimalId) // Ensure AnimalId is used as the FK
-				.OnDelete(DeleteBehavior.Cascade); // Cascade delete when Animal is deleted
+				.WithOne(a => a.AnimalProfile) 
+				.HasForeignKey<AnimalProfile>(ap => ap.AnimalId)
+				.OnDelete(DeleteBehavior.Cascade);
 
-			// Configure JSON column for UsefulLinks (if applicable)
 			entity.Property(ap => ap.UsefulLinks)
 				.HasColumnType("jsonb");
 		});
 	}
 
-  private static void ConfigureNotifications(ModelBuilder builder)
-  {
-      builder.Entity<Notifications>()
+	private static void ConfigureNotifications(ModelBuilder builder)
+	{
+		builder.Entity<Notifications>()
           .HasKey(n => n.Id); // Primary key
 
-      builder.Entity<Notifications>()
-          .HasOne(n => n.User) // Navigation property to ApplicationUser
-          .WithMany(u => u.Notifications) // Specify collection navigation in ApplicationUser
-          .HasForeignKey(n => n.UserId) // Foreign key in Notifications
-          .IsRequired() // UserId is required
-          .OnDelete(DeleteBehavior.Cascade); // Cascade delete notifications when the user is deleted
-  }
+		builder.Entity<Notifications>()
+          .HasOne(n => n.User)
+          .WithMany(u => u.Notifications) 
+          .HasForeignKey(n => n.UserId)
+          .IsRequired()
+          .OnDelete(DeleteBehavior.Cascade);
+	}
+
+	private static void ConfigureEvents(ModelBuilder builder)
+	{
+		builder.Entity<Event>()
+			.HasKey(e => e.Id);
+
+		builder.Entity<Event>()
+			.HasMany(e => e.EventVolunteerMappings)
+			.WithOne(evm => evm.Event)
+			.HasForeignKey(e => e.EventId)
+			.OnDelete(DeleteBehavior.Cascade);
+
+		builder.Entity<EventVolunteerMap>()
+			.HasKey(nameof(EventVolunteerMap.EventId), nameof(EventVolunteerMap.VolunteerId));
+	}
 }
 

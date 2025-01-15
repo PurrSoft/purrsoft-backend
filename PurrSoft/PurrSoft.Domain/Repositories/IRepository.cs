@@ -7,6 +7,7 @@ public interface IRepository<T> where T : class
     IQueryable<T> Query(Expression<Func<T, bool>> whereQueryFilter = null);
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     void Add(T entity);
+    void AddRangeAsync(ICollection<T> entities);
     void Remove(T entity);
     void RemoveRange(IEnumerable<T> entities);
 }

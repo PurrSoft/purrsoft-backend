@@ -10,6 +10,8 @@ public class Repository<T>(PurrSoftDbContext context) : IRepository<T> where T :
 
     public void Add(T entity) => DbContext.Add(entity);
 
+    public void AddRangeAsync(ICollection<T> entities) => DbContext.AddRangeAsync(entities);
+
     public IQueryable<T> Query(Expression<Func<T, bool>> whereFilter = null)
     {
         DbSet<T> query = DbContext.Set<T>();
@@ -17,6 +19,7 @@ public class Repository<T>(PurrSoftDbContext context) : IRepository<T> where T :
     }
 
     public void Remove(T entity) => DbContext.Remove(entity);
+
     public void RemoveRange(IEnumerable<T> entities)
     {
         DbContext.RemoveRange(entities);
