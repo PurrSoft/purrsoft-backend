@@ -17,8 +17,10 @@ public class GetFilteredRequestsQueries : BaseRequest<CollectionResponse<Request
 
 
 	public bool? Approved { get; set; }
-	public DateTime? StartDate { get; set; }
-	public DateTime? EndDate { get; set; }
+	public DateTime? UpperStartDate { get; set; }
+	public DateTime? LowerStartDate { get; set; }
+	public DateTime? UpperEndDate { get; set; }
+	public DateTime? LowerEndDate { get; set; }
 	public TimeSpan? Duration { get; set; }
 }
 

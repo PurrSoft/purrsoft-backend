@@ -24,6 +24,15 @@ public class RequestQueryHandler(IRepository<Request> requestRepository, ILogRep
 		request.UpperCreatedAt = request.UpperCreatedAt != null ?
 			DateTime.SpecifyKind(request.UpperCreatedAt.Value, DateTimeKind.Utc) : null;
 
+		request.LowerStartDate = request.LowerStartDate != null ?
+			DateTime.SpecifyKind(request.LowerStartDate.Value, DateTimeKind.Utc) : null;
+		request.UpperStartDate = request.UpperStartDate != null ?
+			DateTime.SpecifyKind(request.UpperStartDate.Value, DateTimeKind.Utc) : null;
+		request.LowerEndDate = request.LowerEndDate != null ?
+			DateTime.SpecifyKind(request.LowerEndDate.Value, DateTimeKind.Utc) : null;
+		request.UpperEndDate = request.UpperEndDate != null ?
+			DateTime.SpecifyKind(request.UpperEndDate.Value, DateTimeKind.Utc) : null;
+
 		try
 		{
 			query = query.ApplyFilter(request);

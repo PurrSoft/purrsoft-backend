@@ -21,19 +21,41 @@ public static class RequestFilters
 			}
 		}
 
-		if (query.LowerCreatedAt != null)
+		if (query.RequestType == nameof(RequestType.Leave))
 		{
-			requestQuery = requestQuery.Where(r => r.CreatedAt >= query.LowerCreatedAt);
-		}
+			var leaveRequestQuery = requestQuery.OfType<LeaveRequest>();
 
-		if (query.UpperCreatedAt != null)
-		{
-			requestQuery = requestQuery.Where(r => r.CreatedAt <= query.UpperCreatedAt);
-		}
+			if (query.Approved.HasValue)
+			{
+				leaveRequestQuery = leaveRequestQuery.Where(lr => lr.Approved == query.Approved.Value);
+			}
 
-		if (!string.IsNullOrEmpty(query.UserId))
-		{
-			requestQuery = requestQuery.Where(r => r.UserId == query.UserId);
+			if (query.LowerStartDate != null)
+			{
+				leaveRequestQuery = leaveRequestQuery.Where(lr => lr.StartDate >= query.LowerStartDate);
+			}
+
+			if (query.UpperStartDate != null)
+			{
+				leaveRequestQuery = leaveRequestQuery.Where(lr => lr.StartDate <= query.UpperStartDate);
+			}
+
+			if (query.LowerEndDate != null)
+			{
+				leaveRequestQuery = leaveRequestQuery.Where(lr => lr.EndDate >= query.LowerEndDate);
+			}
+
+			if (query.UpperEndDate != null)
+			{
+				leaveRequestQuery = leaveRequestQuery.Where(lr => lr.EndDate <= query.UpperEndDate);
+			}
+
+			if (query.Duration != null)
+			{
+				leaveRequestQuery = leaveRequestQuery.Where(lr => lr.Duration == query.Duration);
+			}
+
+			return leaveRequestQuery; // Return specialized query for LeaveRequest
 		}
 
 		return requestQuery;
