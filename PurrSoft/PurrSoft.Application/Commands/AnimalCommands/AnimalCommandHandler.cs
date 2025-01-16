@@ -25,13 +25,14 @@ public class AnimalCommandHandler(
             animalRepository.Add(new Animal
             {
                 Id = guid,
-                AnimalType = Enum.Parse<AnimalType>(request.animalDto.AnimalType),
+                AnimalType = request.animalDto.AnimalType != null ? Enum.Parse<AnimalType>(request.animalDto.AnimalType) : null,
                 Name = request.animalDto.Name,
                 YearOfBirth = request.animalDto.YearOfBirth,
                 Gender = request.animalDto.Gender,
                 Sterilized = request.animalDto.Sterilized,
-                ImageUrl = request.animalDto.ImageUrl
-            });
+                Passport = request.animalDto.Passport,
+                ImageUrls = request.animalDto.ImageUrls ?? new List<string>()
+            }); 
 
             await animalRepository.SaveChangesAsync(cancellationToken);
 
@@ -52,12 +53,13 @@ public class AnimalCommandHandler(
                 .Query(x => x.Id == Guid.Parse(request.animalDto.Id))
                 .FirstOrDefaultAsync();
 
-            animal.Name = request.animalDto.Name;
-            animal.AnimalType = Enum.Parse<AnimalType>(request.animalDto.AnimalType);
-            animal.YearOfBirth = request.animalDto.YearOfBirth;
-            animal.Gender = request.animalDto.Gender;
-            animal.Sterilized = request.animalDto.Sterilized;
-            animal.ImageUrl = request.animalDto.ImageUrl;
+            animal.Name = request.animalDto.Name ?? animal.Name;
+            animal.AnimalType = request.animalDto.AnimalType != null ? Enum.Parse<AnimalType>(request.animalDto.AnimalType) : animal.AnimalType;
+            animal.YearOfBirth = request.animalDto.YearOfBirth ?? animal.YearOfBirth;
+            animal.Gender = request.animalDto.Gender ?? animal.Gender;
+            animal.Sterilized = request.animalDto.Sterilized ?? animal.Sterilized;
+            animal.Passport = request.animalDto.Passport ?? animal.Passport;
+            animal.ImageUrls = request.animalDto.ImageUrls ?? animal.ImageUrls;
             
             await animalRepository.SaveChangesAsync(cancellationToken);
 

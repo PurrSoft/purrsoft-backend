@@ -8,6 +8,7 @@ public class AnimalOverview
     public int YearOfBirth { get; set; }
     public string? Gender { get; set; }
     public Boolean Sterilized { get; set; }
-    public string? ImageUrl { get; set; }
+    public string? Passport { get; set; }
+    public IList<string> ImageUrls { get; set; }
 }
 
