@@ -32,6 +32,18 @@ public static class EventFilters
                 .Where(e => e.EventVolunteerMappings != null ? e.EventVolunteerMappings.Any(evm => evm.VolunteerId == query.AttendingVolunteer) : false);
         }
 
+        if (query.FromDate.HasValue)
+        {
+            eventsQuery = eventsQuery
+                .Where(e => e.Date.HasValue ? e.Date.Value >= query.FromDate.Value : false);
+        }
+
+        if (query.ToDate.HasValue)
+        {
+            eventsQuery = eventsQuery
+                .Where(e => e.Date.HasValue ? e.Date.Value <= query.ToDate.Value : false);
+        }
+
         return eventsQuery;
     }
 }

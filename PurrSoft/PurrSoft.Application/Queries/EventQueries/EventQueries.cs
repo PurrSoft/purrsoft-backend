@@ -14,6 +14,8 @@ public class GetFilteredEventsQueries : BaseRequest<CollectionResponse<EventOver
     public DateTime? Date { get; set; }
     public string? Location { get; set; }
     public string? AttendingVolunteer { get; set; }
+    public DateTime? FromDate { get; set; }
+    public DateTime? ToDate { get; set; }
 }
 
 public class GetEventByIdQuery : BaseRequest<EventDto>
