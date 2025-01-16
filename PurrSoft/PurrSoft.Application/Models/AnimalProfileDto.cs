@@ -6,10 +6,12 @@ namespace PurrSoft.Application.Models
     public class AnimalProfileDto
     {
         public Guid AnimalId { get; set; }
+        public string? Contract { get; set; }
+        public string? ContractState { get; set; }
+        public DateTime? ShelterCheckIn { get; set; }
         public string? CurrentDisease { get; set; }
         public string? CurrentMedication { get; set; }
         public string? PastDisease { get; set; }
-        public string? Passport { get; set; }
         public string? Microchip { get; set; }
         public string? ExternalDeworming { get; set; }
         public string? InternalDeworming { get; set; }
