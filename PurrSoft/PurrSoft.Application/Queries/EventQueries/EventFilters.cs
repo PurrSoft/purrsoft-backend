@@ -19,7 +19,7 @@ public static class EventFilters
         if (query.Date.HasValue)
         {
             eventsQuery = eventsQuery
-                .Where(e => e.Date.HasValue ? e.Date.Value.Date == query.Date.Value.Date : false);
+                .Where(e => e.Date.HasValue ? e.Date.Value == query.Date.Value : false);
         }
         if (!string.IsNullOrEmpty(query.Location))
         {
@@ -35,14 +35,15 @@ public static class EventFilters
         if (query.FromDate.HasValue)
         {
             eventsQuery = eventsQuery
-                .Where(e => e.Date.HasValue ? e.Date.Value.Date >= query.FromDate.Value.Date : false);
+                .Where(e => e.Date.HasValue ? e.Date.Value >= query.FromDate.Value : false);
         }
 
         if (query.ToDate.HasValue)
         {
             eventsQuery = eventsQuery
-                .Where(e => e.Date.HasValue ? e.Date.Value.Date <= query.ToDate.Value.Date : false);
+                .Where(e => e.Date.HasValue ? e.Date.Value <= query.ToDate.Value : false);
         }
+
 
         return eventsQuery;
     }

@@ -28,7 +28,7 @@ public class EventCommandHandler(
                 Id = guid,
                 Title = request.EventDto.Title,
                 Subtitle = request.EventDto.Subtitle,
-                Date = request.EventDto.Date,
+                Date = request.EventDto.Date.HasValue ? DateTime.SpecifyKind(request.EventDto.Date.Value, DateTimeKind.Utc) : null,
                 Location = request.EventDto.Location,
                 Description = request.EventDto.Description
             });
@@ -71,7 +71,7 @@ public class EventCommandHandler(
 
             eventEntity.Title = request.EventDto.Title ?? eventEntity.Title;
             eventEntity.Subtitle = request.EventDto.Subtitle ?? eventEntity.Subtitle;
-            eventEntity.Date = request.EventDto.Date ?? eventEntity.Date;
+            eventEntity.Date = request.EventDto.Date.HasValue ? DateTime.SpecifyKind(request.EventDto.Date.Value, DateTimeKind.Utc) : eventEntity.Date;
             eventEntity.Location = request.EventDto.Location ?? eventEntity.Location;
             eventEntity.Description = request.EventDto.Description ?? eventEntity.Description;
 
