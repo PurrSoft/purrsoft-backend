@@ -20,8 +20,8 @@ public class ShiftQueryHandler(IRepository<Shift> shiftRepository, ILogRepositor
 	{
 		IQueryable<Shift> query = shiftRepository.Query();
 
-		request.Start = request.Start != null ?
-			DateTime.SpecifyKind(request.Start.Value, DateTimeKind.Utc) : null;
+		request.UpperStartTime = request.UpperStartTime != null ?
+			DateTime.SpecifyKind(request.UpperStartTime.Value, DateTimeKind.Utc) : null;
 
 		try
 		{

@@ -10,8 +10,10 @@ public class GetFilteredShiftsQueries : BaseRequest<CollectionResponse<ShiftOver
 	public int Take { get; set; }
 	public string? SortBy { get; set; }
 	public string? SortOrder { get; set; }
-	public DateTime? Start { get; set; }
+	public DateTime? UpperStartTime { get; set; }
+	public DateTime? LowerStartTime { get; set; }
 	public string? ShiftType { get; set; }
+	public string? ShiftStatus { get; set; }
 	public string? VolunteerId { get; set; }
 }
 
