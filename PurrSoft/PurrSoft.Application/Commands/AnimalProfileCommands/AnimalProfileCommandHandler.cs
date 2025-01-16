@@ -3,7 +3,10 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
+using PurrSoft.Application.Interfaces;
+using PurrSoft.Application.Models;
 using PurrSoft.Domain.Entities;
+using PurrSoft.Domain.Entities.Enums;
 using PurrSoft.Domain.Repositories;
 
 namespace PurrSoft.Application.Commands.AnimalProfileCommands
@@ -11,7 +14,8 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
     public class AnimalProfileCommandHandler(
         IRepository<AnimalProfile> animalProfileRepository,
         IRepository<Animal> animalRepository,
-        ILogRepository<AnimalProfileCommandHandler> logRepository)
+        ILogRepository<AnimalProfileCommandHandler> logRepository,
+        ISignalRService signalRService)
         : IRequestHandler<AnimalProfileCommands.AnimalProfileCreateCommand, CommandResponse<Guid>>,
           IRequestHandler<AnimalProfileCommands.AnimalProfileUpdateCommand, CommandResponse>,
           IRequestHandler<AnimalProfileCommands.AnimalProfileDeleteCommand, CommandResponse>
@@ -57,6 +61,13 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
 
                 animalProfileRepository.Add(newProfile);
                 await animalProfileRepository.SaveChangesAsync(cancellationToken);
+
+                // implement after Paula's branch with new changes is merged
+                //AnimalProfileDto? profileDto = Queryable
+                //    .AsQueryable(new List<AnimalProfile> { newProfile })
+                //    .ProjectToDto()
+                //    .FirstOrDefault();
+                //await signalRService.NotifyAllAsync<AnimalProfile>(NotificationOperationType.Add, profileDto);
 
                 return CommandResponse.Ok(newProfile.AnimalId);
             }
@@ -106,6 +117,13 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
 
                 await animalProfileRepository.SaveChangesAsync(cancellationToken);
 
+                // implement after Paula's branch with new changes is merged
+                //AnimalProfileDto? profileDto = Queryable
+                //    .AsQueryable(new List<AnimalProfile> { newProfile })
+                //    .ProjectToDto()
+                //    .FirstOrDefault();
+                //await signalRService.NotifyAllAsync<AnimalProfile>(NotificationOperationType.Update, profileDto);
+
                 return CommandResponse.Ok();
             }
             catch (Exception ex)
@@ -136,6 +154,8 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands
 
                 animalProfileRepository.Remove(profile);
                 await animalProfileRepository.SaveChangesAsync(cancellationToken);
+
+                await signalRService.NotifyAllAsync<AnimalProfile>(NotificationOperationType.Delete, request.Id);
 
                 return CommandResponse.Ok();
             }

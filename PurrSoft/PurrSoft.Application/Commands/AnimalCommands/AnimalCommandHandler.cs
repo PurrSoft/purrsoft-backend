@@ -26,7 +26,7 @@ public class AnimalCommandHandler(
         try
         {
             Guid guid = Guid.NewGuid();
-            animalRepository.Add(new Animal
+            Animal animal = new Animal
             {
                 Id = guid,
                 AnimalType = Enum.Parse<AnimalType>(request.animalDto.AnimalType),
@@ -35,9 +35,16 @@ public class AnimalCommandHandler(
                 Gender = request.animalDto.Gender,
                 Sterilized = request.animalDto.Sterilized,
                 ImageUrl = request.animalDto.ImageUrl
-            });
+            };
+            animalRepository.Add(animal);
 
             await animalRepository.SaveChangesAsync(cancellationToken);
+
+            AnimalDto? animalDto = Queryable
+                .AsQueryable(new List<Animal> { animal })
+                .ProjectToDto()
+                .FirstOrDefault();
+            await signalRService.NotifyAllAsync<Animal>(NotificationOperationType.Add, animalDto);
 
             return CommandResponse.Ok(guid.ToString());
         }
@@ -65,9 +72,11 @@ public class AnimalCommandHandler(
             
             await animalRepository.SaveChangesAsync(cancellationToken);
 
-            var animalDto = Queryable.AsQueryable(new List<Animal> { animal }).ProjectToDto().FirstOrDefault();
-
-            await signalRService.NotifyAllAsync<AnimalDto>(OperationType.Update, animalDto);
+            AnimalDto? animalDto = Queryable
+                .AsQueryable(new List<Animal> { animal })
+                .ProjectToDto()
+                .FirstOrDefault();
+            await signalRService.NotifyAllAsync<Animal>(NotificationOperationType.Update, animalDto);
 
             return CommandResponse.Ok();
         }
@@ -94,6 +103,8 @@ public class AnimalCommandHandler(
             animalRepository.Remove(animal);
 
             await animalRepository.SaveChangesAsync(cancellationToken);
+
+            await signalRService.NotifyAllAsync<Animal>(NotificationOperationType.Delete, request.Id);
 
             return CommandResponse.Ok();
         }

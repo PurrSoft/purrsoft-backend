@@ -2,8 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
+using PurrSoft.Application.Interfaces;
+using PurrSoft.Application.Models;
+using PurrSoft.Application.QueryOverviews.Mappers;
 using PurrSoft.Common.Identity;
 using PurrSoft.Domain.Entities;
+using PurrSoft.Domain.Entities.Enums;
 using PurrSoft.Domain.Repositories;
 using static PurrSoft.Application.Commands.AnimalFosterMapCommands.AnimalFosterMapCommands;
 
@@ -15,8 +19,9 @@ public class AnimalFosterMapCommandHandler(
 	IRepository<Foster> _fosterRepository,
 	ILogRepository<AnimalFosterMapCommandHandler> _logRepository,
 	IRepository<ApplicationUser> _userRepository,
-	ICurrentUserService _currentService
-	) :
+	ICurrentUserService _currentService,
+    ISignalRService _signalRService
+    ) :
 	IRequestHandler<AddAnimalToFosterCommand, CommandResponse>,
 	IRequestHandler<UpdateAnimalFosterMapCommand, CommandResponse>,
 	IRequestHandler<RemoveAnimalFromFosterCommand, CommandResponse>
@@ -49,7 +54,14 @@ public class AnimalFosterMapCommandHandler(
 			};
 			_animalFosterMapRepository.Add(animalFosterMap);
 			await _animalFosterMapRepository.SaveChangesAsync(cancellationToken);
-			var resp = CommandResponse.Ok();
+
+            AnimalFosterMapDto? animalFosterMapDto = Queryable
+                .AsQueryable(new List<AnimalFosterMap> { animalFosterMap })
+                .ProjectToDto()
+                .FirstOrDefault();
+			await _signalRService.NotifyAllAsync<AnimalFosterMap>(NotificationOperationType.Add, animalFosterMapDto);
+
+            var resp = CommandResponse.Ok();
 			return CommandResponse.Ok();
 		}
 		catch (DbUpdateException ex)
@@ -119,7 +131,14 @@ public class AnimalFosterMapCommandHandler(
 			animalFosterMap.SupervisingComment = request.AnimalFosterMapDto.SupervisingComment;
 
 			await _animalFosterMapRepository.SaveChangesAsync(cancellationToken);
-			return CommandResponse.Ok();
+
+            AnimalFosterMapDto? animalFosterMapDto = Queryable
+                .AsQueryable(new List<AnimalFosterMap> { animalFosterMap })
+                .ProjectToDto()
+                .FirstOrDefault();
+            await _signalRService.NotifyAllAsync<AnimalFosterMap>(NotificationOperationType.Update, animalFosterMapDto);
+
+            return CommandResponse.Ok();
 		}
 		catch (DbUpdateException ex)
 		{
@@ -156,7 +175,10 @@ public class AnimalFosterMapCommandHandler(
 
 			_animalFosterMapRepository.Remove(animalFosterMap);
 			await _animalFosterMapRepository.SaveChangesAsync(cancellationToken);
-			return CommandResponse.Ok();
+
+			await _signalRService.NotifyAllAsync<AnimalFosterMap>(NotificationOperationType.Delete, request.AnimalFosterMapId);
+
+            return CommandResponse.Ok();
 		}
 		catch (Exception ex)
 		{

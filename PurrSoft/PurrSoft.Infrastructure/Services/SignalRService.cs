@@ -14,7 +14,7 @@ public class SignalRService : ISignalRService
         _hubContext = hubContext;
     }
 
-    public async Task NotifyAllAsync<T>(OperationType operationType, T data)
+    public async Task NotifyAllAsync<T>(NotificationOperationType operationType, Object? data)
     {
         await _hubContext.Clients.All.SendAsync("ReceiveMessage", new
         {
@@ -24,7 +24,7 @@ public class SignalRService : ISignalRService
         });
     }
 
-    public async Task NotifyRoleAsync<T>(string role, OperationType operationType, T data)
+    public async Task NotifyRoleAsync<T>(string role, NotificationOperationType operationType, Object? data)
     {
         await _hubContext.Clients.Group(role).SendAsync("ReceiveMessage", new
         {
@@ -34,7 +34,7 @@ public class SignalRService : ISignalRService
         });
     }
 
-    public async Task NotifyUserAsync<T>(string userId, OperationType operationType, T data)
+    public async Task NotifyUserAsync<T>(string userId, NotificationOperationType operationType, Object? data)
     {
         await _hubContext.Clients.User(userId).SendAsync("ReceiveMessage", new
         {

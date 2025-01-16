@@ -1,6 +1,6 @@
 ﻿namespace PurrSoft.Domain.Entities.Enums;
 
-public enum OperationType
+public enum NotificationOperationType
 {
     Add = 0,
     Update = 1,
