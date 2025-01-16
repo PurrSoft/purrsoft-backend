@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PurrSoft.Persistence;
@@ -12,9 +13,11 @@ using PurrSoft.Persistence;
 namespace PurrSoft.Persistence.Migrations
 {
     [DbContext(typeof(PurrSoftDbContext))]
-    partial class PurrSoftDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250116214230_AddTreatmentEntity")]
+    partial class AddTreatmentEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -410,35 +413,35 @@ namespace PurrSoft.Persistence.Migrations
                 });
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.Notifications", b =>
-                            {
-                                b.Property<Guid>("Id")
-                                    .ValueGeneratedOnAdd()
-                                    .HasColumnType("uuid");
-            
-                                b.Property<DateTime>("CreatedAt")
-                                    .HasColumnType("timestamp with time zone");
-            
-                                b.Property<bool>("IsRead")
-                                    .HasColumnType("boolean");
-            
-                                b.Property<string>("Message")
-                                    .IsRequired()
-                                    .HasColumnType("text");
-            
-                                b.Property<string>("Type")
-                                    .IsRequired()
-                                    .HasColumnType("text");
-            
-                                b.Property<string>("UserId")
-                                    .IsRequired()
-                                    .HasColumnType("text");
-            
-                                b.HasKey("Id");
-            
-                                b.HasIndex("UserId");
-            
-                                b.ToTable("Notifications");
-                            });
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
+                });
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.Role", b =>
                 {
@@ -512,6 +515,45 @@ namespace PurrSoft.Persistence.Migrations
                     b.HasIndex("VolunteerId");
 
                     b.ToTable("Shifts");
+                });
+
+            modelBuilder.Entity("PurrSoft.Domain.Entities.Treatment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ExtraInfo")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("IdAnimal")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MedicationName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MedicationTime")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("TreatmentDays")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("TreatmentEnd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("TreatmentStart")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdAnimal");
+
+                    b.ToTable("Treatments");
                 });
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.UserRole", b =>
@@ -667,17 +709,16 @@ namespace PurrSoft.Persistence.Migrations
                     b.Navigation("User");
                 });
 
-			modelBuilder.Entity("PurrSoft.Domain.Entities.Notifications", b =>
-			                {
-			                    b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
-			                        .WithMany("Notifications")
-			                        .HasForeignKey("UserId")
-			                        .OnDelete(DeleteBehavior.Cascade)
-			                        .IsRequired();
-			
-			                    b.Navigation("User");
-			                });
-			                
+            modelBuilder.Entity("PurrSoft.Domain.Entities.Notifications", b =>
+                {
+                    b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.Shift", b =>
                 {
@@ -687,6 +728,17 @@ namespace PurrSoft.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Volunteer");
+                });
+
+            modelBuilder.Entity("PurrSoft.Domain.Entities.Treatment", b =>
+                {
+                    b.HasOne("PurrSoft.Domain.Entities.Animal", "Animal")
+                        .WithMany("Treatments")
+                        .HasForeignKey("IdAnimal")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Animal");
                 });
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.UserRole", b =>
@@ -746,18 +798,15 @@ namespace PurrSoft.Persistence.Migrations
                     b.Navigation("AnimalProfile");
 
                     b.Navigation("FosteredBy");
+
+                    b.Navigation("Treatments");
                 });
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.ApplicationUser", b =>
                 {
-                    b.Navigation("UserRoles");
-                    
                     b.Navigation("Notifications");
-                });
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
-                {
-                    b.Navigation("FosteredAnimals");
+                    b.Navigation("UserRoles");
                 });
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
