@@ -30,6 +30,7 @@ public class AnimalCommandHandler(
                 YearOfBirth = request.animalDto.YearOfBirth,
                 Gender = request.animalDto.Gender,
                 Sterilized = request.animalDto.Sterilized,
+                Passport = request.animalDto.Passport,
                 ImageUrls = request.animalDto.ImageUrls ?? new List<string>()
             }); 
 
@@ -57,6 +58,7 @@ public class AnimalCommandHandler(
             animal.YearOfBirth = request.animalDto.YearOfBirth ?? animal.YearOfBirth;
             animal.Gender = request.animalDto.Gender ?? animal.Gender;
             animal.Sterilized = request.animalDto.Sterilized ?? animal.Sterilized;
+            animal.Passport = request.animalDto.Passport ?? animal.Passport;
             animal.ImageUrls = request.animalDto.ImageUrls ?? animal.ImageUrls;
             
             await animalRepository.SaveChangesAsync(cancellationToken);

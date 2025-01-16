@@ -8,5 +8,6 @@ public class AnimalDto
     public int? YearOfBirth { get; set; }
     public string? Gender { get; set; }
     public bool? Sterilized { get; set; }
-    public ICollection<string>? ImageUrls { get; set; }
+    public string? Passport { get; set; }
+    public IList<string>? ImageUrls { get; set; }
 }

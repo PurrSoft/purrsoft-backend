@@ -13,7 +13,7 @@ using PurrSoft.Persistence;
 namespace PurrSoft.Persistence.Migrations
 {
     [DbContext(typeof(PurrSoftDbContext))]
-    [Migration("20250114190854_UpdatedAnimalAndAnimalProfileEntities")]
+    [Migration("20250116145413_UpdatedAnimalAndAnimalProfileEntities")]
     partial class UpdatedAnimalAndAnimalProfileEntities
     {
         /// <inheritdoc />

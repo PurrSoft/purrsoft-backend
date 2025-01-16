@@ -15,6 +15,7 @@ public static class AnimalMappers
             YearOfBirth = x.YearOfBirth == null ? 0 : (int)x.YearOfBirth,
             Gender = x.Gender,
             Sterilized = x.Sterilized == null ? false : (bool) x.Sterilized,
+            Passport = x.Passport,
             ImageUrls = x.ImageUrls
         });
     }
@@ -29,6 +30,7 @@ public static class AnimalMappers
             YearOfBirth = x.YearOfBirth == null ? 0 : (int)x.YearOfBirth,
             Gender = x.Gender,
             Sterilized = x.Sterilized == null ? false : (bool)x.Sterilized,
+            Passport = x.Passport,
             ImageUrls = x.ImageUrls
         });
     }

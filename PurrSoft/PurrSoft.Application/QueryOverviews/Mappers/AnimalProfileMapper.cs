@@ -11,6 +11,8 @@ public static class AnimalProfileMapper
         {
             AnimalId = ap.AnimalId,
             Contract = ap.Contract,
+            ContractState = ap.ContractState.ToString() ?? "",
+            ShelterCheckIn = ap.ShelterCheckIn,
             CurrentDisease = ap.CurrentDisease,
             CurrentMedication = ap.CurrentMedication,
             PastDisease = ap.PastDisease,
