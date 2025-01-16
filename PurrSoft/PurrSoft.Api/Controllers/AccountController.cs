@@ -47,7 +47,7 @@ public class AccountController : BaseController
 	[Authorize(AuthenticationSchemes = "Bearer")]
 	[ProducesResponseType(typeof(ApplicationUserDto), (int)HttpStatusCode.OK)]
 	[ProducesResponseType(typeof(CommandResponse), (int)HttpStatusCode.BadRequest)]
-	public async Task<CollectionResponse<ApplicationUserDto>> GetLoggedInUserRole([FromRoute] string role)
+	public async Task<CollectionResponse<ApplicationUserDto>> GetUsersByRole([FromRoute] string role)
 		=> await Mediator.Send(new GetUsersByRoleQuery() { Role = role });
 
 	[HttpPut()]

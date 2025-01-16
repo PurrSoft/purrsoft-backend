@@ -32,7 +32,7 @@ public class AccountQueryHandler
 	{
 		List<ApplicationUserDto> UserList = await userRepository
 			.Query(u => u.UserRoles
-				.Any(role => role.Role.NormalizedName == request.Role))
+				.Any(role => role.Role.Name.ToLower().Trim() == request.Role.ToLower().Trim()))
 			.ProjectToDto().ToListAsync(cancellationToken);
 		return new CollectionResponse<ApplicationUserDto>(UserList, UserList.Count);
 	}
