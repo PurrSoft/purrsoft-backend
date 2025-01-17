@@ -17,9 +17,12 @@ public class PurrSoftDbContext(DbContextOptions options)
 	public DbSet<AnimalFosterMap> AnimalFosters { get; set; }
 	public DbSet<AnimalProfile> AnimalProfiles { get; set; }
 	public DbSet<Shift> Shifts { get; set; }
+
 	public DbSet<Notifications> Notifications { get; set; }
 	public DbSet<Event> Events { get; set; }
 	public DbSet<EventVolunteerMap> EventVolunteerMaps {  get; set; }
+  public DbSet<Treatment> Treatments { get; set; }
+
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -33,6 +36,7 @@ public class PurrSoftDbContext(DbContextOptions options)
 		ConfigureAnimalProfile(modelBuilder);
 		ConfigureFosterAnimals(modelBuilder);
 		ConfigureNotifications(modelBuilder);
+		ConfigureTreatments(modelBuilder);
 		ConfigureEvents(modelBuilder);
 		modelBuilder.SeederForRoles();
 	}
@@ -49,6 +53,21 @@ public class PurrSoftDbContext(DbContextOptions options)
 		builder.Entity<Role>().HasMany(r => r.UserRoles).WithOne(ur => ur.Role).HasForeignKey(ur => ur.RoleId);
 	}
     
+	private static void ConfigureTreatments(ModelBuilder builder)
+	{
+		builder.Entity<Treatment>(entity =>
+		{
+			// Configure the primary key
+			entity.HasKey(t => t.Id);
+
+			
+			entity.HasOne(t => t.Animal)
+				.WithMany(a => a.Treatments) 
+				.HasForeignKey(t => t.IdAnimal) 
+				.OnDelete(DeleteBehavior.Cascade); 
+		});
+	}
+
   private static void ConfigureFosters(ModelBuilder builder)
 	{
 		builder.Entity<Foster>().HasKey(f => f.UserId);
