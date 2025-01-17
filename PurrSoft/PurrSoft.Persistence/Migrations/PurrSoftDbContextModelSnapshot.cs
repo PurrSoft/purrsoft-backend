@@ -11,812 +11,917 @@ using PurrSoft.Persistence;
 
 namespace PurrSoft.Persistence.Migrations
 {
-    [DbContext(typeof(PurrSoftDbContext))]
-    partial class PurrSoftDbContextModelSnapshot : ModelSnapshot
-    {
-        protected override void BuildModel(ModelBuilder modelBuilder)
-        {
+	[DbContext(typeof(PurrSoftDbContext))]
+	partial class PurrSoftDbContextModelSnapshot : ModelSnapshot
+	{
+		protected override void BuildModel(ModelBuilder modelBuilder)
+		{
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+			modelBuilder
+				.HasAnnotation("ProductVersion", "9.0.0")
+				.HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+			NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+				{
+					b.Property<int>("Id")
+						.ValueGeneratedOnAdd()
+						.HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+					NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+					b.Property<string>("ClaimType")
+						.HasColumnType("text");
 
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+					b.Property<string>("ClaimValue")
+						.HasColumnType("text");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.Property<string>("RoleId")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.HasKey("Id");
+					b.HasKey("Id");
 
-                    b.HasIndex("RoleId");
+					b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims", (string)null);
-                });
+					b.ToTable("AspNetRoleClaims", (string)null);
+				});
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+				{
+					b.Property<int>("Id")
+						.ValueGeneratedOnAdd()
+						.HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+					NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("text");
+					b.Property<string>("ClaimType")
+						.HasColumnType("text");
 
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("text");
+					b.Property<string>("ClaimValue")
+						.HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.Property<string>("UserId")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.HasKey("Id");
+					b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+					b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
+					b.ToTable("AspNetUserClaims", (string)null);
+				});
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+				{
+					b.Property<string>("LoginProvider")
+						.HasColumnType("text");
 
-                    b.Property<string>("ProviderKey")
-                        .HasColumnType("text");
+					b.Property<string>("ProviderKey")
+						.HasColumnType("text");
 
-                    b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("text");
+					b.Property<string>("ProviderDisplayName")
+						.HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.Property<string>("UserId")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.HasKey("LoginProvider", "ProviderKey");
+					b.HasKey("LoginProvider", "ProviderKey");
 
-                    b.HasIndex("UserId");
+					b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins", (string)null);
-                });
+					b.ToTable("AspNetUserLogins", (string)null);
+				});
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+				{
+					b.Property<string>("UserId")
+						.HasColumnType("text");
 
-                    b.Property<string>("LoginProvider")
-                        .HasColumnType("text");
+					b.Property<string>("LoginProvider")
+						.HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
+					b.Property<string>("Name")
+						.HasColumnType("text");
 
-                    b.Property<string>("Value")
-                        .HasColumnType("text");
+					b.Property<string>("Value")
+						.HasColumnType("text");
 
-                    b.HasKey("UserId", "LoginProvider", "Name");
+					b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens", (string)null);
-                });
+					b.ToTable("AspNetUserTokens", (string)null);
+				});
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Animal", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Animal", b =>
+				{
+					b.Property<Guid>("Id")
+						.ValueGeneratedOnAdd()
+						.HasColumnType("uuid");
 
-                    b.Property<int>("AnimalType")
-                        .HasColumnType("integer");
+					b.Property<int?>("AnimalType")
+						.HasColumnType("integer");
 
-                    b.Property<string>("Gender")
-                        .HasColumnType("text");
+					b.Property<string>("Gender")
+						.HasColumnType("text");
 
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("text");
+					b.PrimitiveCollection<string[]>("ImageUrls")
+						.IsRequired()
+						.HasColumnType("text[]");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
+					b.Property<string>("Name")
+						.HasColumnType("text");
 
-                    b.Property<bool>("Sterilized")
-                        .HasColumnType("boolean");
+					b.Property<string>("Passport")
+						.HasColumnType("text");
 
-                    b.Property<int>("YearOfBirth")
-                        .HasColumnType("integer");
+					b.Property<bool?>("Sterilized")
+						.HasColumnType("boolean");
 
-                    b.HasKey("Id");
+					b.Property<int?>("YearOfBirth")
+						.HasColumnType("integer");
 
-                    b.ToTable("Animals");
-                });
+					b.HasKey("Id");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalFosterMap", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+					b.ToTable("Animals");
+				});
 
-                    b.Property<Guid>("AnimalId")
-                        .HasColumnType("uuid");
+			modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalFosterMap", b =>
+				{
+					b.Property<Guid>("Id")
+						.ValueGeneratedOnAdd()
+						.HasColumnType("uuid");
 
-                    b.Property<DateTime?>("EndFosteringDate")
-                        .HasColumnType("timestamp with time zone");
+					b.Property<Guid>("AnimalId")
+						.HasColumnType("uuid");
 
-                    b.Property<string>("FosterId")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.Property<DateTime?>("EndFosteringDate")
+						.HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("StartFosteringDate")
-                        .HasColumnType("timestamp with time zone");
+					b.Property<string>("FosterId")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.Property<string>("SupervisingComment")
-                        .HasColumnType("text");
+					b.Property<DateTime>("StartFosteringDate")
+						.HasColumnType("timestamp with time zone");
 
-                    b.HasKey("Id");
+					b.Property<string>("SupervisingComment")
+						.HasColumnType("text");
 
-                    b.HasIndex("AnimalId");
+					b.HasKey("Id");
 
-                    b.HasIndex("FosterId");
+					b.HasIndex("AnimalId");
 
-                    b.ToTable("AnimalFosters");
-                });
+					b.HasIndex("FosterId");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalProfile", b =>
-                {
-                    b.Property<Guid>("AnimalId")
-                        .HasColumnType("uuid");
+					b.ToTable("AnimalFosters");
+				});
 
-                    b.Property<string>("AdditionalInfo")
-                        .HasColumnType("text");
+			modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalProfile", b =>
+				{
+					b.Property<Guid>("AnimalId")
+						.HasColumnType("uuid");
 
-                    b.Property<string>("AdditionalMedicalInfo")
-                        .HasColumnType("text");
+					b.Property<string>("AdditionalInfo")
+						.HasColumnType("text");
 
-                    b.Property<string>("CoronavirusVaccine")
-                        .HasColumnType("text");
+					b.Property<string>("AdditionalMedicalInfo")
+						.HasColumnType("text");
 
-                    b.Property<string>("CurrentDisease")
-                        .HasColumnType("text");
+					b.Property<string>("Contract")
+						.HasColumnType("text");
 
-                    b.Property<string>("CurrentMedication")
-                        .HasColumnType("text");
+					b.Property<int?>("ContractState")
+						.HasColumnType("integer");
 
-                    b.Property<string>("CurrentTreatment")
-                        .HasColumnType("text");
+					b.Property<string>("CoronavirusVaccine")
+						.HasColumnType("text");
 
-                    b.Property<string>("EarMiteTreatment")
-                        .HasColumnType("text");
+					b.Property<string>("CurrentDisease")
+						.HasColumnType("text");
 
-                    b.Property<string>("ExternalDeworming")
-                        .HasColumnType("text");
+					b.Property<string>("CurrentMedication")
+						.HasColumnType("text");
 
-                    b.Property<string>("FIVFeLVTest")
-                        .HasColumnType("text");
+					b.Property<string>("CurrentTreatment")
+						.HasColumnType("text");
 
-                    b.Property<string>("GiardiaTest")
-                        .HasColumnType("text");
+					b.Property<string>("EarMiteTreatment")
+						.HasColumnType("text");
 
-                    b.Property<string>("IntakeNotes")
-                        .HasColumnType("text");
+					b.Property<string>("ExternalDeworming")
+						.HasColumnType("text");
 
-                    b.Property<string>("InternalDeworming")
-                        .HasColumnType("text");
+					b.Property<string>("FIVFeLVTest")
+						.HasColumnType("text");
 
-                    b.Property<string>("MedicalAppointments")
-                        .HasColumnType("text");
+					b.Property<string>("GiardiaTest")
+						.HasColumnType("text");
 
-                    b.Property<string>("Microchip")
-                        .HasColumnType("text");
+					b.Property<string>("IntakeNotes")
+						.HasColumnType("text");
 
-                    b.Property<string>("MultivalentVaccine")
-                        .HasColumnType("text");
+					b.Property<string>("InternalDeworming")
+						.HasColumnType("text");
 
-                    b.Property<string>("Passport")
-                        .HasColumnType("text");
+					b.Property<string>("MedicalAppointments")
+						.HasColumnType("text");
 
-                    b.Property<string>("PastDisease")
-                        .HasColumnType("text");
+					b.Property<string>("Microchip")
+						.HasColumnType("text");
 
-                    b.Property<string>("RabiesVaccine")
-                        .HasColumnType("text");
+					b.Property<string>("MultivalentVaccine")
+						.HasColumnType("text");
 
-                    b.Property<string>("RefillReminders")
-                        .HasColumnType("text");
+					b.Property<string>("PastDisease")
+						.HasColumnType("text");
 
-                    b.PrimitiveCollection<List<string>>("UsefulLinks")
-                        .HasColumnType("jsonb");
+					b.Property<string>("RabiesVaccine")
+						.HasColumnType("text");
 
-                    b.HasKey("AnimalId");
+					b.Property<string>("RefillReminders")
+						.HasColumnType("text");
 
-                    b.ToTable("AnimalProfiles");
-                });
+					b.Property<DateTime?>("ShelterCheckIn")
+						.HasColumnType("timestamp with time zone");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.ApplicationLog", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+					b.PrimitiveCollection<List<string>>("UsefulLinks")
+						.HasColumnType("jsonb");
 
-                    b.Property<string>("CallStack")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.HasKey("AnimalId");
 
-                    b.Property<string>("ExceptionMessage")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.ToTable("AnimalProfiles");
+				});
 
-                    b.Property<string>("ExceptionSource")
-                        .IsRequired()
-                        .HasColumnType("text");
+			modelBuilder.Entity("PurrSoft.Domain.Entities.ApplicationLog", b =>
+				{
+					b.Property<Guid>("Id")
+						.ValueGeneratedOnAdd()
+						.HasColumnType("uuid");
 
-                    b.Property<string>("Level")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.Property<string>("CallStack")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.Property<DateTime>("LoggedAt")
-                        .HasColumnType("timestamp with time zone");
+					b.Property<string>("ExceptionMessage")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.Property<string>("Logger")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.Property<string>("ExceptionSource")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.Property<string>("MachineName")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.Property<string>("Level")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.Property<DateTime>("LoggedAt")
+						.HasColumnType("timestamp with time zone");
 
-                    b.HasKey("Id");
+					b.Property<string>("Logger")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.ToTable("ApplicationLogs");
-                });
+					b.Property<string>("MachineName")
+						.IsRequired()
+						.HasColumnType("text");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.ApplicationUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+					b.Property<string>("Message")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("integer");
+					b.HasKey("Id");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
+					b.ToTable("ApplicationLogs");
+				});
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
+			modelBuilder.Entity("PurrSoft.Domain.Entities.ApplicationUser", b =>
+				{
+					b.Property<string>("Id")
+						.HasColumnType("text");
 
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+					b.Property<int>("AccessFailedCount")
+						.HasColumnType("integer");
 
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("boolean");
+					b.Property<string>("Address")
+						.HasColumnType("text");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.Property<string>("ConcurrencyStamp")
+						.IsConcurrencyToken()
+						.HasColumnType("text");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.Property<string>("Email")
+						.HasMaxLength(256)
+						.HasColumnType("character varying(256)");
 
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("boolean");
+					b.Property<bool>("EmailConfirmed")
+						.HasColumnType("boolean");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("timestamp with time zone");
+					b.Property<string>("FirstName")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+					b.Property<string>("LastName")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+					b.Property<bool>("LockoutEnabled")
+						.HasColumnType("boolean");
 
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("text");
+					b.Property<DateTimeOffset?>("LockoutEnd")
+						.HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+					b.Property<string>("NormalizedEmail")
+						.HasMaxLength(256)
+						.HasColumnType("character varying(256)");
 
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("boolean");
+					b.Property<string>("NormalizedUserName")
+						.HasMaxLength(256)
+						.HasColumnType("character varying(256)");
 
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("text");
+					b.Property<string>("PasswordHash")
+						.HasColumnType("text");
 
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("boolean");
+					b.Property<string>("PhoneNumber")
+						.HasColumnType("text");
 
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+					b.Property<bool>("PhoneNumberConfirmed")
+						.HasColumnType("boolean");
 
-                    b.HasKey("Id");
+					b.Property<string>("SecurityStamp")
+						.HasColumnType("text");
 
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
+					b.Property<bool>("TwoFactorEnabled")
+						.HasColumnType("boolean");
 
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
+					b.Property<string>("UserName")
+						.HasMaxLength(256)
+						.HasColumnType("character varying(256)");
 
-                    b.ToTable("AspNetUsers", (string)null);
-                });
+					b.HasKey("Id");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+					b.HasIndex("NormalizedEmail")
+						.HasDatabaseName("EmailIndex");
 
-                    b.Property<int>("AnimalFosteredCount")
-                        .HasColumnType("integer");
+					b.HasIndex("NormalizedUserName")
+						.IsUnique()
+						.HasDatabaseName("UserNameIndex");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+					b.ToTable("AspNetUsers", (string)null);
+				});
 
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("timestamp with time zone");
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Event", b =>
+				{
+					b.Property<Guid>("Id")
+						.ValueGeneratedOnAdd()
+						.HasColumnType("uuid");
 
-                    b.Property<string>("ExperienceLevel")
-                        .HasColumnType("text");
+					b.Property<DateTime?>("Date")
+						.HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("HasOtherAnimals")
-                        .HasColumnType("boolean");
+					b.Property<string>("Description")
+						.HasColumnType("text");
 
-                    b.Property<string>("HomeDescription")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.Property<string>("Location")
+						.HasColumnType("text");
 
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.Property<string>("Subtitle")
+						.HasColumnType("text");
 
-                    b.Property<int?>("MaxAnimalsAllowed")
-                        .HasColumnType("integer");
+					b.Property<string>("Title")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.Property<string>("OtherAnimalDetails")
-                        .HasColumnType("text");
+					b.HasKey("Id");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+					b.ToTable("Events");
+				});
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+			modelBuilder.Entity("PurrSoft.Domain.Entities.EventVolunteerMap", b =>
+				{
+					b.Property<Guid>("EventId")
+						.HasColumnType("uuid");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+					b.Property<string>("VolunteerId")
+						.HasColumnType("text");
 
-                    b.HasKey("UserId");
+					b.HasKey("EventId", "VolunteerId");
 
-                    b.ToTable("Fosters");
-                });
+					b.HasIndex("VolunteerId");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Request", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+					b.ToTable("EventVolunteerMaps");
+				});
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
+				{
+					b.Property<string>("UserId")
+						.HasColumnType("text");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.Property<int>("AnimalFosteredCount")
+						.HasColumnType("integer");
 
-                    b.PrimitiveCollection<List<string>>("Images")
-                        .HasColumnType("text[]");
+					b.Property<DateTime>("CreatedAt")
+						.HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("RequestType")
-                        .HasColumnType("integer");
+					b.Property<DateTime?>("EndDate")
+						.HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+					b.Property<string>("ExperienceLevel")
+						.HasColumnType("text");
 
-                    b.HasKey("Id");
+					b.Property<bool>("HasOtherAnimals")
+						.HasColumnType("boolean");
 
-                    b.HasIndex("UserId");
+					b.Property<string>("HomeDescription")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.ToTable("Requests");
-                });
+					b.Property<string>("Location")
+						.IsRequired()
+						.HasColumnType("text");
 
-           modelBuilder.Entity("PurrSoft.Domain.Entities.Notifications", b =>
-                  {
-                      b.Property<Guid>("Id")
-                         .ValueGeneratedOnAdd()
-                         .HasColumnType("uuid");
+					b.Property<int?>("MaxAnimalsAllowed")
+						.HasColumnType("integer");
 
-                      b.Property<DateTime>("CreatedAt")
-                         .HasColumnType("timestamp with time zone");
+					b.Property<string>("OtherAnimalDetails")
+						.HasColumnType("text");
 
-                      b.Property<bool>("IsRead")
-                         .HasColumnType("boolean");
+					b.Property<DateTime>("StartDate")
+						.HasColumnType("timestamp with time zone");
 
-                      b.Property<string>("Message")
-                         .IsRequired()
-                         .HasColumnType("text");
+					b.Property<int>("Status")
+						.HasColumnType("integer");
 
-                      b.Property<string>("Type")
-                         .IsRequired()
-                         .HasColumnType("text");
+					b.Property<DateTime>("UpdatedAt")
+						.HasColumnType("timestamp with time zone");
 
-                      b.Property<string>("UserId")
-                         .IsRequired()
-                         .HasColumnType("text");
+					b.HasKey("UserId");
 
-                      b.HasKey("Id");
+					b.ToTable("Fosters");
+				});
 
-                      b.HasIndex("UserId");
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Notifications", b =>
+				{
+					b.Property<Guid>("Id")
+						.ValueGeneratedOnAdd()
+						.HasColumnType("uuid");
 
-                      b.ToTable("Notifications");
-                });
+					b.Property<DateTime>("CreatedAt")
+						.HasColumnType("timestamp with time zone");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Role", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+					b.Property<bool>("IsRead")
+						.HasColumnType("boolean");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("text");
+					b.Property<string>("Message")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+					b.Property<string>("Type")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+					b.Property<string>("UserId")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.HasKey("Id");
+					b.HasKey("Id");
 
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
+					b.HasIndex("UserId");
 
-                    b.ToTable("AspNetRoles", (string)null);
+					b.ToTable("Notifications");
+				});
 
-                    b.HasData(
-                        new
-                        {
-                            Id = "c68c49f4-7cff-4c4e-a836-f670f386c0f0",
-                            Name = "Manager",
-                            NormalizedName = "MANAGER"
-                        },
-                        new
-                        {
-                            Id = "5f50c0ac-fadf-4792-af6a-54dcd5c3aab3",
-                            Name = "Volunteer",
-                            NormalizedName = "VOLUNTEER"
-                        },
-                        new
-                        {
-                            Id = "16f9f85a-1389-489a-87d4-cef974323047",
-                            Name = "Foster",
-                            NormalizedName = "FOSTER"
-                        },
-                        new
-                        {
-                            Id = "45422d1a-dcce-4b72-a93b-dcf6356e4106",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        });
-                });
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Request", b =>
+				{
+					b.Property<Guid>("Id")
+						.ValueGeneratedOnAdd()
+						.HasColumnType("uuid");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Shift", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+					b.Property<DateTime>("CreatedAt")
+						.HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("ShiftType")
-                        .HasColumnType("integer");
+					b.Property<string>("Description")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("timestamp with time zone");
+					b.PrimitiveCollection<List<string>>("Images")
+						.HasColumnType("text[]");
 
-                    b.Property<string>("VolunteerId")
-                        .HasColumnType("text");
+					b.Property<int>("RequestType")
+						.HasColumnType("integer");
 
-                    b.HasKey("Id");
+					b.Property<string>("UserId")
+						.IsRequired()
+						.HasColumnType("text");
 
-                    b.HasIndex("VolunteerId");
+					b.HasKey("Id");
 
-                    b.ToTable("Shifts");
-                });
+					b.HasIndex("UserId");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.UserRole", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+					b.ToTable("Requests");
+				});
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("text");
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Notifications", b =>
+				   {
+					   b.Property<Guid>("Id")
+						  .ValueGeneratedOnAdd()
+						  .HasColumnType("uuid");
 
-                    b.HasKey("UserId", "RoleId");
+					   b.Property<DateTime>("CreatedAt")
+						  .HasColumnType("timestamp with time zone");
 
-                    b.HasIndex("RoleId");
+					   b.Property<bool>("IsRead")
+						  .HasColumnType("boolean");
 
-                    b.ToTable("AspNetUserRoles", (string)null);
-                });
+					   b.Property<string>("Message")
+						  .IsRequired()
+						  .HasColumnType("text");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Volunteer", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+					   b.Property<string>("Type")
+						  .IsRequired()
+						  .HasColumnType("text");
 
-                    b.Property<string>("AvailableHours")
-                        .IsRequired()
-                        .HasColumnType("text");
+					   b.Property<string>("UserId")
+						  .IsRequired()
+						  .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
+					   b.HasKey("Id");
 
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("timestamp with time zone");
+					   b.HasIndex("UserId");
 
-                    b.Property<DateTime?>("LastShiftDate")
-                        .HasColumnType("timestamp with time zone");
+					   b.ToTable("Notifications");
+				   });
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Role", b =>
+				{
+					b.Property<string>("Id")
+						.HasColumnType("text");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+					b.Property<string>("ConcurrencyStamp")
+						.IsConcurrencyToken()
+						.HasColumnType("text");
 
-                    b.Property<string>("SupervisorId")
-                        .HasColumnType("text");
+					b.Property<string>("Name")
+						.HasMaxLength(256)
+						.HasColumnType("character varying(256)");
 
-                    b.PrimitiveCollection<string[]>("Tasks")
-                        .HasColumnType("text[]");
+					b.Property<string>("NormalizedName")
+						.HasMaxLength(256)
+						.HasColumnType("character varying(256)");
 
-                    b.Property<int>("Tier")
-                        .HasColumnType("integer");
+					b.HasKey("Id");
 
-                    b.Property<DateTime?>("TrainingStartDate")
-                        .HasColumnType("timestamp with time zone");
+					b.HasIndex("NormalizedName")
+						.IsUnique()
+						.HasDatabaseName("RoleNameIndex");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
+					b.ToTable("AspNetRoles", (string)null);
 
-                    b.HasKey("UserId");
+					b.HasData(
+						new
+						{
+							Id = "c68c49f4-7cff-4c4e-a836-f670f386c0f0",
+							Name = "Manager",
+							NormalizedName = "MANAGER"
+						},
+						new
+						{
+							Id = "5f50c0ac-fadf-4792-af6a-54dcd5c3aab3",
+							Name = "Volunteer",
+							NormalizedName = "VOLUNTEER"
+						},
+						new
+						{
+							Id = "16f9f85a-1389-489a-87d4-cef974323047",
+							Name = "Foster",
+							NormalizedName = "FOSTER"
+						},
+						new
+						{
+							Id = "45422d1a-dcce-4b72-a93b-dcf6356e4106",
+							Name = "Admin",
+							NormalizedName = "ADMIN"
+						});
+				});
 
-                    b.HasIndex("SupervisorId");
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Shift", b =>
+				{
+					b.Property<Guid>("Id")
+						.ValueGeneratedOnAdd()
+						.HasColumnType("uuid");
 
-                    b.ToTable("Volunteers");
-                });
+					b.Property<int>("ShiftStatus")
+						.HasColumnType("integer");
 
-            modelBuilder.Entity("VolunteerTrainer", b =>
-                {
-                    b.Property<string>("TrainerId")
-                        .HasColumnType("text");
+					b.Property<int>("ShiftType")
+						.HasColumnType("integer");
 
-                    b.Property<string>("VolunteerId")
-                        .HasColumnType("text");
+					b.Property<DateTime>("Start")
+						.HasColumnType("timestamp with time zone");
 
-                    b.HasKey("TrainerId", "VolunteerId");
+					b.Property<string>("VolunteerId")
+						.HasColumnType("text");
 
-                    b.HasIndex("VolunteerId");
+					b.HasKey("Id");
 
-                    b.ToTable("VolunteerTrainer");
-                });
+					b.HasIndex("VolunteerId");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+					b.ToTable("Shifts");
+				});
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+			modelBuilder.Entity("PurrSoft.Domain.Entities.UserRole", b =>
+				{
+					b.Property<string>("UserId")
+						.HasColumnType("text");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+					b.Property<string>("RoleId")
+						.HasColumnType("text");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+					b.HasKey("UserId", "RoleId");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalFosterMap", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.Animal", "Animal")
-                        .WithMany("FosteredBy")
-                        .HasForeignKey("AnimalId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+					b.HasIndex("RoleId");
 
-                    b.HasOne("PurrSoft.Domain.Entities.Foster", "Foster")
-                        .WithMany("FosteredAnimals")
-                        .HasForeignKey("FosterId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+					b.ToTable("AspNetUserRoles", (string)null);
+				});
 
-                    b.Navigation("Animal");
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Volunteer", b =>
+				{
+					b.Property<string>("UserId")
+						.HasColumnType("text");
 
-                    b.Navigation("Foster");
-                });
+					b.Property<string>("AvailableHours")
+						.IsRequired()
+						.HasColumnType("text");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalProfile", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.Animal", "Animal")
-                        .WithOne("AnimalProfile")
-                        .HasForeignKey("PurrSoft.Domain.Entities.AnimalProfile", "AnimalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+					b.Property<DateTime>("CreatedAt")
+						.HasColumnType("timestamp with time zone");
 
-                    b.Navigation("Animal");
-                });
+					b.Property<DateTime?>("EndDate")
+						.HasColumnType("timestamp with time zone");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
-                        .WithOne()
-                        .HasForeignKey("PurrSoft.Domain.Entities.Foster", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+					b.Property<DateTime?>("LastShiftDate")
+						.HasColumnType("timestamp with time zone");
 
-                    b.Navigation("User");
-                });
+					b.Property<DateTime>("StartDate")
+						.HasColumnType("timestamp with time zone");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Request", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
-                        .WithMany("Requests")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+					b.Property<int>("Status")
+						.HasColumnType("integer");
 
-                    b.Navigation("User");
-                });
+					b.Property<string>("SupervisorId")
+						.HasColumnType("text");
 
-			      modelBuilder.Entity("PurrSoft.Domain.Entities.Notifications", b =>
-			           {
-			               b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
-			                   .WithMany("Notifications")
-			                   .HasForeignKey("UserId")
-			                   .OnDelete(DeleteBehavior.Cascade)
-			                   .IsRequired();
-			
-			              b.Navigation("User");
-			          });
-			              
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Shift", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.Volunteer", "Volunteer")
-                        .WithMany("Shifts")
-                        .HasForeignKey("VolunteerId")
-                        .OnDelete(DeleteBehavior.Restrict);
+					b.PrimitiveCollection<string[]>("Tasks")
+						.HasColumnType("text[]");
 
-                    b.Navigation("Volunteer");
-                });
+					b.Property<int>("Tier")
+						.HasColumnType("integer");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.UserRole", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+					b.Property<DateTime?>("TrainingStartDate")
+						.HasColumnType("timestamp with time zone");
 
-                    b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+					b.Property<DateTime>("UpdatedAt")
+						.HasColumnType("timestamp with time zone");
 
-                    b.Navigation("Role");
+					b.HasKey("UserId");
 
-                    b.Navigation("User");
-                });
+					b.HasIndex("SupervisorId");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Volunteer", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "Supervisor")
-                        .WithMany()
-                        .HasForeignKey("SupervisorId")
-                        .OnDelete(DeleteBehavior.Restrict);
+					b.ToTable("Volunteers");
+				});
 
-                    b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
-                        .WithOne()
-                        .HasForeignKey("PurrSoft.Domain.Entities.Volunteer", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+			modelBuilder.Entity("VolunteerTrainer", b =>
+				{
+					b.Property<string>("TrainerId")
+						.HasColumnType("text");
 
-                    b.Navigation("Supervisor");
+					b.Property<string>("VolunteerId")
+						.HasColumnType("text");
 
-                    b.Navigation("User");
-                });
+					b.HasKey("TrainerId", "VolunteerId");
 
-            modelBuilder.Entity("VolunteerTrainer", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+					b.HasIndex("VolunteerId");
 
-                    b.HasOne("PurrSoft.Domain.Entities.Volunteer", null)
-                        .WithMany()
-                        .HasForeignKey("VolunteerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
+					b.ToTable("VolunteerTrainer");
+				});
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Animal", b =>
-                {
-                    b.Navigation("AnimalProfile");
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+				{
+					b.HasOne("PurrSoft.Domain.Entities.Role", null)
+						.WithMany()
+						.HasForeignKey("RoleId")
+						.OnDelete(DeleteBehavior.Cascade)
+						.IsRequired();
+				});
 
-                    b.Navigation("FosteredBy");
-                });
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+				{
+					b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", null)
+						.WithMany()
+						.HasForeignKey("UserId")
+						.OnDelete(DeleteBehavior.Cascade)
+						.IsRequired();
+				});
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.ApplicationUser", b =>
-                {
-                    b.Navigation("Requests");
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+				{
+					b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", null)
+						.WithMany()
+						.HasForeignKey("UserId")
+						.OnDelete(DeleteBehavior.Cascade)
+						.IsRequired();
+				});
 
-                    b.Navigation("UserRoles");
-                    
-                    b.Navigation("Notifications");
-                });
+			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+				{
+					b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", null)
+						.WithMany()
+						.HasForeignKey("UserId")
+						.OnDelete(DeleteBehavior.Cascade)
+						.IsRequired();
+				});
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
-                {
-                    b.Navigation("FosteredAnimals");
-                });
+			modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalFosterMap", b =>
+				{
+					b.HasOne("PurrSoft.Domain.Entities.Animal", "Animal")
+						.WithMany("FosteredBy")
+						.HasForeignKey("AnimalId")
+						.OnDelete(DeleteBehavior.Restrict)
+						.IsRequired();
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
-                {
-                    b.Navigation("FosteredAnimals");
-                });
+					b.HasOne("PurrSoft.Domain.Entities.Foster", "Foster")
+						.WithMany("FosteredAnimals")
+						.HasForeignKey("FosterId")
+						.OnDelete(DeleteBehavior.Restrict)
+						.IsRequired();
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Role", b =>
-                {
-                    b.Navigation("UserRoles");
-                });
+					b.Navigation("Animal");
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Volunteer", b =>
-                {
-                    b.Navigation("Shifts");
-                });
+					b.Navigation("Foster");
+				});
+
+			modelBuilder.Entity("PurrSoft.Domain.Entities.AnimalProfile", b =>
+				{
+					b.HasOne("PurrSoft.Domain.Entities.Animal", "Animal")
+						.WithOne("AnimalProfile")
+						.HasForeignKey("PurrSoft.Domain.Entities.AnimalProfile", "AnimalId")
+						.OnDelete(DeleteBehavior.Cascade)
+						.IsRequired();
+
+					b.Navigation("Animal");
+				});
+
+			modelBuilder.Entity("PurrSoft.Domain.Entities.EventVolunteerMap", b =>
+				{
+					b.HasOne("PurrSoft.Domain.Entities.Event", "Event")
+						.WithMany("EventVolunteerMappings")
+						.HasForeignKey("EventId")
+						.OnDelete(DeleteBehavior.Cascade)
+						.IsRequired();
+
+					b.HasOne("PurrSoft.Domain.Entities.Volunteer", "Volunteer")
+						.WithMany("EventVolunteerMaps")
+						.HasForeignKey("VolunteerId")
+						.OnDelete(DeleteBehavior.Cascade)
+						.IsRequired();
+
+					b.Navigation("Event");
+
+					b.Navigation("Volunteer");
+				});
+
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
+				{
+					b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
+						.WithOne()
+						.HasForeignKey("PurrSoft.Domain.Entities.Foster", "UserId")
+						.OnDelete(DeleteBehavior.Restrict)
+						.IsRequired();
+
+					b.Navigation("User");
+				});
+
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Request", b =>
+				{
+					b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
+						.WithMany("Requests")
+						.HasForeignKey("UserId")
+						.OnDelete(DeleteBehavior.Cascade)
+						.IsRequired();
+
+					b.Navigation("User");
+				});
+
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Notifications", b =>
+				 {
+					 b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
+						 .WithMany("Notifications")
+						 .HasForeignKey("UserId")
+						 .OnDelete(DeleteBehavior.Cascade)
+						 .IsRequired();
+
+
+					 b.Navigation("User");
+				 });
+
+
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Shift", b =>
+				{
+					b.HasOne("PurrSoft.Domain.Entities.Volunteer", "Volunteer")
+						.WithMany("Shifts")
+						.HasForeignKey("VolunteerId")
+						.OnDelete(DeleteBehavior.Restrict);
+
+					b.Navigation("Volunteer");
+				});
+
+			modelBuilder.Entity("PurrSoft.Domain.Entities.UserRole", b =>
+				{
+					b.HasOne("PurrSoft.Domain.Entities.Role", "Role")
+						.WithMany("UserRoles")
+						.HasForeignKey("RoleId")
+						.OnDelete(DeleteBehavior.Cascade)
+						.IsRequired();
+
+					b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
+						.WithMany("UserRoles")
+						.HasForeignKey("UserId")
+						.OnDelete(DeleteBehavior.Cascade)
+						.IsRequired();
+
+					b.Navigation("Role");
+
+					b.Navigation("User");
+				});
+
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Volunteer", b =>
+				{
+					b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "Supervisor")
+						.WithMany()
+						.HasForeignKey("SupervisorId")
+						.OnDelete(DeleteBehavior.Restrict);
+
+					b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
+						.WithOne()
+						.HasForeignKey("PurrSoft.Domain.Entities.Volunteer", "UserId")
+						.OnDelete(DeleteBehavior.Restrict)
+						.IsRequired();
+
+					b.Navigation("Supervisor");
+
+					b.Navigation("User");
+				});
+
+			modelBuilder.Entity("VolunteerTrainer", b =>
+				{
+					b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", null)
+						.WithMany()
+						.HasForeignKey("TrainerId")
+						.OnDelete(DeleteBehavior.Restrict)
+						.IsRequired();
+
+					b.HasOne("PurrSoft.Domain.Entities.Volunteer", null)
+						.WithMany()
+						.HasForeignKey("VolunteerId")
+						.OnDelete(DeleteBehavior.Cascade)
+						.IsRequired();
+				});
+
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Animal", b =>
+				{
+					b.Navigation("AnimalProfile");
+
+					b.Navigation("FosteredBy");
+				});
+
+			modelBuilder.Entity("PurrSoft.Domain.Entities.ApplicationUser", b =>
+				{
+					b.Navigation("UserRoles");
+				});
+
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Event", b =>
+				{
+					b.Navigation("EventVolunteerMappings");
+				});
+
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
+				{
+					b.Navigation("FosteredAnimals");
+				});
+
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Role", b =>
+				{
+					b.Navigation("UserRoles");
+				});
+
+			modelBuilder.Entity("PurrSoft.Domain.Entities.Volunteer", b =>
+				{
+					b.Navigation("EventVolunteerMaps");
+
+					b.Navigation("Shifts");
+				});
 #pragma warning restore 612, 618
-        }
-    }
+		}
+	}
 }
