@@ -6,8 +6,8 @@ using PurrSoft.Persistence.Seeders;
 
 namespace PurrSoft.Persistence;
 
-public class PurrSoftDbContext(DbContextOptions options) 
-    : IdentityDbContext<ApplicationUser, Role, string, IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>(options)
+public class PurrSoftDbContext(DbContextOptions options)
+	: IdentityDbContext<ApplicationUser, Role, string, IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>, IdentityRoleClaim<string>, IdentityUserToken<string>>(options)
 {
 
 	public DbSet<ApplicationLog> ApplicationLogs { get; set; }
@@ -18,8 +18,6 @@ public class PurrSoftDbContext(DbContextOptions options)
 	public DbSet<AnimalProfile> AnimalProfiles { get; set; }
 	public DbSet<Shift> Shifts { get; set; }
 	public DbSet<Notifications> Notifications { get; set; }
-	public DbSet<Event> Events { get; set; }
-	public DbSet<EventVolunteerMap> EventVolunteerMaps {  get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -33,7 +31,6 @@ public class PurrSoftDbContext(DbContextOptions options)
 		ConfigureAnimalProfile(modelBuilder);
 		ConfigureFosterAnimals(modelBuilder);
 		ConfigureNotifications(modelBuilder);
-		ConfigureEvents(modelBuilder);
 		modelBuilder.SeederForRoles();
 	}
 
@@ -48,8 +45,8 @@ public class PurrSoftDbContext(DbContextOptions options)
 		builder.Entity<Role>().Property(r => r.Id).ValueGeneratedNever();
 		builder.Entity<Role>().HasMany(r => r.UserRoles).WithOne(ur => ur.Role).HasForeignKey(ur => ur.RoleId);
 	}
-    
-  private static void ConfigureFosters(ModelBuilder builder)
+
+	private static void ConfigureFosters(ModelBuilder builder)
 	{
 		builder.Entity<Foster>().HasKey(f => f.UserId);
 		builder.Entity<Foster>().Property(f => f.UserId).ValueGeneratedNever();
@@ -60,7 +57,7 @@ public class PurrSoftDbContext(DbContextOptions options)
 			.IsRequired()
 			.OnDelete(DeleteBehavior.Restrict);
 	}
-      
+
 	private static void ConfigureShifts(ModelBuilder builder)
 	{
 		builder.Entity<Shift>().HasKey(s => s.Id);
@@ -70,9 +67,9 @@ public class PurrSoftDbContext(DbContextOptions options)
 			.HasForeignKey(s => s.VolunteerId)
 			.OnDelete(DeleteBehavior.Restrict);
 	}
-  
 
-private static void ConfigureVolunteers(ModelBuilder builder)
+
+	private static void ConfigureVolunteers(ModelBuilder builder)
 	{
 		builder.Entity<Volunteer>().HasKey(v => v.UserId);
 		builder.Entity<Volunteer>()
@@ -104,8 +101,8 @@ private static void ConfigureVolunteers(ModelBuilder builder)
 			.WithOne(evm => evm.Volunteer)
 			.HasForeignKey(evm => evm.VolunteerId)
 			.OnDelete(DeleteBehavior.Cascade);
-    }
-      
+	}
+
 	private static void ConfigureFosterAnimals(ModelBuilder builder)
 	{
 		builder.Entity<AnimalFosterMap>().HasKey(af => af.Id);
@@ -132,7 +129,7 @@ private static void ConfigureVolunteers(ModelBuilder builder)
 			entity.HasKey(ap => ap.AnimalId);
 
 			entity.HasOne(ap => ap.Animal)
-				.WithOne(a => a.AnimalProfile) 
+				.WithOne(a => a.AnimalProfile)
 				.HasForeignKey<AnimalProfile>(ap => ap.AnimalId)
 				.OnDelete(DeleteBehavior.Cascade);
 
@@ -141,17 +138,28 @@ private static void ConfigureVolunteers(ModelBuilder builder)
 		});
 	}
 
+	private static void ConfigureRequests(ModelBuilder builder)
+	{
+		builder.Entity<Request>().HasKey(r => r.Id);
+		builder.Entity<Request>()
+			.HasOne(r => r.User)
+			.WithMany(u => u.Requests)
+			.HasForeignKey(r => r.UserId)
+			.IsRequired();
+	}
+
+
 	private static void ConfigureNotifications(ModelBuilder builder)
 	{
 		builder.Entity<Notifications>()
-          .HasKey(n => n.Id); // Primary key
+			.HasKey(n => n.Id); // Primary key
 
 		builder.Entity<Notifications>()
-          .HasOne(n => n.User)
-          .WithMany(u => u.Notifications) 
-          .HasForeignKey(n => n.UserId)
-          .IsRequired()
-          .OnDelete(DeleteBehavior.Cascade);
+		  .HasOne(n => n.User)
+		  .WithMany(u => u.Notifications)
+		  .HasForeignKey(n => n.UserId)
+		  .IsRequired()
+		  .OnDelete(DeleteBehavior.Cascade);
 	}
 
 	private static void ConfigureEvents(ModelBuilder builder)
