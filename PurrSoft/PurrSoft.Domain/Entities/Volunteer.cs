@@ -20,7 +20,7 @@ public class Volunteer
     public virtual ApplicationUser User { get; set; }
 	public virtual IList<Shift> Shifts { get; set; }
 	// public virtual ICollection<LeaveRequest> LeaveRequests { get; set; }
-
+	public virtual ICollection<EventVolunteerMap>? EventVolunteerMaps { get; set; }
 	public Volunteer()
 	{
 		Tasks = new List<string>();
