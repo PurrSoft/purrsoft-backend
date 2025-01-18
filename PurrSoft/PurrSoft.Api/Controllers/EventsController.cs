@@ -15,7 +15,7 @@ namespace PurrSoft.Api.Controllers;
 public class EventsController : BaseController
 {
     [HttpGet()]
-	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Admin")]
+	[Authorize(AuthenticationSchemes = "Bearer", Roles = "Manager, Admin,Foster,Volunteer")]
     [ProducesResponseType(typeof(CollectionResponse<EventOverview>), (int)HttpStatusCode.OK)]
     public async Task<CollectionResponse<EventOverview>> GetEvents([FromQuery] GetFilteredEventsQueries query)
     {
