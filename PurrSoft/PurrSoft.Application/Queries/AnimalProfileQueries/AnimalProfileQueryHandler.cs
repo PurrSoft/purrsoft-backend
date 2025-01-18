@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PurrSoft.Application.Common;
 using PurrSoft.Application.Models;
+using PurrSoft.Application.QueryOverviews.Mappers;
 using PurrSoft.Domain.Entities;
 using PurrSoft.Domain.Repositories;
 
@@ -15,21 +16,27 @@ namespace PurrSoft.Application.Queries.AnimalProfileQueries
         {
             var query = animalProfileRepository.Query();
 
-            // Apply filters based on query parameters
             if (!string.IsNullOrEmpty(request.CurrentDisease))
                 query = query.Where(ap => ap.CurrentDisease == request.CurrentDisease);
             if (!string.IsNullOrEmpty(request.CurrentMedication))
                 query = query.Where(ap => ap.CurrentMedication == request.CurrentMedication);
             if (!string.IsNullOrEmpty(request.PastDisease))
                 query = query.Where(ap => ap.PastDisease == request.PastDisease);
-            if (!string.IsNullOrEmpty(request.Passport))
-                query = query.Where(ap => ap.Passport == request.Passport); // "Carnet" mapped to "Passport"
+            if (!string.IsNullOrEmpty(request.Contract))
+                query = query.Where(ap => ap.Contract == request.Contract);
             if (!string.IsNullOrEmpty(request.Microchip))
-                query = query.Where(ap => ap.Microchip == request.Microchip); // "Microcip" mapped to "Microchip"
+                query = query.Where(ap => ap.Microchip == request.Microchip);
+            if (!string.IsNullOrEmpty(request.ContractState))
+                query = query.Where(ap => ap.ContractState.ToString() == request.ContractState);
+            if (request.ShelterCheckIn != null)
+                query = query.Where(ap => ap.ShelterCheckIn == request.ShelterCheckIn);
+            if (request.IncludeRabiesVaccine)
+                query = query.Where(ap => !string.IsNullOrEmpty(ap.RabiesVaccine));
+            if (request.IncludeMultivalentVaccine)
+                query = query.Where(ap => !string.IsNullOrEmpty(ap.MultivalentVaccine));
 
-            // Map results to DTO
             var result = await query
-                .Select(ap => MapToDto(ap))
+                .ProjectToDto()
                 .ToListAsync(cancellationToken);
 
             return new CollectionResponse<AnimalProfileDto>(result, result.Count);
@@ -42,41 +49,14 @@ namespace PurrSoft.Application.Queries.AnimalProfileQueries
                 return CommandResponse.Failed<AnimalProfileDto>("Invalid Animal profile ID format.");
             }
 
-            // Retrieve and map a single profile
             var profile = await animalProfileRepository
                 .Query(x => x.AnimalId == profileId)
-                .Select(ap => MapToDto(ap))
+                .ProjectToDto()
                 .FirstOrDefaultAsync(cancellationToken);
 
             return profile == null
                 ? CommandResponse.Failed<AnimalProfileDto>("Animal profile not found.")
                 : CommandResponse.Ok(profile);
         }
-        
-        private static AnimalProfileDto MapToDto(AnimalProfile ap) => new()
-        {
-            AnimalId = ap.AnimalId,
-            CurrentDisease = ap.CurrentDisease,
-            CurrentMedication = ap.CurrentMedication,
-            PastDisease = ap.PastDisease,
-            Passport = ap.Passport,
-            Microchip = ap.Microchip,
-            ExternalDeworming = ap.ExternalDeworming,
-            InternalDeworming = ap.InternalDeworming,
-            CurrentTreatment = ap.CurrentTreatment,
-            MultivalentVaccine = ap.MultivalentVaccine,
-            RabiesVaccine = ap.RabiesVaccine,
-            FIVFeLVTest = ap.FIVFeLVTest,
-            CoronavirusVaccine = ap.CoronavirusVaccine,
-            GiardiaTest = ap.GiardiaTest,
-            EarMiteTreatment = ap.EarMiteTreatment,
-            IntakeNotes = ap.IntakeNotes,
-            AdditionalMedicalInfo = ap.AdditionalMedicalInfo,
-            AdditionalInfo = ap.AdditionalInfo,
-            MedicalAppointments = ap.MedicalAppointments,
-            RefillReminders = ap.RefillReminders,
-            UsefulLinks = ap.UsefulLinks
-        };
-
     }
 }

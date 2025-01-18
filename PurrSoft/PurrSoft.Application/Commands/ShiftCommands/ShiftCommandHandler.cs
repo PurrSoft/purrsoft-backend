@@ -39,6 +39,7 @@ public class ShiftCommandHandler(
 			{
 				Start = DateTime.SpecifyKind(request.ShiftDto.Start, DateTimeKind.Utc),
 				ShiftType = Enum.Parse<ShiftType>(request.ShiftDto.ShiftType),
+				ShiftStatus = Enum.Parse<ShiftStatus>(request.ShiftDto.ShiftStatus),
 				VolunteerId = request.ShiftDto.VolunteerId
 			};
 
@@ -81,10 +82,8 @@ public class ShiftCommandHandler(
 					return CommandResponse.Failed($"Volunteer with ID {request.ShiftDto.VolunteerId} not found.");
 				}
 			}
-
-			shift.Start = request.ShiftDto.Start;
-			shift.ShiftType = Enum.Parse<ShiftType>(request.ShiftDto.ShiftType);
-			shift.VolunteerId = request.ShiftDto.VolunteerId;
+			request.ShiftDto.Update(shift);
+			
 
 			await _shiftRepository.SaveChangesAsync(cancellationToken);
 

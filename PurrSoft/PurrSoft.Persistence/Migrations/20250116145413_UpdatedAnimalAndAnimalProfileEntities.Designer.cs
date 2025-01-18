@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PurrSoft.Persistence;
@@ -12,9 +13,11 @@ using PurrSoft.Persistence;
 namespace PurrSoft.Persistence.Migrations
 {
     [DbContext(typeof(PurrSoftDbContext))]
-    partial class PurrSoftDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250116145413_UpdatedAnimalAndAnimalProfileEntities")]
+    partial class UpdatedAnimalAndAnimalProfileEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -371,48 +374,6 @@ namespace PurrSoft.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Event", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Subtitle")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Events");
-                });
-
-            modelBuilder.Entity("PurrSoft.Domain.Entities.EventVolunteerMap", b =>
-                {
-                    b.Property<Guid>("EventId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("VolunteerId")
-                        .HasColumnType("text");
-
-                    b.HasKey("EventId", "VolunteerId");
-
-                    b.HasIndex("VolunteerId");
-
-                    b.ToTable("EventVolunteerMaps");
-                });
-
             modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
                 {
                     b.Property<string>("UserId")
@@ -549,9 +510,6 @@ namespace PurrSoft.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<int>("ShiftStatus")
-                        .HasColumnType("integer");
 
                     b.Property<int>("ShiftType")
                         .HasColumnType("integer");
@@ -711,25 +669,6 @@ namespace PurrSoft.Persistence.Migrations
                     b.Navigation("Animal");
                 });
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.EventVolunteerMap", b =>
-                {
-                    b.HasOne("PurrSoft.Domain.Entities.Event", "Event")
-                        .WithMany("EventVolunteerMappings")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PurrSoft.Domain.Entities.Volunteer", "Volunteer")
-                        .WithMany("EventVolunteerMaps")
-                        .HasForeignKey("VolunteerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("Volunteer");
-                });
-
             modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
                 {
                     b.HasOne("PurrSoft.Domain.Entities.ApplicationUser", "User")
@@ -828,11 +767,6 @@ namespace PurrSoft.Persistence.Migrations
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("PurrSoft.Domain.Entities.Event", b =>
-                {
-                    b.Navigation("EventVolunteerMappings");
-                });
-
             modelBuilder.Entity("PurrSoft.Domain.Entities.Foster", b =>
                 {
                     b.Navigation("FosteredAnimals");
@@ -845,8 +779,6 @@ namespace PurrSoft.Persistence.Migrations
 
             modelBuilder.Entity("PurrSoft.Domain.Entities.Volunteer", b =>
                 {
-                    b.Navigation("EventVolunteerMaps");
-
                     b.Navigation("Shifts");
                 });
 #pragma warning restore 612, 618

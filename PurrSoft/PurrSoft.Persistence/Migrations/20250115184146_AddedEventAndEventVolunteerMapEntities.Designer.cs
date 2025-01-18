@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PurrSoft.Persistence;
@@ -12,9 +13,11 @@ using PurrSoft.Persistence;
 namespace PurrSoft.Persistence.Migrations
 {
     [DbContext(typeof(PurrSoftDbContext))]
-    partial class PurrSoftDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250115184146_AddedEventAndEventVolunteerMapEntities")]
+    partial class AddedEventAndEventVolunteerMapEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -120,26 +123,22 @@ namespace PurrSoft.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int?>("AnimalType")
+                    b.Property<int>("AnimalType")
                         .HasColumnType("integer");
 
                     b.Property<string>("Gender")
                         .HasColumnType("text");
 
-                    b.PrimitiveCollection<string[]>("ImageUrls")
-                        .IsRequired()
-                        .HasColumnType("text[]");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<string>("Passport")
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("Sterilized")
+                    b.Property<bool>("Sterilized")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("YearOfBirth")
+                    b.Property<int>("YearOfBirth")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -189,12 +188,6 @@ namespace PurrSoft.Persistence.Migrations
                     b.Property<string>("AdditionalMedicalInfo")
                         .HasColumnType("text");
 
-                    b.Property<string>("Contract")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("ContractState")
-                        .HasColumnType("integer");
-
                     b.Property<string>("CoronavirusVaccine")
                         .HasColumnType("text");
 
@@ -234,6 +227,9 @@ namespace PurrSoft.Persistence.Migrations
                     b.Property<string>("MultivalentVaccine")
                         .HasColumnType("text");
 
+                    b.Property<string>("Passport")
+                        .HasColumnType("text");
+
                     b.Property<string>("PastDisease")
                         .HasColumnType("text");
 
@@ -242,9 +238,6 @@ namespace PurrSoft.Persistence.Migrations
 
                     b.Property<string>("RefillReminders")
                         .HasColumnType("text");
-
-                    b.Property<DateTime?>("ShelterCheckIn")
-                        .HasColumnType("timestamp with time zone");
 
                     b.PrimitiveCollection<List<string>>("UsefulLinks")
                         .HasColumnType("jsonb");
@@ -549,9 +542,6 @@ namespace PurrSoft.Persistence.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<int>("ShiftStatus")
-                        .HasColumnType("integer");
 
                     b.Property<int>("ShiftType")
                         .HasColumnType("integer");
