@@ -10,6 +10,8 @@ public class Animal
 	public int? YearOfBirth { get; set; }
 	public string? Gender { get; set; }
 	public string? Passport {  get; set; }
+	public bool? Sterilized { get; set; }
+	public IList<string> ImageUrls { get; set; }
 	public virtual AnimalProfile? AnimalProfile { get; set; }
 	public virtual IList<AnimalFosterMap> FosteredBy { get; set; }
     public virtual IList<Treatment> Treatments { get; set; } // Navigation property for Treatments
