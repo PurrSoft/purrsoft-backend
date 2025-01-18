@@ -83,9 +83,10 @@ public class EventCommandHandler(
                 Id = notifications.Id,
                 Type = notifications.Type,
                 Message = notifications.Message,
-                IsRead = notifications.IsRead
+                IsRead = notifications.IsRead,
+                UserId = currentUser.UserId 
             };
-
+            await notificationsRepository.SaveChangesAsync(cancellationToken);
             await signalRService.NotifyAllAsync<Notifications>(NotificationOperationType.Add, notificationsDto);
 
             return CommandResponse.Ok(guid.ToString());
