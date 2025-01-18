@@ -2,6 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
+using PurrSoft.Application.Interfaces;
+using PurrSoft.Application.Models;
+using PurrSoft.Application.QueryOverviews;
+using PurrSoft.Application.QueryOverviews.Mappers;
 using PurrSoft.Common.Identity;
 using PurrSoft.Domain.Entities;
 using PurrSoft.Domain.Entities.Enums;
@@ -13,7 +17,8 @@ public class VolunteerCommandHandler(
     IRepository<Volunteer> _volunteerRepository,
     ILogRepository<VolunteerCommandHandler> _logRepository,
     IRepository<ApplicationUser> _userRepository,
-    ICurrentUserService _currentUserService) :
+    ICurrentUserService _currentUserService,
+    ISignalRService _signalRService) :
     IRequestHandler<CreateVolunteerCommand, CommandResponse>,
     IRequestHandler<UpdateVolunteerCommand, CommandResponse>,
     IRequestHandler<DeleteVolunteerCommand, CommandResponse>
@@ -24,9 +29,14 @@ public class VolunteerCommandHandler(
     {
         try
         {
+            ApplicationUser? user = await _userRepository
+            .Query(u => u.Id == request.VolunteerDto.UserId)
+            .FirstOrDefaultAsync(cancellationToken);
+
             Volunteer volunteer = new Volunteer
             {
                 UserId = request.VolunteerDto.UserId,
+                User = user,
                 StartDate = DateTime.SpecifyKind(
                     DateTime.Parse(request.VolunteerDto.StartDate), 
                     DateTimeKind.Utc),
@@ -53,6 +63,12 @@ public class VolunteerCommandHandler(
             _volunteerRepository.Add(volunteer);
             await _volunteerRepository.SaveChangesAsync(cancellationToken);
 
+            VolunteerOverview? volunteerOverview = Queryable
+                .AsQueryable(new List<Volunteer> { volunteer })
+                .ProjectToOverview()
+                .FirstOrDefault();
+            await _signalRService.NotifyAllAsync<Volunteer>(NotificationOperationType.Add, volunteerOverview);
+
             return CommandResponse.Ok();
         }
         catch (Exception ex)
@@ -73,13 +89,18 @@ public class VolunteerCommandHandler(
             throw new UnauthorizedAccessException();
         }
 
-        ApplicationUser user = await _userRepository
+        ApplicationUser? user = await _userRepository
             .Query(u => u.Id == currentUser.UserId)
             .Include(u => u.UserRoles)
             .ThenInclude(ur => ur.Role)
             .FirstOrDefaultAsync(cancellationToken);
 
-        List<string> userRoles = user.UserRoles
+        if (user == null)
+        {
+            throw new UnauthorizedAccessException();
+        }
+
+        List<string?> userRoles = user.UserRoles
             .Select(ur => ur.Role.Name).ToList();
 
         if (userRoles != null &&
@@ -91,7 +112,11 @@ public class VolunteerCommandHandler(
 
         try
         {
-            Volunteer volunteer = _volunteerRepository
+            ApplicationUser? userV = await _userRepository
+            .Query(u => u.Id == request.VolunteerDto.UserId)
+            .FirstOrDefaultAsync(cancellationToken);
+
+            Volunteer? volunteer = _volunteerRepository
                 .Query(v => v.UserId == request.VolunteerDto.UserId).FirstOrDefault();
             if (volunteer == null)
             {
@@ -99,6 +124,7 @@ public class VolunteerCommandHandler(
             }
 
             volunteer.UserId = request.VolunteerDto.UserId;
+            volunteer.User = userV;
             volunteer.StartDate = DateTime.SpecifyKind(
                 DateTime.Parse(request.VolunteerDto.StartDate), 
                 DateTimeKind.Utc);
@@ -125,6 +151,12 @@ public class VolunteerCommandHandler(
 
             await _volunteerRepository.SaveChangesAsync(cancellationToken);
 
+            VolunteerOverview? volunteerOverview = Queryable
+                .AsQueryable(new List<Volunteer> { volunteer })
+                .ProjectToOverview()
+                .FirstOrDefault();
+            await _signalRService.NotifyAllAsync<Volunteer>(NotificationOperationType.Update, volunteerOverview);
+            
             return CommandResponse.Ok();
         }
         catch (Exception ex)
@@ -138,7 +170,7 @@ public class VolunteerCommandHandler(
     {
         try
         {
-            Volunteer volunteer = await _volunteerRepository
+            Volunteer? volunteer = await _volunteerRepository
                 .Query(v => v.UserId == request.Id).FirstOrDefaultAsync();
             if (volunteer == null)
             {
@@ -147,6 +179,8 @@ public class VolunteerCommandHandler(
 
             _volunteerRepository.Remove(volunteer);
             await _volunteerRepository.SaveChangesAsync(cancellationToken);
+
+            await _signalRService.NotifyAllAsync<Volunteer>(NotificationOperationType.Delete, request.Id);
 
             return CommandResponse.Ok();
         }

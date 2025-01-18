@@ -2,6 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
+using PurrSoft.Application.Interfaces;
+using PurrSoft.Application.Models;
+using PurrSoft.Application.QueryOverviews;
+using PurrSoft.Application.QueryOverviews.Mappers;
 using PurrSoft.Common.Identity;
 using PurrSoft.Domain.Entities;
 using PurrSoft.Domain.Entities.Enums;
@@ -14,7 +18,8 @@ public class FosterCommandHandler(
 	IRepository<Foster> _fosterRepository,
 	ILogRepository<FosterCommandHandler> _logRepository,
 	IRepository<ApplicationUser> _userRepository,
-	ICurrentUserService _currentService) :
+	ICurrentUserService _currentService,
+	ISignalRService _signalRService) :
 	IRequestHandler<CreateFosterCommand, CommandResponse>,
 	IRequestHandler<UpdateFosterCommand, CommandResponse>,
 	IRequestHandler<DeleteFosterCommand, CommandResponse>
@@ -23,10 +28,20 @@ public class FosterCommandHandler(
 	{
 		try
 		{
-			Foster foster = new Foster
+            ApplicationUser? user = await _userRepository
+            .Query(u => u.Id == request.FosterDto.UserId)
+            .FirstOrDefaultAsync(cancellationToken);
+
+            if (user == null)
+            {
+                return CommandResponse.Failed(new[] { "There is no User with that id!" });
+            }
+
+            Foster foster = new Foster
 			{
 				UserId = request.FosterDto.UserId,
-				StartDate = request.FosterDto.StartDate,
+				User = user,
+                StartDate = request.FosterDto.StartDate,
 				EndDate = null,
 				Status = Enum.Parse<FosterStatus>(request.FosterDto.Status),
 				Location = request.FosterDto.Location,
@@ -42,8 +57,13 @@ public class FosterCommandHandler(
 
 			_fosterRepository.Add(foster);
 			await _fosterRepository.SaveChangesAsync(cancellationToken);
+			FosterOverview? fosterOverview = Queryable
+				.AsQueryable(new List<Foster> { foster })
+				.ProjectToOverview()
+				.FirstOrDefault();
+            await _signalRService.NotifyAllAsync<Foster>(NotificationOperationType.Add, fosterOverview);
 
-			return CommandResponse.Ok();
+            return CommandResponse.Ok();
 		}
 		catch (Exception ex)
 		{
@@ -76,13 +96,18 @@ public class FosterCommandHandler(
 
 		try
 		{
-			Foster? foster = _fosterRepository.Query(f => f.UserId == request.FosterDto.UserId).FirstOrDefault();
+            ApplicationUser? userF = await _userRepository
+            .Query(u => u.Id == request.FosterDto.UserId)
+            .FirstOrDefaultAsync(cancellationToken);
+
+            Foster? foster = _fosterRepository.Query(f => f.UserId == request.FosterDto.UserId).FirstOrDefault();
 			if (foster == null)
 			{
 				return CommandResponse.Failed(new[] { "There is no Foster with that id!" });
 			}
 
 			foster.UserId = request.FosterDto.UserId;
+			foster.User = userF;
 			foster.StartDate = request.FosterDto.StartDate;
 			foster.EndDate = request.FosterDto.EndDate;
 			foster.Status = Enum.Parse<FosterStatus>(request.FosterDto.Status);
@@ -96,7 +121,14 @@ public class FosterCommandHandler(
 			foster.UpdatedAt = DateTime.UtcNow;
 
 			await _fosterRepository.SaveChangesAsync(cancellationToken);
-			return CommandResponse.Ok();
+
+            FosterOverview? fosterOverview = Queryable
+                .AsQueryable(new List<Foster> { foster })
+                .ProjectToOverview()
+                .FirstOrDefault();
+            await _signalRService.NotifyAllAsync<Foster>(NotificationOperationType.Update, fosterOverview);
+
+            return CommandResponse.Ok();
 		}
 		catch (Exception ex)
 		{
@@ -109,7 +141,7 @@ public class FosterCommandHandler(
 	{
 		try
 		{
-			Foster foster = await _fosterRepository.Query(f => f.UserId == request.Id)
+			Foster? foster = await _fosterRepository.Query(f => f.UserId == request.Id)
 				.FirstOrDefaultAsync(cancellationToken);
 			if (foster == null)
 			{
@@ -119,7 +151,9 @@ public class FosterCommandHandler(
 			_fosterRepository.Remove(foster);
 			await _fosterRepository.SaveChangesAsync(cancellationToken);
 
-			return CommandResponse.Ok();
+			await _signalRService.NotifyAllAsync<Foster>(NotificationOperationType.Delete, request.Id);
+
+            return CommandResponse.Ok();
 		}
 		catch (Exception ex)
 		{

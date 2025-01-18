@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
+using PurrSoft.Application.Interfaces;
+using PurrSoft.Application.Models;
+using PurrSoft.Application.QueryOverviews.Mappers;
 using PurrSoft.Domain.Entities;
 using PurrSoft.Domain.Entities.Enums;
 using PurrSoft.Domain.Repositories;
@@ -12,6 +15,7 @@ namespace PurrSoft.Application.Commands.AnimalCommands;
 public class AnimalCommandHandler(
     IRepository<Animal> animalRepository,
     IConfiguration configuration,
+    ISignalRService signalRService,
     ILogRepository<AnimalCommandHandler> logRepository)
     : IRequestHandler<CreateAnimalCommand, CommandResponse>,
       IRequestHandler<UpdateAnimalCommand, CommandResponse>,
@@ -22,7 +26,7 @@ public class AnimalCommandHandler(
         try
         {
             Guid guid = Guid.NewGuid();
-            animalRepository.Add(new Animal
+            Animal animal = new Animal
             {
                 Id = guid,
                 AnimalType = request.animalDto.AnimalType != null ? Enum.Parse<AnimalType>(request.animalDto.AnimalType) : null,
@@ -32,9 +36,16 @@ public class AnimalCommandHandler(
                 Sterilized = request.animalDto.Sterilized,
                 Passport = request.animalDto.Passport,
                 ImageUrls = request.animalDto.ImageUrls ?? new List<string>()
-            }); 
+            };
+            animalRepository.Add(animal);
 
             await animalRepository.SaveChangesAsync(cancellationToken);
+
+            AnimalDto? animalDto = Queryable
+                .AsQueryable(new List<Animal> { animal })
+                .ProjectToDto()
+                .FirstOrDefault();
+            await signalRService.NotifyAllAsync<Animal>(NotificationOperationType.Add, animalDto);
 
             return CommandResponse.Ok(guid.ToString());
         }
@@ -63,6 +74,12 @@ public class AnimalCommandHandler(
             
             await animalRepository.SaveChangesAsync(cancellationToken);
 
+            AnimalDto? animalDto = Queryable
+                .AsQueryable(new List<Animal> { animal })
+                .ProjectToDto()
+                .FirstOrDefault();
+            await signalRService.NotifyAllAsync<Animal>(NotificationOperationType.Update, animalDto);
+
             return CommandResponse.Ok();
         }
         catch (Exception ex)
@@ -88,6 +105,8 @@ public class AnimalCommandHandler(
             animalRepository.Remove(animal);
 
             await animalRepository.SaveChangesAsync(cancellationToken);
+
+            await signalRService.NotifyAllAsync<Animal>(NotificationOperationType.Delete, request.Id);
 
             return CommandResponse.Ok();
         }

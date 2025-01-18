@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
+using PurrSoft.Application.Interfaces;
+using PurrSoft.Application.Models;
+using PurrSoft.Application.QueryOverviews.Mappers;
 using PurrSoft.Common.Identity;
 using PurrSoft.Domain.Entities;
 using PurrSoft.Domain.Entities.Enums;
@@ -12,7 +15,8 @@ namespace PurrSoft.Application.Commands.ShiftCommands;
 public class ShiftCommandHandler(
 	IRepository<Shift> _shiftRepository,
 	IRepository<Volunteer> _volunteerRepository,
-	ILogRepository<ShiftCommandHandler> logRepository) :
+	ILogRepository<ShiftCommandHandler> logRepository,
+	ISignalRService _signalRService) :
 	IRequestHandler<CreateShiftCommand, CommandResponse>,
 	IRequestHandler<UpdateShiftCommand, CommandResponse>,
 	IRequestHandler<DeleteShiftCommand, CommandResponse>
@@ -42,7 +46,13 @@ public class ShiftCommandHandler(
 			_shiftRepository.Add(shift);
 			await _shiftRepository.SaveChangesAsync(cancellationToken);
 
-			return CommandResponse.Ok();
+			ShiftDto? shiftDto = Queryable
+				.AsQueryable(new List<Shift> { shift })
+				.ProjectToDto()
+				.FirstOrDefault();
+            await _signalRService.NotifyAllAsync<Shift>(NotificationOperationType.Add, shiftDto);
+
+            return CommandResponse.Ok();
 		}
 		catch (Exception ex)
 		{
@@ -76,7 +86,15 @@ public class ShiftCommandHandler(
 			
 
 			await _shiftRepository.SaveChangesAsync(cancellationToken);
-			return CommandResponse.Ok();
+
+            ShiftDto? shiftDto = Queryable
+                .AsQueryable(new List<Shift> { shift })
+                .ProjectToDto()
+                .FirstOrDefault();
+
+            await _signalRService.NotifyAllAsync<Shift>(NotificationOperationType.Update, shiftDto);
+
+            return CommandResponse.Ok();
 		}
 		catch (Exception ex)
 		{
@@ -99,7 +117,9 @@ public class ShiftCommandHandler(
 			_shiftRepository.Remove(shift);
 			await _shiftRepository.SaveChangesAsync(cancellationToken);
 
-			return CommandResponse.Ok();
+			await _signalRService.NotifyAllAsync<Shift>(NotificationOperationType.Delete, request.Id);
+
+            return CommandResponse.Ok();
 		}
 		catch (Exception ex)
 		{

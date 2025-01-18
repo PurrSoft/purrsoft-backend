@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
 using PurrSoft.Application.Interfaces;
 using PurrSoft.Application.Models;
+using PurrSoft.Domain.Entities.Enums;
 using PurrSoft.Domain.Repositories;
 
 namespace PurrSoft.Application.Queries.GoogleFormsResponsesQueries;

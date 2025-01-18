@@ -3,6 +3,9 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
+using PurrSoft.Application.Interfaces;
+using PurrSoft.Application.Models;
+using PurrSoft.Application.QueryOverviews.Mappers;
 using PurrSoft.Domain.Entities;
 using PurrSoft.Domain.Entities.Enums;
 using PurrSoft.Domain.Repositories;
@@ -12,7 +15,8 @@ namespace PurrSoft.Application.Commands.AnimalProfileCommands;
 public class AnimalProfileCommandHandler(
     IRepository<AnimalProfile> animalProfileRepository,
     IRepository<Animal> animalRepository,
-    ILogRepository<AnimalProfileCommandHandler> logRepository)
+    ILogRepository<AnimalProfileCommandHandler> logRepository,
+    ISignalRService signalRService)
     : IRequestHandler<AnimalProfileCommands.AnimalProfileCreateCommand, CommandResponse<Guid>>,
       IRequestHandler<AnimalProfileCommands.AnimalProfileUpdateCommand, CommandResponse>,
       IRequestHandler<AnimalProfileCommands.AnimalProfileDeleteCommand, CommandResponse>
@@ -60,14 +64,20 @@ public class AnimalProfileCommandHandler(
             animalProfileRepository.Add(newProfile);
             await animalProfileRepository.SaveChangesAsync(cancellationToken);
 
-            return CommandResponse.Ok(newProfile.AnimalId);
+            AnimalProfileDto? profileDto = Queryable
+                .AsQueryable(new List<AnimalProfile> { newProfile })
+                .ProjectToDto()
+                .FirstOrDefault();
+            await signalRService.NotifyAllAsync<AnimalProfile>(NotificationOperationType.Add, profileDto);
+
+                return CommandResponse.Ok(newProfile.AnimalId);
+            }
+            catch (Exception ex)
+            {
+                logRepository.LogException(LogLevel.Error, ex);
+                throw;
+            }
         }
-        catch (Exception ex)
-        {
-            logRepository.LogException(LogLevel.Error, ex);
-            throw;
-        }
-    }
 
     public async Task<CommandResponse> Handle(AnimalProfileCommands.AnimalProfileUpdateCommand request, CancellationToken cancellationToken)
     {
@@ -110,17 +120,23 @@ public class AnimalProfileCommandHandler(
 
             await animalProfileRepository.SaveChangesAsync(cancellationToken);
 
-            return CommandResponse.Ok();
-        }
-        catch (Exception ex)
-        {
-            logRepository.LogException(LogLevel.Error, ex);
-            return CommandResponse.Failed(new List<ValidationFailure>
+            AnimalProfileDto? profileDto = Queryable
+                .AsQueryable(new List<AnimalProfile> { profile })
+                .ProjectToDto()
+                .FirstOrDefault();
+            await signalRService.NotifyAllAsync<AnimalProfile>(NotificationOperationType.Update, profileDto);
+
+                return CommandResponse.Ok();
+            }
+            catch (Exception ex)
             {
-                new("AnimalProfile", "Failed to update animal profile.")
-            });
+                logRepository.LogException(LogLevel.Error, ex);
+                return CommandResponse.Failed(new List<ValidationFailure>
+                {
+                    new("AnimalProfile", "Failed to update animal profile.")
+                });
+            }
         }
-    }
 
     public async Task<CommandResponse> Handle(AnimalProfileCommands.AnimalProfileDeleteCommand request, CancellationToken cancellationToken)
     {
@@ -140,6 +156,8 @@ public class AnimalProfileCommandHandler(
 
             animalProfileRepository.Remove(profile);
             await animalProfileRepository.SaveChangesAsync(cancellationToken);
+
+            await signalRService.NotifyAllAsync<AnimalProfile>(NotificationOperationType.Delete, request.Id);
 
             return CommandResponse.Ok();
         }
