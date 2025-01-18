@@ -36,7 +36,7 @@ public class AnimalCommandHandler(
                 Sterilized = request.animalDto.Sterilized,
                 Passport = request.animalDto.Passport,
                 ImageUrls = request.animalDto.ImageUrls ?? new List<string>()
-            });
+            };
             animalRepository.Add(animal);
 
             await animalRepository.SaveChangesAsync(cancellationToken);

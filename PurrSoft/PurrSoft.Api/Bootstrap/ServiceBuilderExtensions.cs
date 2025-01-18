@@ -35,6 +35,9 @@ public static class ServiceBuilderExtensions
         // Register DbContext
         services.AddDbContext(configuration);
 
+        // Register SignalR
+        services.AddSignalR();
+
         // Configure JWT
         IConfigurationSection jwtSettings = configuration.GetSection("JwtConfig");
         JwtConfig jwtConfig = new()
@@ -104,9 +107,6 @@ public static class ServiceBuilderExtensions
 
         // Configure Identity
         services.ConfigureIdentity();
-
-        // Register SignalR
-        services.AddSignalR();
 
         // Register MediatR
         services.AddMediatR(cfg =>

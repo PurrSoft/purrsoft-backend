@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
 using PurrSoft.Application.Interfaces;
 using PurrSoft.Application.Models;
+using PurrSoft.Application.QueryOverviews.Mappers;
 using PurrSoft.Domain.Entities;
 using PurrSoft.Domain.Entities.Enums;
 using PurrSoft.Domain.Repositories;
@@ -63,12 +64,11 @@ public class AnimalProfileCommandHandler(
             animalProfileRepository.Add(newProfile);
             await animalProfileRepository.SaveChangesAsync(cancellationToken);
 
-                // implement after Paula's branch with new changes is merged
-                //AnimalProfileDto? profileDto = Queryable
-                //    .AsQueryable(new List<AnimalProfile> { newProfile })
-                //    .ProjectToDto()
-                //    .FirstOrDefault();
-                //await signalRService.NotifyAllAsync<AnimalProfile>(NotificationOperationType.Add, profileDto);
+            AnimalProfileDto? profileDto = Queryable
+                .AsQueryable(new List<AnimalProfile> { newProfile })
+                .ProjectToDto()
+                .FirstOrDefault();
+            await signalRService.NotifyAllAsync<AnimalProfile>(NotificationOperationType.Add, profileDto);
 
                 return CommandResponse.Ok(newProfile.AnimalId);
             }
@@ -120,12 +120,11 @@ public class AnimalProfileCommandHandler(
 
             await animalProfileRepository.SaveChangesAsync(cancellationToken);
 
-                // implement after Paula's branch with new changes is merged
-                //AnimalProfileDto? profileDto = Queryable
-                //    .AsQueryable(new List<AnimalProfile> { newProfile })
-                //    .ProjectToDto()
-                //    .FirstOrDefault();
-                //await signalRService.NotifyAllAsync<AnimalProfile>(NotificationOperationType.Update, profileDto);
+            AnimalProfileDto? profileDto = Queryable
+                .AsQueryable(new List<AnimalProfile> { profile })
+                .ProjectToDto()
+                .FirstOrDefault();
+            await signalRService.NotifyAllAsync<AnimalProfile>(NotificationOperationType.Update, profileDto);
 
                 return CommandResponse.Ok();
             }
@@ -158,18 +157,17 @@ public class AnimalProfileCommandHandler(
             animalProfileRepository.Remove(profile);
             await animalProfileRepository.SaveChangesAsync(cancellationToken);
 
-                await signalRService.NotifyAllAsync<AnimalProfile>(NotificationOperationType.Delete, request.Id);
+            await signalRService.NotifyAllAsync<AnimalProfile>(NotificationOperationType.Delete, request.Id);
 
-                return CommandResponse.Ok();
-            }
-            catch (Exception ex)
+            return CommandResponse.Ok();
+        }
+        catch (Exception ex)
+        {
+            logRepository.LogException(LogLevel.Error, ex);
+            return CommandResponse.Failed(new List<ValidationFailure>
             {
-                logRepository.LogException(LogLevel.Error, ex);
-                return CommandResponse.Failed(new List<ValidationFailure>
-                {
-                    new("AnimalProfile", "Failed to delete animal profile.")
-                });
-            }
+                new("AnimalProfile", "Failed to delete animal profile.")
+            });
         }
     }
 }

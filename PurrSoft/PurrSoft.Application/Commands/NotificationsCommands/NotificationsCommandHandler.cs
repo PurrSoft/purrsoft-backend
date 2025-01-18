@@ -3,14 +3,18 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PurrSoft.Application.Common;
+using PurrSoft.Application.Interfaces;
+using PurrSoft.Application.Models;
 using PurrSoft.Domain.Entities;
+using PurrSoft.Domain.Entities.Enums;
 using PurrSoft.Domain.Repositories;
 
 namespace PurrSoft.Application.Commands.NotificationsCommands
 {
     public class NotificationCommandHandler(
         IRepository<Notifications> notificationsRepository,
-        ILogRepository<NotificationCommandHandler> logRepository)
+        ILogRepository<NotificationCommandHandler> logRepository,
+        ISignalRService signalRService)
         : IRequestHandler<NotificationCommands.NotificationCommands.NotificationCreateCommand, CommandResponse<Guid>>,
           IRequestHandler<NotificationCommands.NotificationCommands.NotificationUpdateCommand, CommandResponse>,
           IRequestHandler<NotificationCommands.NotificationCommands.NotificationDeleteCommand, CommandResponse>
@@ -30,6 +34,15 @@ namespace PurrSoft.Application.Commands.NotificationsCommands
 
                 notificationsRepository.Add(newNotification);
                 await notificationsRepository.SaveChangesAsync(cancellationToken);
+
+                NotificationsDto? notificationDto = new NotificationsDto
+                {
+                    Id = newNotification.Id,
+                    Type = newNotification.Type,
+                    Message = newNotification.Message,
+                    IsRead = newNotification.IsRead
+                };
+                await signalRService.NotifyAllAsync<Notifications>(NotificationOperationType.Add, notificationDto);
 
                 return CommandResponse.Ok(newNotification.Id);
             }
@@ -72,6 +85,15 @@ namespace PurrSoft.Application.Commands.NotificationsCommands
 
                 await notificationsRepository.SaveChangesAsync(cancellationToken);
 
+                NotificationsDto? notificationDto = new NotificationsDto
+                {
+                    Id = notification.Id,
+                    Type = notification.Type,
+                    Message = notification.Message,
+                    IsRead = notification.IsRead
+                };
+                await signalRService.NotifyAllAsync<Notifications>(NotificationOperationType.Update, notificationDto);
+
                 return CommandResponse.Ok();
             }
             catch (FluentValidation.ValidationException ex)
@@ -106,6 +128,8 @@ namespace PurrSoft.Application.Commands.NotificationsCommands
 
                 notificationsRepository.Remove(notification);
                 await notificationsRepository.SaveChangesAsync(cancellationToken);
+
+                await signalRService.NotifyAllAsync<Notifications>(NotificationOperationType.Delete, request.NotificationId);
 
                 return CommandResponse.Ok();
             }
